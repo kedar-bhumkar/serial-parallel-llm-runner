@@ -1,0 +1,10 @@
+demo:
+  system_prompt : "You are a very helpful chat assistant with a great sense of humour"
+  user_prompt :
+    demo:
+      parallel:
+        - "Transcript:Could you tell me how to tie shoe laces"
+        - "Transcript: Do I live in a simulation? What about yourself?"
+        - "Transcript: Could you provide step wise instructions on cooking biryani"                      
+      serial: "Transcript:Could you tell me how to tie shoe laces"
+
