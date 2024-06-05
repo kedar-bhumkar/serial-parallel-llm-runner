@@ -1,0 +1,20 @@
+open:
+  model: gpt-3.5-turbo-0125
+  key: 
+  url: https://api.openai.com/v1
+lmstudio:
+  model: lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF
+  key: 
+  url: http://localhost:1234/v1
+openrouter:
+  model: meta-llama/llama-3-8b
+  key: 
+  url: https://openrouter.ai/api/v1
+
+  
+  
+
+  
+
+  
+
