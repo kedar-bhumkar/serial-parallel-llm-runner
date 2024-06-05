@@ -1,9 +1,10 @@
 **Brief**
 Generic LLM client to run user defined prompts on any open AI format compatible model/probviders.
-Currently supports
+Currently supports below model factories
 - OpenAi
 - OpenRouter
 - LMStudio local
+
 
 **Usage**
 - install all dependencies
@@ -22,3 +23,13 @@ Currently supports
   prompts.yaml - define the prompts in this as given in the demo usecase
   config.yaml - define the models here
   
+**Features**
+- Supports multiple model factories and models within it
+- Config driven prompts
+- Supports any prompt
+- Supports batch mode of calling the llm multiple times for the same prompt
+- Supports serial and parallel execution
+- Supports response formatting via a 'formatter' function to change the output as desired
+- prompt, response and other parameters logged in a local postgres DB for analysis
+- Supports accuracy calculation
+- Supports result reproducibility calculation
