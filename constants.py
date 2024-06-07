@@ -17,6 +17,7 @@ default_run_mode = None
 default_run_count = 1
 default_sleep = 0.75
 default_accuracy_check = "OFF"
+default_encoding = "cl100k_base"
 
 INSERT_QUERY = """
         INSERT INTO Run_stats (
@@ -36,8 +37,10 @@ INSERT_QUERY = """
             difference,
             ideal_response_difference,
             mode,
+            similarity_metric,
             run_date
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
         """
 READ_QUERY = """
         SELECT 
