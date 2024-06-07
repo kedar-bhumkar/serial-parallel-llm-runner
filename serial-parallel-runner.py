@@ -25,8 +25,9 @@ accuracy_check = None
 db_data= []
 i_data={}
 
-async def async_generate(client,count,prompt):    
+async def async_generate(client,count,prompt):        
     #print(f"generate - {prompt}")
+
     chat_completion = await client.chat.completions.create(
       messages=[
             {"role": "system", "content": theSystemPrompt},
@@ -43,6 +44,8 @@ async def async_generate(client,count,prompt):
 
 def generate(client,count,prompt):    
     #print(f"generate - {prompt}")
+    num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
+
     chat_completion = client.chat.completions.create(
       messages=[
             {"role": "system", "content": theSystemPrompt},
@@ -51,8 +54,9 @@ def generate(client,count,prompt):
         model=theModel,
         temperature = default_temperature
     )
- 
-    formatted_json = format_response(theFormatter, chat_completion.choices[0].message.content)
+
+    num_tokens_from_string(chat_completion.choices[0].message.content, default_encoding, "output")
+    formatted_json = transform_response(theFormatter, chat_completion.choices[0].message.content)
     print(f'response...  {count} ...' , formatted_json)
     return formatted_json
 
@@ -145,20 +149,31 @@ def log(usecase, page, response, time, mode):
     print(f"logging in db ...mode={mode}")
     global theFormatter, i_data, db_data, run_id,theIdealResponse
     matches_idealResponse = None
+    response = format_response(response[0])
+    theIdealResponse = format_response(theIdealResponse)
+    repro_difflib_similarity = None
+    accuracy_difflib_similarity = None
+    similarity_metric=''
 
     if(len(db_data)>0):
         isBaseline = False
-        matches_baseline, reproducibility_changes = compare(db_data[0]['response'], response)
+        first_response = format_response(db_data[0]['response'])
+        matches_baseline, reproducibility_changes, repro_difflib_similarity = compare(first_response, response)
     else:
         isBaseline = True
         matches_baseline = True
         reproducibility_changes = ''
+        repro_difflib_similarity = 1.0
 
     if(accuracy_check == "ON"):
-         matches_idealResponse, idealResponse_changes = compare(theIdealResponse, response)
+         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(theIdealResponse, response)
     else:
         matches_idealResponse = ""
         idealResponse_changes = ""
+
+    print(f'accuracy_difflib_similarity-{accuracy_difflib_similarity}, repro_difflib_similarity-{repro_difflib_similarity}')
+    
+    print(f'similarity_metric-{similarity_metric}')
 
     i_data = {
         'usecase':usecase,
@@ -176,7 +191,8 @@ def log(usecase, page, response, time, mode):
         'matches_baseline': matches_baseline,
         'matches_ideal':matches_idealResponse,
         'difference': reproducibility_changes,
-        'ideal_response_difference': idealResponse_changes
+        'ideal_response_difference': idealResponse_changes,
+        'similarity_metric':f'accuracy_difflib_similarity->>{accuracy_difflib_similarity} -- repro_difflib_similarity->>{repro_difflib_similarity}'
     }
 
     db_data.append(i_data)

@@ -33,3 +33,5 @@ Currently supports below model factories
 - prompt, response and other parameters logged in a local postgres DB for analysis
 - Supports accuracy calculation
 - Supports result reproducibility calculation
+- Supports token counting
+- Supports computing the similarity scores using difflib and Levenstein algorithm

@@ -10,6 +10,7 @@ def connect():
    
     conn = psycopg2.connect(**config['db']['postgres'])
     cursor = conn.cursor()   
+    print(f"config-2")
 
     return conn, cursor
 
@@ -19,9 +20,7 @@ def insert(data_list):
         # SQL query to insert data into the table
         insert_query = INSERT_QUERY
         
-        # Current date for run_date
-        current_date = datetime.now()
-        
+    
      
         # Prepare the values to be inserted
         values_list = [
@@ -42,6 +41,7 @@ def insert(data_list):
                 data['difference'],
                 data['ideal_response_difference'],
                 data['mode'],
+                data['similarity_metric'],
                 datetime.now()  # Current date for run_date
             )
             for data in data_list

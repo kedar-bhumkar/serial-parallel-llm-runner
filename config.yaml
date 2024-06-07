@@ -1,4 +1,4 @@
-open:
+openai:
   model: gpt-3.5-turbo-0125
   key: 
   url: https://api.openai.com/v1
@@ -10,8 +10,6 @@ openrouter:
   model: meta-llama/llama-3-8b
   key: 
   url: https://openrouter.ai/api/v1
-
-  
   
 
   
