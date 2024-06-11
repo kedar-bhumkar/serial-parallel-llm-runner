@@ -6,11 +6,11 @@ from datetime import datetime
 
 def connect():
     config = getConfig(db_conn_file)
-    print(f"config-{config['db']['postgres']}")
+    #print(f"config-{config['db']['postgres']}")
    
     conn = psycopg2.connect(**config['db']['postgres'])
     cursor = conn.cursor()   
-    print(f"config-2")
+    #print(f"config-2")
 
     return conn, cursor
 

@@ -47,7 +47,7 @@ def compare(resp1, resp2):
 
     diff = unified_diff(resp1 , resp2,n=0, lineterm='')    
     changes = ''.join(list(diff))
-    #print(f'diff-{changes}')
+    print(f'diff-{changes}')
 
     ratio = SequenceMatcher(a=resp1, b=resp2).ratio()
     _ratio = f'diff_ratio-{ratio}'
