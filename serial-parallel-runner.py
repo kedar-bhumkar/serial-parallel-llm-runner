@@ -76,12 +76,15 @@ async def generate_concurrently(page):
     #print(f"results...{results}")
 
 
-def init_AI_client(model_family):
+def init_AI_client(model_family, model):
     global clientSync, clientAsync, theModel
     
     config = getConfig(config_file)
-    theModel =  config[model_family]["model"]
-
+    if(model==None):
+        theModel =  config[model_family]["model"]
+    else:    
+        theModel = model
+        
     clientAsync = AsyncOpenAI(
         api_key  = config[model_family]["key"],
         base_url = config[model_family]["url"],
@@ -99,7 +102,7 @@ def init_prompts(usecase, page, mode):
     theIdealResponse = config[usecase]['user_prompt'][page][mode]['ideal_response']
   
 
-def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sleep_time):    
+def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sleep_time, model):    
     global theFormatter, i_data, db_data
   
     
@@ -122,7 +125,7 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
     if(sleep_time == None):
         sleep_time = default_sleep    
 
-    init_AI_client(model_family)
+    init_AI_client(model_family, model)
     init_prompts(usecase, page, mode)
 
     if (mode == "parallel" or  mode == "dual"):
@@ -207,6 +210,7 @@ def main():
     parser.add_argument("--usecase", type=str, required=False, help="the usecase")
     parser.add_argument("--page", type=str, required=False, help="the page name")
     parser.add_argument("--mode", type=str, required=False, help="mode serial or parallel")
+    parser.add_argument("--model", type=str, required=False, help="A valid LLM model name")
     parser.add_argument("--model_family", type=str, required=False, help="openai openrouter lmstudio")
     parser.add_argument("--formatter", type=str, required=False, help="response formatting function")
     parser.add_argument("--run_mode", type=str, required=False, help="same-llm, multiple-llm")
@@ -220,6 +224,7 @@ def main():
     run_mode = args.run_mode
     run_count = args.run_count 
     accuracy_check = args.accuracy_check
+    
 
     if(run_mode == None):
         run_mode = default_run_mode
@@ -228,12 +233,12 @@ def main():
     if(accuracy_check == None):
         accuracy_check = default_accuracy_check
 
-    print(f"usecase-{args.usecase}, page-{args.page}, mode-{args.mode}, model_family-{args.model_family}, formatter-{args.formatter}, run_mode-{args.run_mode}, run_count-{args.run_count}, sleep-{args.sleep}, accuracy_check - {accuracy_check}")
+    print(f"usecase-{args.usecase}, page-{args.page}, mode-{args.mode}, model_family-{args.model_family}, formatter-{args.formatter}, run_mode-{args.run_mode}, run_count-{args.run_count}, sleep-{args.sleep}, accuracy_check - {accuracy_check}, model-{args.model}")
     
     if(run_mode !=None):
         run_id = getRunID(8)
 
-    [sync_async_runner(args.usecase, args.page, args.mode, args.model_family, args.formatter, args.run_mode, args.sleep) for _ in range(run_count)]
+    [sync_async_runner(args.usecase, args.page, args.mode, args.model_family, args.formatter, args.run_mode, args.sleep, args.model) for _ in range(run_count)]
     #print(f"db_data - {db_data}")
     
     if(run_mode !=None):
