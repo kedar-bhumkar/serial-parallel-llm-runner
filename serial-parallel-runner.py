@@ -2,6 +2,7 @@ import asyncio
 from openai import AsyncOpenAI, OpenAI
 import time
 import argparse
+from pydantic_models import *
 from constants import *
 from util import *
 from db_layer import *
@@ -20,6 +21,7 @@ run_count= None
 run_id = None
 theIdealResponse = None
 accuracy_check = None
+
 # Serial
 
 db_data= []
@@ -42,8 +44,8 @@ async def async_generate(client,count,prompt):
     return formatted_json
 
 
-def generate(client,count,prompt):    
-    #print(f"generate - {prompt}")
+def generate(client,count,prompt,page):    
+    print(f"generate - {prompt}")
     num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
 
     chat_completion = client.chat.completions.create(
@@ -54,16 +56,27 @@ def generate(client,count,prompt):
         model=theModel,
         temperature = default_temperature
     )
+    response = chat_completion.choices[0].message.content
+    num_tokens_from_string(response, default_encoding, "output")
+    #print(f'unformatted response...  {count} ...' , response)
+    
+    try:
+        cls = globals()[page]
+    except:
+        print("No pydantic model defined")
+    else:    
+        validated_response = cls.model_validate_json(response)
+        print(f"validated_response-{validated_response}")    
 
-    num_tokens_from_string(chat_completion.choices[0].message.content, default_encoding, "output")
-    formatted_json = transform_response(theFormatter, chat_completion.choices[0].message.content)
-    print(f'response...  {count} ...' , formatted_json)
-    return formatted_json
+    finally:       
+        formatted_json = transform_response(theFormatter, response)
+        print(f'response...  {count} ...' , formatted_json)
+        return formatted_json
 
 # Serial
 def generate_serially(page):  
     global clientSync  
-    return [generate(clientSync, 0, thePrompt)]
+    return [generate(clientSync, 0, thePrompt, page)]
 
 
 # Parallel
@@ -84,7 +97,7 @@ def init_AI_client(model_family, model):
         theModel =  config[model_family]["model"]
     else:    
         theModel = model
-        
+
     clientAsync = AsyncOpenAI(
         api_key  = config[model_family]["key"],
         base_url = config[model_family]["url"],
@@ -97,10 +110,29 @@ def init_AI_client(model_family, model):
 def init_prompts(usecase, page, mode):
     global thePrompt,theSystemPrompt,theIdealResponse
     config = getConfig(prompts_file)  
-    thePrompt = config[usecase]['user_prompt'][page][mode]['input']
+    thePrompt = prompt_constrainer(usecase,page, config, mode)
     theSystemPrompt = config[usecase]['system_prompt']
     theIdealResponse = config[usecase]['user_prompt'][page][mode]['ideal_response']
   
+
+def prompt_constrainer(usecase,page, config, mode):
+   
+    thePrompt = (config[usecase]['user_prompt'][page][mode]['input']) 
+
+    try:
+        cls = globals()[page]
+    except:
+        print(f"No pydantic model defined")
+    else:    
+        print(f"cls->{cls}")
+        response_schema_dict = cls.model_json_schema()
+        response_schema_json = json.dumps(response_schema_dict, indent=2)    
+        thePrompt = thePrompt.format(constraints=response_schema_json)
+    finally:
+        return thePrompt
+    
+
+
 
 def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sleep_time, model):    
     global theFormatter, i_data, db_data
@@ -137,9 +169,10 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
     if (mode == "serial" or  mode == "dual"):   
         # Serial invoker
         start = time.perf_counter()
-        response = generate_serially(page)
-        end = time.perf_counter() - start
+        response = generate_serially(page)        
+        end = time.perf_counter() - start        
         print(f"Serial Program finished in {end:0.2f} seconds.")
+
 
     print(f"run mode - {run_mode}")
     if(run_mode !=None):
@@ -210,7 +243,7 @@ def main():
     parser.add_argument("--usecase", type=str, required=False, help="the usecase")
     parser.add_argument("--page", type=str, required=False, help="the page name")
     parser.add_argument("--mode", type=str, required=False, help="mode serial or parallel")
-    parser.add_argument("--model", type=str, required=False, help="A valid LLM model name")
+    parser.add_argument("--model", type=str, required=False, help="A valid LLM model name. Check supported providers as well if model is present")
     parser.add_argument("--model_family", type=str, required=False, help="openai openrouter lmstudio")
     parser.add_argument("--formatter", type=str, required=False, help="response formatting function")
     parser.add_argument("--run_mode", type=str, required=False, help="same-llm, multiple-llm")
