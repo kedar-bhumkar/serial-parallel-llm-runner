@@ -37,12 +37,7 @@ acd:
       serial: 
         input: "Transcript:I visited a patient John Summers on April 1,2024 as part of a Follow up visit at his home. He is a new  member of the program. He had a  Fall from staircase and had been to the ER.      
                       He suffers from hypertension, had undergone a CABG 2 years back and has acute bronchotis.
-                    Return_data_constraints: Visit Type - (Comprehensive,Annual,Follow-up,Acute,Acute/Reassessment,Discharge,RN Visit,RN Acute/Reassessment,RN Follow up,Post Transition,Post Hospital,Post Hospital Inpatient,Post Hospital ER/OBS/Outpatient,Superbill,Post Hospital Annual,Risk Stratification Assessment,SNF Initial,SNF Discharge Summary,SNF Interim Discharge Summary,SNF Follow up,SNF Admit,Telephonic RN Follow up,Telephonic Follow-up,Post Hospital Initial,Post Hospital Initial,Quarterly)
-                                             Date of Visit - (should be in Date format , blank)
-                                             Member New or Established - (New,Established)
-                                             Place of Service - (Home Nursing Facility, Skilled Nursing Facility, Assisted Living Facility, blank)
-                                             Has there been a Fall? - (Yes,No)
-                                             History of present illness - (record here any  medical history mentioned including diseases, conditions which he/she may have had)"
+                    Return_data_constraints: {constraints}"
         ideal_response: "{
   \"Visit Type\": \"Follow-up\",
   \"Date of Visit\": \"\",
