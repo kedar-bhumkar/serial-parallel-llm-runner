@@ -186,7 +186,7 @@ def log(usecase, page, response, time, mode):
     if(len(db_data)>0):
         isBaseline = False
         first_response = db_data[0]['response']
-        matches_baseline, reproducibility_changes, repro_difflib_similarity = compare(get_Pydantic_Filetered_Response(page, first_response), get_Pydantic_Filetered_Response(page,response))
+        matches_baseline, reproducibility_changes, repro_difflib_similarity = compare(get_Pydantic_Filtered_Response(page, first_response), get_Pydantic_Filtered_Response(page,response))
     else:
         isBaseline = True
         matches_baseline = True
@@ -194,7 +194,7 @@ def log(usecase, page, response, time, mode):
         repro_difflib_similarity = 1.0
 
     if(accuracy_check == "ON"):
-         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(get_Pydantic_Filetered_Response(page,theIdealResponse), get_Pydantic_Filetered_Response(page,response))
+         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(get_Pydantic_Filtered_Response(page,theIdealResponse), get_Pydantic_Filtered_Response(page,response))
     else:
         matches_idealResponse = ""
         idealResponse_changes = ""

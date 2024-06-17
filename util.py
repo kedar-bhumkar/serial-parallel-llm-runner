@@ -76,7 +76,7 @@ def num_tokens_from_string(string: str, encoding_name: str, type: str) -> int:
     print(f'For {type} the no of tokens are {num_tokens}')
     return num_tokens
 
-def get_Pydantic_Filetered_Response(page, response):
+def get_Pydantic_Filtered_Response(page, response):
     #print(f"page-{page} - response-{response}")
     try:
         cls = globals()[page]
@@ -87,9 +87,8 @@ def get_Pydantic_Filetered_Response(page, response):
         
         try:
             validated_response = cls.model_validate_json(response)
-            response= validated_response.model_dump_json()
-            response1= validated_response.model_dump_json()
-            print(f'validated_json_respone->{response1}')
+            response= validated_response.model_dump_json()       
+            #print(f'validated_json_respone->{response1}')
         except Exception as e:    
             print(f"response validation failed -{e}")   
         else:
