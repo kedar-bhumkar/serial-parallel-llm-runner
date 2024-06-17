@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings("ignore")
 import psycopg2
 from constants import *
 from util import getConfig

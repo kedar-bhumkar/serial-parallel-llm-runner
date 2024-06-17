@@ -17,12 +17,12 @@ def print_reproducibility_stats(df):
     grouped['% true'] = ((grouped[True] / (grouped[False] + grouped[True])) * 100).round(2)
 
     # Display the grouped DataFrame
-    print(grouped)
+    #print(grouped)
 
     # Compute the true reproducibility
     numerator = grouped[True].sum()
     denominator = grouped[False].sum() + grouped[True].sum()
-    print(f'numerator={numerator} - denominator-{denominator}')
+    #print(f'numerator={numerator} - denominator-{denominator}')
 
     true_value = ((numerator / denominator) * 100).round(2)
 
@@ -33,7 +33,7 @@ def print_reproducibility_stats(df):
 def print_accuracy_stats(df):
     # Convert matches_baseline to boolean
     df['matches_ideal'] = df['matches_ideal'].apply(lambda x: False if not x or x.lower() == 'false' else True)
-    print(f"df-matches_ideal->{df['matches_ideal']}")
+    #print(f"df-matches_ideal->{df['matches_ideal']}")
     # Group by run_no and matches_baseline and count the occurrences
     grouped = df.groupby(['run_no', 'matches_ideal']).size().unstack(fill_value=0)
 
@@ -48,12 +48,12 @@ def print_accuracy_stats(df):
     grouped['% false'] = ((grouped[False] / (grouped[False] + grouped[True])) * 100).round(2)
     grouped['% true'] = ((grouped[True] / (grouped[False] + grouped[True])) * 100).round(2)
     # Display the grouped DataFrame
-    print(grouped)
+    #print(grouped)
 
     # Compute the true reproducibility
     numerator = grouped[True].sum()
     denominator = grouped[False].sum() + grouped[True].sum()
-    print(f'numerator={numerator} - denominator-{denominator}')
+    #print(f'numerator={numerator} - denominator-{denominator}')
 
     true_value = ((numerator / denominator) * 100).round(2)
 

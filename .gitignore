@@ -3,4 +3,6 @@ diff_tester.py
 prompts.yaml
 class-generator.py
 pydantic_models.py
+full_run.bat
 config.yaml
+
