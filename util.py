@@ -5,6 +5,7 @@ import re
 from difflib import *
 import Levenshtein
 import tiktoken
+from pydantic_models import *
 
 def transform_response(theFormatter,response):
     
@@ -67,8 +68,6 @@ def compare(resp1, resp2):
     else:
         return False, changes, f'{_ratio},{_distance},{_similarity_ratio}'
 
-def format_response(response):
-    return  (re.sub(r'\s+', '', response)).lower()
 
 def num_tokens_from_string(string: str, encoding_name: str, type: str) -> int:
     """Returns the number of tokens in a text string."""
@@ -76,3 +75,29 @@ def num_tokens_from_string(string: str, encoding_name: str, type: str) -> int:
     num_tokens = len(encoding.encode(string))
     print(f'For {type} the no of tokens are {num_tokens}')
     return num_tokens
+
+def get_Pydantic_Filetered_Response(page, response):
+    #print(f"page-{page} - response-{response}")
+    try:
+        cls = globals()[page]
+    except:
+        print("No pydantic model defined")
+    else:    
+        print("pydantic model defined...")
+        
+        try:
+            validated_response = cls.model_validate_json(response)
+            response= validated_response.model_dump_json()
+            response1= validated_response.model_dump_json()
+            print(f'validated_json_respone->{response1}')
+        except Exception as e:    
+            print(f"response validation failed -{e}")   
+        else:
+            print("response validation is successful ...")     
+        
+    finally:               
+        return format_response(response)
+    
+    
+def format_response(response):
+    return  (re.sub(r'\s+', '', response)).lower()

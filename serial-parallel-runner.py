@@ -45,7 +45,7 @@ async def async_generate(client,count,prompt):
 
 
 def generate(client,count,prompt,page):    
-    print(f"generate - {prompt}")
+    #print(f"generate - {prompt}")
     num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
 
     chat_completion = client.chat.completions.create(
@@ -58,20 +58,11 @@ def generate(client,count,prompt,page):
     )
     response = chat_completion.choices[0].message.content
     num_tokens_from_string(response, default_encoding, "output")
-    #print(f'unformatted response...  {count} ...' , response)
-    
-    try:
-        cls = globals()[page]
-    except:
-        print("No pydantic model defined")
-    else:    
-        validated_response = cls.model_validate_json(response)
-        print(f"validated_response-{validated_response}")    
-
-    finally:       
-        formatted_json = transform_response(theFormatter, response)
-        print(f'response...  {count} ...' , formatted_json)
-        return formatted_json
+    print(f'unformatted response...  {count} ...' , response)
+   
+    formatted_json = transform_response(theFormatter, response)
+    #print(f'response...  {count} ...' , formatted_json)
+    return formatted_json
 
 # Serial
 def generate_serially(page):  
@@ -124,9 +115,10 @@ def prompt_constrainer(usecase,page, config, mode):
     except:
         print(f"No pydantic model defined")
     else:    
-        print(f"cls->{cls}")
+        print(f"pydantic model defined")
         response_schema_dict = cls.model_json_schema()
         response_schema_json = json.dumps(response_schema_dict, indent=2)    
+        
         thePrompt = thePrompt.format(constraints=response_schema_json)
     finally:
         return thePrompt
@@ -174,7 +166,7 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
         print(f"Serial Program finished in {end:0.2f} seconds.")
 
 
-    print(f"run mode - {run_mode}")
+    #print(f"run mode - {run_mode}")
     if(run_mode !=None):
         log(usecase, page, response, end, mode)
 
@@ -185,16 +177,16 @@ def log(usecase, page, response, time, mode):
     print(f"logging in db ...mode={mode}")
     global theFormatter, i_data, db_data, run_id,theIdealResponse
     matches_idealResponse = None
-    response = format_response(response[0])
-    theIdealResponse = format_response(theIdealResponse)
+    response = response[0]
+    theIdealResponse = theIdealResponse
     repro_difflib_similarity = None
     accuracy_difflib_similarity = None
     similarity_metric=''
 
     if(len(db_data)>0):
         isBaseline = False
-        first_response = format_response(db_data[0]['response'])
-        matches_baseline, reproducibility_changes, repro_difflib_similarity = compare(first_response, response)
+        first_response = db_data[0]['response']
+        matches_baseline, reproducibility_changes, repro_difflib_similarity = compare(get_Pydantic_Filetered_Response(page, first_response), get_Pydantic_Filetered_Response(page,response))
     else:
         isBaseline = True
         matches_baseline = True
@@ -202,14 +194,14 @@ def log(usecase, page, response, time, mode):
         repro_difflib_similarity = 1.0
 
     if(accuracy_check == "ON"):
-         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(theIdealResponse, response)
+         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(get_Pydantic_Filetered_Response(page,theIdealResponse), get_Pydantic_Filetered_Response(page,response))
     else:
         matches_idealResponse = ""
         idealResponse_changes = ""
 
-    print(f'accuracy_difflib_similarity-{accuracy_difflib_similarity}, repro_difflib_similarity-{repro_difflib_similarity}')
+    #print(f'accuracy_difflib_similarity-{accuracy_difflib_similarity}, repro_difflib_similarity-{repro_difflib_similarity}')
     
-    print(f'similarity_metric-{similarity_metric}')
+    #print(f'similarity_metric-{similarity_metric}')
 
     i_data = {
         'usecase':usecase,
