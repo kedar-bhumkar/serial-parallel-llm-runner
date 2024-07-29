@@ -27,9 +27,9 @@ Currently supports below model factories
   
 
   **Config files**
-  prompts.yaml - define the prompts in this as given in the demo usecase (for command line only)
-  config.yaml - define the models here
-  dbconfig.yaml - postgres connection details
+  - prompts.yaml - define the prompts in this as given in the demo usecase (for command line only)
+  - config.yaml - define the models here
+  - dbconfig.yaml - postgres connection details
   
 **Features**
 - Support command line and web interafce (FAST API)
