@@ -12,20 +12,19 @@ Currently supports below model factories
 - python main.py
 
 **Parameters**
-- All parameters are optional
-- If left blank, demo usecase will be used
-  "--usecase" - the usecase"
-    ("--page", type=str, required=False, help="the page name")
-    ("--mode", type=str, required=False, help="mode serial or parallel")
-    ("--model", type=str, required=False, help="A valid LLM model name. Check supported providers as well if model is present")
-    ("--model_family", type=str, required=False, help="openai openrouter lmstudio groq")
-    ("--formatter", type=str, required=False, help="response formatting function")
-    ("--run_mode", type=str, required=False, help="same-llm, multiple-llm")
-    ("--run_count", type=int, required=False, help="How many times to run")
-    ("--sleep", type=int, required=False, help="Pause between invocations")
-    ("--accuracy_check", type=str, required=False, help="Compare against supplied ideal response. Values - ON, OFF")
-    ("--negative_prompt", type=str, required=False, help="Compute unspoken sections as NOT ASSESSED using fuzzy matching Values - ON, OFF")
-    ("--use_for_training", type=str, required=False, help="Count this row for training / finetuning - true, false")
+  -usecase - the usecase
+  -page - the page name
+  -mode - mode serial or parallel
+  -model - A valid LLM model name. Check supported providers as well if model is present
+  -model_family - openai openrouter lmstudio groq
+  -formatter - response formatting function
+  -run_mode - same-llm, multiple-llm
+  -run_count - How many times to run
+  -sleep- Pause between invocations
+  -accuracy_check- Compare against supplied ideal response. Values - ON, OFF
+  -negative_prompt - Compute unspoken sections as NOT ASSESSED using fuzzy matching Values - ON, OFF
+  -use_for_training - Count this row for training / finetuning - true, false
+  
 
   **Config files**
   prompts.yaml - define the prompts in this as given in the demo usecase (for command line only)
