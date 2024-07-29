@@ -1,4 +1,5 @@
 from  db_layer import *
+from custom_logger import logger
 
 def print_reproducibility_stats(df):
     # Convert matches_baseline to boolean
@@ -27,7 +28,7 @@ def print_reproducibility_stats(df):
     true_value = ((numerator / denominator) * 100).round(2)
 
     true_value
-    print(f'Reproducibility-{true_value}')
+    logger.critical(f'Reproducibility-{true_value}')
 
 
 def print_accuracy_stats(df):
@@ -53,12 +54,12 @@ def print_accuracy_stats(df):
     # Compute the true reproducibility
     numerator = grouped[True].sum()
     denominator = grouped[False].sum() + grouped[True].sum()
-    #print(f'numerator={numerator} - denominator-{denominator}')
+    print(f'numerator={numerator} - denominator-{denominator}')
 
     true_value = ((numerator / denominator) * 100).round(2)
 
  
-    print(f'Accuracy-{true_value}')
+    logger.critical(f'Accuracy-{true_value}')
 
 
 

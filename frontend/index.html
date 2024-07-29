@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACD Tester</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ACD Tester</h1>
+        <div class="transcript-box">
+            <p>Transcript</p>
+            <textarea id="transcript">Reviewed the following with the member today. Geriatric syndrome was assessed.member reports overall health to be Very goodNo change in Self-assessed mental healthPain assessment completed verbally.Verbal pain scale reported as  0 Constitutional Reviewed and negative.Eyes Assessed. members Uses glassesNose and throat Assessed. member reports  difficulty swallowing.Respiratory was reviewed and negative.Cardiovascular was Reviewed and negative.Gastrointestinal was reviewed and negative.Genitourinary was Assessed. member reports  difficulty urinating.Cognitive impairment was not seenNEUROLOGICAL was assessed . The member said she has had Numbness and tingling with Prickling sensationIt feels like Pins and needlesMusculoskeletal  assessed and gait disturbances were seen.Reports history of fractures on Left femur. The last fracture was in 1996.member informed that he is Non-diabetic.Endocrine was assessed. The patient has hot and cold intolerance and has excessive thirst and hungerPsychological assessment was done. She Reports depression. Manages it with activities.Some additional notes about the member - He was once incacerated in jail for 2 weeks.</textarea>
+        </div>
+        <div class="controls">
+            <button onclick="toggleRecording()">Start</button>
+            <button onclick="transcribe()">Transcribe</button>
+            <button onclick="submit()">Submit</button>
+            <button onclick="openSettings()">Settings</button>
+        </div>
+        <a id="response-link" href="#" onClick="window.open('output_render.html', 'Response', 'width=1600,height=800');">View response</a>
+        <canvas id="visualizer"></canvas>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
