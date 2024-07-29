@@ -5,4 +5,13 @@ class-generator.py
 pydantic_models.py
 full_run.bat
 config.yaml
+llm-model-cyclic-tester.py
+json_combiner_tester.py
+formatter_tester.py
+learnings.txt
+frontend/recorder_webm.html
+frontend/player.html
+cycle_models.bat
+response_formatter.py
+
 

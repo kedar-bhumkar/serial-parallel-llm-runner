@@ -43,8 +43,9 @@ def insert(data_list):
                 data['difference'],
                 data['ideal_response_difference'],
                 data['mode'],
-                data['similarity_metric'],
-                datetime.now()  # Current date for run_date
+                data['similarity_metric'],                
+                datetime.now(),  # Current date for run_date
+                data['use_for_training'],
             )
             for data in data_list
         ]

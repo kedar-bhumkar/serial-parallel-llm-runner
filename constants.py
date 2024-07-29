@@ -13,11 +13,16 @@ default_page = "demo"
 default_model_family = "openai"
 default_usecase = "demo"
 default_temperature=0.1
-default_run_mode = None
+default_run_mode = "same-llm"
 default_run_count = 1
 default_sleep = 0.75
-default_accuracy_check = "OFF"
+default_accuracy_check = "ON"
 default_encoding = "cl100k_base"
+default_fuzzy_matching_threshold = 80
+default_negative_prompt="ON"
+default_formatter = "ros_pe_formatter"
+default_use_for_training = False
+
 
 INSERT_QUERY = """
         INSERT INTO Run_stats (
@@ -38,9 +43,10 @@ INSERT_QUERY = """
             ideal_response_difference,
             mode,
             similarity_metric,
-            run_date
+            run_date,
+            use_for_training
 
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
         """
 READ_QUERY = """
         SELECT 
