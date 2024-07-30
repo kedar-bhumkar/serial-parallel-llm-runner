@@ -9,6 +9,9 @@ let dataArray;
 let bufferLength;
 let canvas;
 let canvasCtx;
+//let serverUrl="https://f4bb-207-191-154-78.ngrok-free.app"
+let serverUrl="https://persistentsystemsltd50-dev-ed.develop.my.salesforce-sites.com/services/apexrest"
+
 
 function toggleRecording() {
     const startButton = document.querySelector('.controls button:first-child');
@@ -132,7 +135,7 @@ async function transcribe() {
 
     // Send the base64 audio data to the server for transcription
     try {
-        const response = await fetch('http://127.0.0.1:8000/transcribe', {
+        const response = await fetch(serverUrl+'/transcribe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -165,7 +168,7 @@ function submit() {
     console.log('transcript ' + transcript )
     if (transcript) {
         // Sending the transcript to the web service
-        fetch('http://127.0.0.1:8000/acd', {
+        fetch(serverUrl+'/acd', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
