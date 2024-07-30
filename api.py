@@ -38,6 +38,11 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
+@app.get("/")
+def doGet( request:Request):
+    return {"Hello"}
+
+
 @app.post("/acd")
 def doChat( request:Request, message:Message):    
     print("Inside /acd")    

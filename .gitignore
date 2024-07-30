@@ -10,7 +10,6 @@ json_combiner_tester.py
 formatter_tester.py
 learnings.txt
 frontend/recorder_webm.html
-frontend/player.html
 cycle_models.bat
 response_formatter.py
 
