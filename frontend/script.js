@@ -9,8 +9,8 @@ let dataArray;
 let bufferLength;
 let canvas;
 let canvasCtx;
-//let serverUrl="https://f4bb-207-191-154-78.ngrok-free.app"
-let serverUrl="https://persistentsystemsltd50-dev-ed.develop.my.salesforce-sites.com/services/apexrest"
+let serverUrl="http://localhost:8000"
+//let serverUrl="https://persistentsystemsltd50-dev-ed.develop.my.salesforce-sites.com/services/apexrest"
 
 
 function toggleRecording() {
@@ -18,7 +18,7 @@ function toggleRecording() {
     const recordingIcon = document.createElement('div');
 
     if (!isRecording) {
-        startButton.textContent = 'Stop Recording';
+        startButton.textContent = 'Stop recording';
         recordingIcon.id = 'recording-icon';
         recordingIcon.textContent = '🔴 Recording';
         document.body.appendChild(recordingIcon);
@@ -40,6 +40,8 @@ function toggleRecording() {
 }
 
 function startRecording() {
+    hideMessage()
+    managePage("disable")
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -64,7 +66,29 @@ function startRecording() {
         })
         .catch(error => {
             console.error("Error accessing microphone:", error);
+            showMessage("error","Error accessing microphone:" +  error)
+        })
+        .finally(() => {                        
+            managePage("enable")
         });
+}
+
+function showMessage(type,msg){
+
+    
+    document.getElementById('message').classList.add("error");
+    if(type=="error"){
+        document.getElementById('message').style.color = 'red'; 
+    }else{
+        document.getElementById('message').style.color = 'green'; 
+    }
+  
+    document.getElementById('message').innerText = type.charAt(0).toUpperCase() + type.slice(1) + ":" + msg 
+    document.getElementById('message').style.display = 'block'; 
+}
+
+function hideMessage(){
+    document.getElementById('message').style.display = 'none'; 
 }
 
 function stopRecording() {
@@ -76,6 +100,7 @@ function stopRecording() {
         // Save the webm file in localStorage
         localStorage.setItem('recordedAudio', base64Data);
         console.log("Recording saved as webm in localStorage.");
+        showMessage("Info", "Recording saved as webm in localStorage.")
 
         recordedChunks = []; // Clear the recorded chunks
         audioContext.close();
@@ -84,12 +109,11 @@ function stopRecording() {
 
 function drawVisualizer() {
     requestAnimationFrame(drawVisualizer);
-
     analyser.getByteTimeDomainData(dataArray);
     canvasCtx.fillStyle = 'rgb(255, 255, 255)';
     canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
     canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+    canvasCtx.strokeStyle = 'rgb(10, 20, 120)';
     canvasCtx.beginPath();
 
     const sliceWidth = canvas.width * 1.0 / bufferLength;
@@ -121,17 +145,21 @@ function blobToBase64(blob) {
     });
 }
 
-
-
-
-
 async function transcribe() {
     // Assume the WebM file is stored as base64 in localStorage under the key 'audioFile'
+    hideMessage()
+    managePage("disable")
     const base64Audio = localStorage.getItem('recordedAudio');
     if (!base64Audio) {
-        alert('No audio file found in localStorage!');
+        //alert('No audio file found in localStorage!');
+        showMessage('error','No audio file found in localStorage!')
         return;
     }
+    const loadingMessage = document.createElement('div');
+    loadingMessage.id = 'loading-message';
+    loadingMessage.textContent = '⌛ Transcribing audio to text... Please wait.';
+    document.body.appendChild(loadingMessage);
+    document.getElementById('transcript').innerText = '';
 
     // Send the base64 audio data to the server for transcription
     try {
@@ -145,18 +173,28 @@ async function transcribe() {
 
         if (response.ok) {
             const data = await response.json();
-            document.getElementById('transcriptionResult').innerText = `Transcription: ${data.transcription}`;
-        } else {
-            alert('Error transcribing audio');
+            console.log(`Transcription: ${data.transcription}`)
+            document.getElementById('transcript').innerText = `Transcription: ${data.transcription}`;
+            showMessage("Info", "Transcription completed successfully.")
+        } else {            
+            showMessage('error','Error transcribing audio')
         }
     } catch (error) {
         console.error('Error:', error);
+        showMessage("error",error)
+    }finally {            
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+        managePage("enable")
     }
 }
 
 function submit() {
     //alert('Submit transcript...');
     // Implement transcribe functionality
+    hideMessage()
+    managePage("disable")
     const loadingMessage = document.createElement('div');
     document.getElementById('response-link').style.display = 'none'; // Show the response link       
     loadingMessage.id = 'loading-message';
@@ -180,22 +218,27 @@ function submit() {
             console.log('Success:', JSON.stringify(data));            
             document.getElementById('response-link').style.display = 'block'; // Show the response link            
             sessionStorage.setItem('llmResponse', JSON.stringify(data));
+            showMessage("Info", "Response received from LLM. Pls click View response below.")
         })
         .catch((error) => {
             console.error('Error:', error);
+            showMessage("error",error)
             
         })
         .finally(() => {            
             if (loadingMessage) {
-                loadingMessage.remove();
+                loadingMessage.remove();                
             }
+            managePage("enable")
         });
     } else {
-        alert('No transcript available to send.');
+        alert();
+        showMessage("error","No transcript available to send.")
         if (loadingMessage) {
             loadingMessage.remove();
         }
     }
+   
 }
 function openSettings() {
     alert('Open settings...');
@@ -203,4 +246,21 @@ function openSettings() {
 }
 
 
+function managePage(action){
+    console.log('Manage page .. action '+ action)
 
+    const allBtn = document.querySelectorAll('button')
+       allBtn.forEach((button) => {       
+        console.log(button.id)
+        if(action == "disable" && button.id != "toggle"){
+            console.log('disable...')
+            button.disabled = true;
+        }
+        else if(button.id != "toggle"){
+            console.log('enable...')
+            button.disabled = false;
+        }
+
+
+    });
+}

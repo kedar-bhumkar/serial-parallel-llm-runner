@@ -232,6 +232,7 @@ def log(usecase, page, response, time, mode):
     accuracy_difflib_similarity = None
     similarity_metric=''
     formatted_real_response = get_Pydantic_Filtered_Response(page,response,theFormatter)
+    print(f"formatted_real_response - {formatted_real_response}" )
 
     if(len(db_data)>0):
         isBaseline = False
@@ -246,6 +247,7 @@ def log(usecase, page, response, time, mode):
     if(accuracy_check == "ON"):
          logger.info(f"theIdealResponse - {theIdealResponse}, response -{response}")
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)       
+         print(f"formatted_ideal_response - {formatted_ideal_response}" )
          matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
     else:
         matches_idealResponse = ""
@@ -296,6 +298,7 @@ def handleRequest(message:Message):
     accuracy_check = message.accuracy_check
     shared_data_instance.set_data('negative_prompt', message.negative_prompt)
     shared_data_instance.set_data('use_for_training', message.use_for_training)
+    shared_data_instance.set_data('error_detection', message.error_detection)
     message.prompt = add_space_after_punctuation(message.prompt)
 
     if(message.mode=="parallel"):   
@@ -309,7 +312,7 @@ def handleRequest(message:Message):
     run_id = getRunID(8)
     response = [sync_async_runner(message.usecase, message.page, message.mode, message.family, message.formatter, message.run_mode, message.sleep, message.model, message.prompt) for _ in range(message.run_count)]
     confidence_map = shared_data_instance.get_data('confidence_map')
-        
+    logger.critical(f'confidence map - {confidence_map}')            
     insert(db_data)     
     
     if(accuracy_check=="ON"):
@@ -338,7 +341,7 @@ def main():
     parser.add_argument("--accuracy_check", type=str, required=False, help="Compare against supplied ideal response. Values - ON, OFF")
     parser.add_argument("--negative_prompt", type=str, required=False, help="Compute unspoken sections as NOT ASSESSED using fuzzy matching Values - ON, OFF")
     parser.add_argument("--use_for_training", type=str, required=False, help="Count this row for training / finetuning - true, false")
-    
+    parser.add_argument("--error_detection", type=str, required=False, help="Perform error detection/confidence map computation  - true, false")
 
 
     # Parse the arguments
@@ -349,6 +352,7 @@ def main():
     shared_data_instance.set_data('negative_prompt', args.negative_prompt)
     mode = args.mode
     use_for_training = args.use_for_training
+    error_detection = args.error_detection
     
     if(run_mode == None):
         run_mode = default_run_mode
@@ -358,7 +362,10 @@ def main():
         accuracy_check = default_accuracy_check    
     if(use_for_training == None):
         use_for_training = default_use_for_training
+    if(error_detection == None):
+         error_detection = default_error_detection    
     shared_data_instance.set_data('use_for_training', use_for_training)
+    shared_data_instance.set_data('error_detection', error_detection)
     # Parallel invoker
     if(mode == None):
         mode = default_mode        

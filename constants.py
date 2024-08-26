@@ -22,6 +22,7 @@ default_fuzzy_matching_threshold = 80
 default_negative_prompt="ON"
 default_formatter = "ros_pe_formatter"
 default_use_for_training = False
+default_error_detection = True
 
 
 INSERT_QUERY = """

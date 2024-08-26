@@ -9,8 +9,11 @@ llm-model-cyclic-tester.py
 json_combiner_tester.py
 formatter_tester.py
 learnings.txt
-frontend/recorder_webm.html
 cycle_models.bat
 response_formatter.py
-
+claude.py
+structured_output.py
+dump.txt
+delete.txt
+fine-tuning/formatted_conversation_data.jsonl
 
