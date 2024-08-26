@@ -24,7 +24,7 @@ Currently supports below model factories
   - accuracy_check- Compare against supplied ideal response. Values - ON, OFF
   - negative_prompt - Compute unspoken sections as NOT ASSESSED using fuzzy matching Values - ON, OFF
   - use_for_training - Count this row for training / finetuning - true, false
-  
+  - error_detection - Perform error detection/confidence map computation  - true, false
 
   **Config files**
   - prompts.yaml - define the prompts in this as given in the demo usecase (for command line only)
