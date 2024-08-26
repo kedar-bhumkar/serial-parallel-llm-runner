@@ -1,4 +1,14 @@
 import base64
+from openai import OpenAI
+from constants import *
+from util import getConfig
+
+
+config = getConfig(config_file)
+model_family = "groq"
+client = OpenAI(api_key  = config[model_family]["key"],base_url = config[model_family]["url"])
+
+
 def transcribe(data):
     print('Inside transcribe')
     audio_base64 = data
@@ -9,4 +19,22 @@ def transcribe(data):
     with open(webm_filename, 'wb') as audio_file:
         audio_file.write(audio_bytes)
 
-    return "success"
+    transcription = doAudioTranscription(webm_filename)
+    return {"transcription": transcription.text}
+
+def doAudioTranscription(filename):
+
+    audio_file= open(filename, "rb")
+    transcription = client.audio.transcriptions.create(
+    model="whisper-large-v3", 
+    file=audio_file,
+    language="en",
+    temperature=0
+    )
+
+    print(transcription.text)
+
+    return transcription
+
+
+#doAudioTranscription("aaji.m4a")
