@@ -10,7 +10,6 @@ let bufferLength;
 let canvas;
 let canvasCtx;
 let serverUrl="http://localhost:8000"
-//let serverUrl="https://persistentsystemsltd50-dev-ed.develop.my.salesforce-sites.com/services/apexrest"
 
 
 function toggleRecording() {
