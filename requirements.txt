@@ -1,0 +1,8 @@
+openai
+pydantic
+fuzzywuzzy
+PyYAML
+httpx
+typing_extensions
+python-Levenshtein
+

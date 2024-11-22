@@ -14,9 +14,9 @@ def ros_pe_formatter(data:ros):
     config = getConfig(prompts_file) 
     #shared_prompt =  (config['acd']['user_prompt']['ros']['serial']['input'])    
     shared_prompt = shared_data_instance.get_data('thePrompt')
-    print(f"shared_user_prompt - {shared_prompt}")
+    #print(f"shared_user_prompt - {shared_prompt}")
     shared_error_detection = shared_data_instance.get_data('error_detection')
-    print(f"shared_error_detection-{shared_error_detection}")
+    #print(f"shared_error_detection-{shared_error_detection}")
     
     #Construct field name: type dict . This would be used to get the actual class for a 'string' section name
     field_dict = get_field_types(ros)
@@ -40,7 +40,7 @@ def ros_pe_formatter(data:ros):
 
        
         if shared_error_detection!='false':
-            print(f"Inside error detection....shared_error_detection-{shared_error_detection}")
+            #print(f"Inside error detection....shared_error_detection-{shared_error_detection}")
             if section!='Reviewed_with' and section!= 'additional_notes':            
                 # if any of the attribute values is not null or not na then check
                     # 1) If the section is assessed
@@ -49,7 +49,7 @@ def ros_pe_formatter(data:ros):
                 
                 section_model = field_dict.get(section)
                 attributes = get_pydantic_attributes(globals()[section_model])
-                print(attributes)
+                #print(attributes)
 
                 assessed_field_name = find_assessed_field(globals()[section_model], Literal["Assessed", "Not Assessed"])
                 
@@ -57,35 +57,42 @@ def ros_pe_formatter(data:ros):
                     assessed_field_value = getattr(section_data,assessed_field_name,None)      
                     for attrib in attributes:                    
                         field_value =   getattr(section_data,attrib,None)  
-                        print(f"section - {section} , assessed_field_name -{assessed_field_name}, theAttr-{attrib}, theAtrrib-value-{field_value} ")            
+                        #print(f"section - {section} , assessed_field_name -{assessed_field_name}, theAttr-{attrib}, theAtrrib-value-{field_value} ")            
                         key = section + '-' + attrib                                
                         if(field_value!=None and field_value!='NA'):                                           
                             if(assessed_field_value == "Assessed"):
                                 fuzzy_match = check_word_in_transcript(section_model, shared_prompt)
-                                print(f"fuzzy_match for word {section_model} - is - {fuzzy_match}")
-                                if(fuzzy_match):
-                                    print('fuzzy matched ')
-                                else:
-                                    print('not fuzzy matched low confidence')                                
-                                    print(f"section - {section_model} , assessed_field_name -{assessed_field_name}")  
-                                    confidence_level[key] = f"section - {section_model} , assessed_field_name -{assessed_field_name} low - not fuzzy matched"
+                                #print(f"fuzzy_match for word {section_model} - is - {fuzzy_match}")
+                                #if(fuzzy_match):
+                                    #print('fuzzy matched ')
+                                #else:
+                                    #print('not fuzzy matched low confidence')                                
+                                    #print(f"section - {section_model} , assessed_field_name -{assessed_field_name}")  
+                                confidence_level[key] = f"section - {section_model} , assessed_field_name -{assessed_field_name} low - not fuzzy matched"
                             elif(assessed_field_value == "Not Assessed"): 
-                                if(field_value == "false"):                                                    
+                                #if(field_value == "false" and attrib != 'Reviewed_and_Negative'):                                                    
+                                if(field_value == "false"):
+                                    ##print(f".... field_value - {field_value}")
+                                    ##print(f".... attrib - {attrib}")
                                     setattr(section_data, attrib, 'NA')     
-                                
+                                    # new code
+                                    ##print(f".... assessed_field_name - {assessed_field_name}")
+                                    #setattr(section_data,assessed_field_name,'Assessed') 
+                                    #temp = getattr(section_data,assessed_field_name,None)
+                                    ##print(f".... temp - {temp}")
                             else:    
                                 if(assessed_field_name!=attrib and field_value!='Other'):
-                                    print(f"section - {section_model} , assessed_field_name -{assessed_field_name}")  
-                                    print(f"attrib-{attrib}")
-                                    print('not assessed low confidence')                                
+                                    #print(f"section - {section_model} , assessed_field_name -{assessed_field_name}")  
+                                    #print(f"attrib-{attrib}")
+                                    #print('not assessed low confidence')                                
                                     confidence_level[key] =  f"section - {section_model} , assessed_field_name -{assessed_field_name} low - not assessed section"
                         elif(assessed_field_value == "Not Assessed" and attrib == 'Not_Assessed_Reason' and field_value == None):    
                                     logger.critical(f"***** correcting Not_Assessed_Reason")
                                     setattr(section_data, 'Not_Assessed_Reason', 'Other')   
-        else:
-             print("Skipped  error detection....")
+        #else:
+             #print("Skipped  error detection....")
 
-    print(f"confidence level - {confidence_level}")
+    #print(f"confidence level - {confidence_level}")
     shared_data_instance.set_data('confidence_map', confidence_level)
     return data
 
@@ -119,14 +126,14 @@ def find_assessed_field(cls: Type[BaseModel], literal_type: Literal["Assessed", 
 
 field_dict = get_field_types(ros)
 section_model = field_dict.get('CONSTITUTIONAL')
-print(f'section_model-{section_model}')
+#print(f'section_model-{section_model}')
 #attributes = get_pydantic_attributes(globals()[section_model])
-#print(attributes)
+##print(attributes)
 
 # Literal type to check
 literal_type = Literal["Assessed", "Not Assessed"]
 #field_name = find_assessed_field(Constitutional, literal_type)
-#print(f"field_name -{field_name}")
+##print(f"field_name -{field_name}")
 
 
 def getConfig(file_path):

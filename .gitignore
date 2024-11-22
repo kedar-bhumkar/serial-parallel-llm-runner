@@ -16,4 +16,5 @@ structured_output.py
 dump.txt
 delete.txt
 fine-tuning/formatted_conversation_data.jsonl
+tokens.txt
 
