@@ -22,7 +22,7 @@ run_count= None
 run_id = None
 theIdealResponse = None
 accuracy_check = None
-
+test_map = {}
 
 # Serial
 
@@ -30,6 +30,7 @@ db_data= []
 i_data={}
 
 async def async_generate(client,count,prompt):        
+    print("Entering method: async_generate")
     #logger.info(f"generate - {prompt}")
     num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
     chat_completion = await client.chat.completions.create(
@@ -52,20 +53,30 @@ async def async_generate(client,count,prompt):
 
 
 def generate(client,count,prompt,page):    
-    logger.critical(f"generate - {prompt}")
+    print("Entering method: generate")
+    #logger.critical(f"generate - {prompt}")
     num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
-    #logger.critical(f"prompt-{prompt}")
+    #logger.critical(f"theSystemPrompt-{theSystemPrompt}")
     chat_completion = client.chat.completions.create(
       messages=[
             {"role": "system", "content": theSystemPrompt},
-            {"role": "user",   "content": prompt}
+            {"role": "user",   "content":  prompt}
         ],
+        prediction = {"type": "content","content": prompt},
         model=theModel,
         temperature = default_temperature
     )
     response = chat_completion.choices[0].message.content
+    print(f"chat_completion-total_tokens-{chat_completion.usage.total_tokens}")
+    print(f"chat_completion-completion_tokens-{chat_completion.usage.completion_tokens}")
+    print(f"chat_completion-prompt_tokens-{chat_completion.usage.prompt_tokens}")
+    print(f"chat_completion-prompt_tokens_details_cached_tokens-{chat_completion.usage.prompt_tokens_details.cached_tokens}")
+    print(f"chat_completion.usage.completion_tokens_details.accepted_prediction_tokens-{chat_completion.usage.completion_tokens_details.accepted_prediction_tokens}")
+    print(f"chat_completion.usage.completion_tokens_details.rejected_prediction_tokens-{chat_completion.usage.completion_tokens_details.rejected_prediction_tokens}")
+    print(f"chat_completion.usage.completion_tokens_details.reasoning_tokens-{chat_completion.usage.completion_tokens_details.reasoning_tokens}")
+
     num_tokens_from_string(response, default_encoding, "output")
-    logger.info(f'unformatted response...  {count} ...' , response)
+    #logger.critical(f'unformatted response...  {count} ...' , response)
     
     #This got replaced by the pydantic formatter
     #formatted_json = transform_response(theFormatter, response)
@@ -74,6 +85,7 @@ def generate(client,count,prompt,page):
 
 # Serial
 def generate_serially(usecase, page, mode, prompt):  
+    print("Entering method: generate_serially")
     global clientSync, thePrompt  
     config = getConfig(prompts_file) 
     #thePrompt = (config[usecase]['user_prompt'][page][mode]['input'])  
@@ -85,6 +97,7 @@ def generate_serially(usecase, page, mode, prompt):
 
 # Parallel
 async def generate_concurrently(usecase, page, mode, prompt):
+    print("Entering method: generate_concurrently")
     global clientAsync    
     #thePrompt = (config[usecase]['user_prompt'][page][mode]['input'])  
     thePrompt = prompt
@@ -99,6 +112,7 @@ async def generate_concurrently(usecase, page, mode, prompt):
 
 
 def init_AI_client(model_family, model):
+    print("Entering method: init_AI_client")
     global clientSync, clientAsync, theModel
     
     config = getConfig(config_file)
@@ -117,15 +131,20 @@ def init_AI_client(model_family, model):
     )
 
 def init_prompts(usecase, page, mode):
+    print("Entering method: init_prompts")
     global thePrompt,theSystemPrompt,theIdealResponse
     config = getConfig(prompts_file)     
     theSystemPrompt = config[usecase]['system_prompt']
-    #logger.critical(f"theSystemPrompt-{theSystemPrompt}")
-    theIdealResponse = config[usecase]['user_prompt'][page]['serial']['ideal_response']
+    logger.critical(f"theSystemPrompt-{theSystemPrompt}")
+    if(shared_data_instance.get_data('theIdealResponse') == None):
+        theIdealResponse = config[usecase]['user_prompt'][page]['serial']['ideal_response']
+    else:
+        theIdealResponse = shared_data_instance.get_data('theIdealResponse')
   
 
 def prompt_constrainer(page,thePrompt, count=None):
-     
+    print("Entering method: prompt_constrainer")
+    logger.critical(f"trnascript-{thePrompt}")
     page_index = page
     negativePrompt = ''
     thePrompt = replace_dates(thePrompt)
@@ -137,6 +156,7 @@ def prompt_constrainer(page,thePrompt, count=None):
         negativePrompt = fuzzyMatch(thePrompt)   
     logger.critical(f"negativePrompt-{negativePrompt}")
 
+    start_time = time.time()
     try:
         if(count!=-1):
             page_index = page+ str(count)
@@ -147,16 +167,20 @@ def prompt_constrainer(page,thePrompt, count=None):
         logger.info(f"pydantic model defined")
         response_schema_dict = cls.model_json_schema()
         response_schema_json = json.dumps(response_schema_dict, indent=2)    
+        end_time = time.time()
+        print(f"Time taken to get response schema - {end_time-start_time}")
+
         #logger.info(f"response_schema_json-{response_schema_json}")
+        #print(f"response_schema_json-{response_schema_json}")
         constraints = "constraints"+ str(count)
-       
+        #print(f"constraints-{constraints}")
         logger.info(f"constraints-{constraints}")
         logger.info(f"thePrompt-{thePrompt}")
         
         # @todo REFACTOR THIS
         if(count == -1):
             thePrompt = thePrompt.format(constraints=response_schema_json,missing_sections=negativePrompt)
-            print(f"thePrompt-{thePrompt}")
+            #print(f"thePrompt-{thePrompt}")
             exit
         if(count == 0):
             thePrompt = thePrompt.format(constraints0=response_schema_json,missing_sections=negativePrompt)
@@ -172,6 +196,7 @@ def prompt_constrainer(page,thePrompt, count=None):
 
 
 def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sleep_time, model, prompt):    
+    print("Entering method: sync_async_runner")
     global theFormatter, i_data, db_data
     db_data = []
     
@@ -210,11 +235,13 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
         response = generate_serially(usecase, page, mode, prompt)        
         end = time.perf_counter() - start        
         response = response[0]
+        
         logger.info(f"Serial Program finished in {end:0.2f} seconds.")
 
     
     if(run_mode !=None):
-        log(usecase, page, response, end, mode)
+        response = log(usecase, page, response, end, mode)
+        #logger.critical(f"f-response-{response}")
 
     time.sleep(sleep_time)
 
@@ -223,16 +250,18 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
 
 
 def log(usecase, page, response, time, mode):    
+    print("Entering method: log")
     #logger.critical(f"logging in db ...mode={mode}, response ={response}")
-    global theFormatter, i_data, db_data, run_id,theIdealResponse,thePrompt
+    global theFormatter, i_data, db_data, run_id,theIdealResponse,thePrompt,test_map
     matches_idealResponse = None
-   
-    theIdealResponse = theIdealResponse
+    run_mode = shared_data_instance.get_data('run_mode')   
     repro_difflib_similarity = None
     accuracy_difflib_similarity = None
-    similarity_metric=''
-    formatted_real_response = get_Pydantic_Filtered_Response(page,response,theFormatter)
-    print(f"formatted_real_response - {formatted_real_response}" )
+
+    formatted_real_response = get_Pydantic_Filtered_Response(page,response,theFormatter,response_type='actual')
+    #print(f"formatted_real_response - {formatted_real_response}" )
+    
+    test_result = {}
 
     if(len(db_data)>0):
         isBaseline = False
@@ -244,170 +273,289 @@ def log(usecase, page, response, time, mode):
         reproducibility_changes = ''
         repro_difflib_similarity = 1.0
 
-    if(accuracy_check == "ON"):
+    if(accuracy_check == "ON" and run_mode != 'test-llm'):
          logger.info(f"theIdealResponse - {theIdealResponse}, response -{response}")
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)       
-         print(f"formatted_ideal_response - {formatted_ideal_response}" )
+         #print(f"formatted_ideal_response - {formatted_ideal_response}" )
          matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
+    elif(run_mode == 'test-llm'):
+         logger.info(f"Running test")
+         formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)                
+         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
+         test_result['matches_idealResponse'] = matches_idealResponse
+         test_result['idealResponse_changes'] = idealResponse_changes
+         test_result['accuracy_difflib_similarity'] = accuracy_difflib_similarity
+         test_result['ideal_response'] = formatted_ideal_response
+         test_result['actual_response'] = formatted_real_response
+         test_result['original_response'] = shared_data_instance.get_data('original_response')  
+         test_result['original_run_no'] = shared_data_instance.get_data('original_run_no')
+         test_result['original_prompt'] = shared_data_instance.get_data('original_prompt')
+         test_map[shared_data_instance.get_data('run_no')] = test_result
+         
     else:
         matches_idealResponse = ""
         idealResponse_changes = ""    
         formatted_ideal_response = ""
 
 
-    #logger.info(f'accuracy_difflib_similarity-{accuracy_difflib_similarity}, repro_difflib_similarity-{repro_difflib_similarity}')
-    
-    #logger.info(f'similarity_metric-{similarity_metric}')
-    if(mode=='parallel'):
-        thePrompt = shared_data_instance.get_data('transcript')
+    if(run_mode != 'test-llm'):
+        if(mode=='parallel'):
+            thePrompt = shared_data_instance.get_data('transcript')
 
-
-    i_data = {
-        'usecase':usecase,
-        'mode':mode,
-        'functionality':page,
-        'llm':theModel,
-        'llm_parameters':'temperature='+str(default_temperature),
-        'isBaseline': isBaseline,
-        'run_no': run_id,
-        'system_prompt': theSystemPrompt,
-        'user_prompt': truncate_prompt(thePrompt),
-        'response': formatted_real_response,
-        'ideal_response':formatted_ideal_response,
-        'execution_time': time,
-        'matches_baseline': matches_baseline,
-        'matches_ideal':matches_idealResponse,
-        'difference': reproducibility_changes,
-        'ideal_response_difference': idealResponse_changes,
-        'similarity_metric':f'accuracy_difflib_similarity->>{accuracy_difflib_similarity} -- repro_difflib_similarity->>{repro_difflib_similarity}',
-        'use_for_training': shared_data_instance.get_data('use_for_training')
-    }
-
-    db_data.append(i_data)
+        i_data = {
+            'usecase':usecase,
+            'mode':mode,
+            'functionality':page,
+            'llm':theModel,
+            'llm_parameters':'temperature='+str(default_temperature),
+            'isBaseline': isBaseline,
+            'run_no': run_id,
+            'system_prompt': theSystemPrompt,
+            'user_prompt': truncate_prompt(thePrompt),
+            'response': formatted_real_response,
+            'ideal_response':formatted_ideal_response,
+            'execution_time': time,
+            'matches_baseline': matches_baseline,
+            'matches_ideal':matches_idealResponse,
+            'difference': reproducibility_changes,
+            'ideal_response_difference': idealResponse_changes,
+            'similarity_metric':f'accuracy_difflib_similarity->>{accuracy_difflib_similarity} -- repro_difflib_similarity->>{repro_difflib_similarity}',
+            'use_for_training': shared_data_instance.get_data('use_for_training')
+        }    
+        db_data.append(i_data)
     #logger.info(f"** db_data - {db_data}")
+    return formatted_real_response
 
 
-def handleRequest(message:Message):
-    global run_count, run_mode,db_data,run_id,accuracy_check
-    logger.critical(f"usecase..-{message.usecase}, page-{message.page}, mode-{message.mode}, family-{message.family}, formatter-{message.formatter}, run_mode-{message.run_mode}, run_count-{message.run_count}, sleep-{message.sleep}, accuracy_check - {accuracy_check}, model-{message.model}, negative_prompt-{message.negative_prompt}, use_for_training - {message.use_for_training} ")
-    logger.critical(f"prompt-{message.prompt}")
-    config = getConfig(prompts_file) 
+def process_request(usecase, page, mode, model_family, formatter, run_mode, sleep, model, 
+                   prompt, run_count, accuracy_check, negative_prompt, use_for_training, 
+                   error_detection, test_size_limit=None):
+    """Common processing logic for both CLI and API requests"""
+    global run_id, theIdealResponse, test_map, db_data
 
-    run_mode = message.run_mode
-    run_count = message.run_count 
-    accuracy_check = message.accuracy_check
-    shared_data_instance.set_data('negative_prompt', message.negative_prompt)
-    shared_data_instance.set_data('use_for_training', message.use_for_training)
-    shared_data_instance.set_data('error_detection', message.error_detection)
-    message.prompt = add_space_after_punctuation(message.prompt)
+    # Initialize defaults if not provided
+    mode = mode or default_mode
+    run_mode = run_mode or default_run_mode
+    run_count = run_count or default_run_count
+    accuracy_check = accuracy_check or default_accuracy_check
+    use_for_training = use_for_training or default_use_for_training
+    error_detection = error_detection or default_error_detection
 
-    if(message.mode=="parallel"):   
-        shared_data_instance.set_data('transcript',    message.prompt)
-        prompts  = config[message.usecase]['user_prompt'][message.page]['parallel']['input'] 
-        prompt =[]
-        for count in range(len(prompts)):
-            prompt.append(prompts[count].replace("{transcript}",message.prompt))
-        message.prompt = prompt
+    logger.critical(
+        f"usecase-{usecase}, page-{page}, mode-{mode}, family-{model_family}, "
+        f"formatter-{formatter}, run_mode-{run_mode}, run_count-{run_count}, "
+        f"sleep-{sleep}, accuracy_check-{accuracy_check}, model-{model}, "
+        f"negative_prompt-{negative_prompt}, use_for_training-{use_for_training}"
+    )
+
+    # Set shared data
+    shared_data = {
+        'negative_prompt': negative_prompt,
+        'use_for_training': use_for_training,
+        'error_detection': error_detection,
+        'run_mode': run_mode
+    }
+    for key, value in shared_data.items():
+        shared_data_instance.set_data(key, value)
 
     run_id = getRunID(8)
-    response = [sync_async_runner(message.usecase, message.page, message.mode, message.family, message.formatter, message.run_mode, message.sleep, message.model, message.prompt) for _ in range(message.run_count)]
-    confidence_map = shared_data_instance.get_data('confidence_map')
-    logger.critical(f'confidence map - {confidence_map}')            
-    insert(db_data)     
-    
-    if(accuracy_check=="ON"):
-        print_accuracy_stats(readWithGroupFilter(run_id))
+    config = getConfig(prompts_file)
 
-    return {"response": response, "confidence_map":confidence_map}
+    # Handle prompt preparation
+    if prompt is None and mode != "test-llm":
+        prompt = config[usecase]['user_prompt'][page][mode]['input']
+        if isinstance(prompt, str):
+            prompt = add_space_after_punctuation(prompt)
 
-
-def main():
-
-
-    global run_count, run_mode,db_data,run_id,accuracy_check
-    # Create the parser
-    parser = argparse.ArgumentParser(description="Run any prompt on any model.")
-
-    # Add named arguments
-    parser.add_argument("--usecase", type=str, required=False, help="the usecase")
-    parser.add_argument("--page", type=str, required=False, help="the page name")
-    parser.add_argument("--mode", type=str, required=False, help="mode serial or parallel")
-    parser.add_argument("--model", type=str, required=False, help="A valid LLM model name. Check supported providers as well if model is present")
-    parser.add_argument("--model_family", type=str, required=False, help="openai openrouter lmstudio groq")
-    parser.add_argument("--formatter", type=str, required=False, help="response formatting function")
-    parser.add_argument("--run_mode", type=str, required=False, help="same-llm, multiple-llm")
-    parser.add_argument("--run_count", type=int, required=False, help="How many times to run")
-    parser.add_argument("--sleep", type=int, required=False, help="Pause between invocations")
-    parser.add_argument("--accuracy_check", type=str, required=False, help="Compare against supplied ideal response. Values - ON, OFF")
-    parser.add_argument("--negative_prompt", type=str, required=False, help="Compute unspoken sections as NOT ASSESSED using fuzzy matching Values - ON, OFF")
-    parser.add_argument("--use_for_training", type=str, required=False, help="Count this row for training / finetuning - true, false")
-    parser.add_argument("--error_detection", type=str, required=False, help="Perform error detection/confidence map computation  - true, false")
-
-
-    # Parse the arguments
-    args = parser.parse_args()
-    run_mode = args.run_mode
-    run_count = args.run_count 
-    accuracy_check = args.accuracy_check
-    shared_data_instance.set_data('negative_prompt', args.negative_prompt)
-    mode = args.mode
-    use_for_training = args.use_for_training
-    error_detection = args.error_detection
-    
-    if(run_mode == None):
-        run_mode = default_run_mode
-    if(run_count == None):
-        run_count = default_run_count
-    if(accuracy_check == None):
-        accuracy_check = default_accuracy_check    
-    if(use_for_training == None):
-        use_for_training = default_use_for_training
-    if(error_detection == None):
-         error_detection = default_error_detection    
-    shared_data_instance.set_data('use_for_training', use_for_training)
-    shared_data_instance.set_data('error_detection', error_detection)
-    # Parallel invoker
-    if(mode == None):
-        mode = default_mode        
-
-    logger.critical(f"usecase-{args.usecase}, page-{args.page}, mode-{mode}, model_family-{args.model_family}, formatter-{args.formatter}, run_mode-{args.run_mode}, run_count-{args.run_count}, sleep-{args.sleep}, accuracy_check - {accuracy_check}, model-{args.model}, negative_prompt-{args.negative_prompt}, use_for_training - {use_for_training}")
-    
-    run_id = getRunID(8)
-    config = getConfig(prompts_file) 
-
-    if(mode=="parallel"):   
-        transcript   = config[args.usecase]['user_prompt'][args.page][mode]['transcript']  
+    # Handle parallel mode prompt preparation
+    if mode == "parallel":
+        transcript = (prompt if isinstance(prompt, str) 
+                     else config[usecase]['user_prompt'][page][mode]['transcript'])
         transcript = add_space_after_punctuation(transcript)
         shared_data_instance.set_data('transcript', transcript)
-        prompts  = config[args.usecase]['user_prompt'][args.page][mode]['input'] 
-        prompt =[]
-        for count in range(len(prompts)):
-            prompt.append(prompts[count].replace("{transcript}",transcript))
-    else:    
-        prompt = config[args.usecase]['user_prompt'][args.page][mode]['input']  
-        prompt = add_space_after_punctuation(prompt)
+        
+        if isinstance(prompt, str):
+            base_prompts = config[usecase]['user_prompt'][page][mode]['input']
+            prompt = [p.replace("{transcript}", transcript) for p in base_prompts]
 
-    if(run_mode == "multiple-llm"):
-        logger.info(f"multiple-llm mode")
-        result = parse_models(getConfig(config_file)) 
-        for model_family, value in result.items():
-            for model in value:
-                #logger.info(f"model_family-{model_family} - model -{model}")
-                [sync_async_runner(args.usecase, args.page, mode, model_family, args.formatter, run_mode, args.sleep, model, prompt)]
-    else:    
-        logger.info(f"same-llm mode")
-        [sync_async_runner(args.usecase, args.page, mode, args.model_family, args.formatter, run_mode, args.sleep, args.model, prompt) for _ in range(run_count)]
+    # Process based on run mode
+    if run_mode == "multiple-llm":
+        return _process_multiple_llm(
+            usecase, page, mode, formatter, run_mode, sleep, prompt
+        )
 
-    confidence_map = shared_data_instance.get_data('confidence_map')
-    logger.critical(f'confidence map - {confidence_map}')    
+    elif run_mode == "test-llm":
+        return _process_test_llm(
+            usecase, page, mode, model_family, formatter, 
+            run_mode, sleep, model, test_size_limit
+        )
 
-    #logger.info(f"db_data - {db_data}")    
-    if(run_mode !=None):
-        insert(db_data)
-        print_reproducibility_stats(readWithGroupFilter(run_id))    
+    else:  # same-llm mode
+        return _process_same_llm(
+            usecase, page, mode, model_family, formatter,
+            run_mode, sleep, model, prompt, run_count, accuracy_check
+        )
+
+def _process_multiple_llm(usecase, page, mode, formatter, run_mode, sleep, prompt):
+    """Handle multiple LLM processing mode"""
+    result = parse_models(getConfig(config_file))
+    responses = []
     
-    if(accuracy_check=="ON"):
+    for model_family, models in result.items():
+        for model in models:
+            response = sync_async_runner(
+                usecase, page, mode, model_family, 
+                formatter, run_mode, sleep, model, prompt
+            )
+            responses.append(response)
+    
+    return responses
+
+def _process_test_llm(usecase, page, mode, model_family, formatter, 
+                     run_mode, sleep, model, test_size_limit):
+    """Handle test LLM processing mode"""
+    result = get_test_data(test_size_limit)
+    
+    for count, row in result.iterrows():
+        logger.critical(f"Running test {count+1} of total {len(result)}")
+        if row['user_prompt'] is not None:
+            _setup_test_data(row)
+            prompt = ''.join([
+                'Return_data_constraints: {constraints} ',
+                row['user_prompt'],
+                '{missing_sections}'
+            ])
+            sync_async_runner(
+                row['usecase'], row['functionality'], mode,
+                model_family, formatter, run_mode, sleep, model, prompt
+            )
+    
+    return _generate_test_summary()
+
+def _process_same_llm(usecase, page, mode, model_family, formatter,
+                     run_mode, sleep, model, prompt, run_count, accuracy_check):
+    """Handle same LLM processing mode"""
+    response = [
+        sync_async_runner(
+            usecase, page, mode, model_family, formatter,
+            run_mode, sleep, model, prompt
+        ) for _ in range(run_count)
+    ]
+    
+    confidence_map = shared_data_instance.get_data('confidence_map')
+    
+    if run_mode is not None:
+        insert(db_data)
+        print_reproducibility_stats(readWithGroupFilter(run_id))
+    
+    if accuracy_check == "ON":
         print_accuracy_stats(readWithGroupFilter(run_id))
+        
+    return {"response": response, "confidence_map": confidence_map}
+
+def _setup_test_data(row):
+    """Helper to set up shared data for test runs"""
+    shared_data = {
+        'theIdealResponse': row['ideal_response'],
+        'run_no': row['run_no'],
+        'ideal_response': row['ideal_response'],
+        'original_response': row['response'],
+        'usecase': row['usecase'],
+        'original_run_no': row['run_no'],
+        'original_prompt': row['user_prompt']
+    }
+    
+    for key, value in shared_data.items():
+        shared_data_instance.set_data(key, value)
+
+def _generate_test_summary():
+    """Generate and log test results summary"""
+    total_tests = len(test_map)
+    passed_tests = sum(1 for test in test_map.values() if test['matches_idealResponse'])
+    failed_tests = total_tests - passed_tests
+    pass_rate = f"{(passed_tests/total_tests)*100:.2f}%"
+    
+    summary = {
+        "AI model": theModel,
+        "Tests Passed": passed_tests,
+        "Tests Failed": failed_tests,
+        "Total Tests": total_tests,
+        "Pass Rate": pass_rate
+    }
+    
+    logger.critical("\nTest Suite Results:")
+    logger.critical("==================")
+    for key, value in summary.items():
+        logger.critical(f"{key}: {value}")
+    
+    save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate)
+    return summary
+
+def handleRequest(message: Message):
+    """Handle API requests"""
+    if isinstance(message.prompt, str):
+        message.prompt = add_space_after_punctuation(message.prompt)
+        
+    return process_request(
+        usecase=message.usecase,
+        page=message.page,
+        mode=message.mode,
+        model_family=message.family,
+        formatter=message.formatter,
+        run_mode=message.run_mode,
+        sleep=message.sleep,
+        model=message.model,
+        prompt=message.prompt,
+        run_count=message.run_count,
+        accuracy_check=message.accuracy_check,
+        negative_prompt=message.negative_prompt,
+        use_for_training=message.use_for_training,
+        error_detection=message.error_detection
+    )
+
+def main():
+    """Handle CLI requests"""
+    parser = argparse.ArgumentParser(description="Run any prompt on any model.")
+    
+    # Add arguments
+    parser.add_argument("--usecase", type=str, help="the usecase")
+    parser.add_argument("--page", type=str, help="the page name")
+    parser.add_argument("--mode", type=str, help="mode serial or parallel")
+    parser.add_argument("--model", type=str, help="A valid LLM model name")
+    parser.add_argument("--model_family", type=str, help="openai openrouter lmstudio groq")
+    parser.add_argument("--formatter", type=str, help="response formatting function")
+    parser.add_argument("--run_mode", type=str, help="same-llm, multiple-llm, test-llm")
+    parser.add_argument("--run_count", type=int, help="How many times to run")
+    parser.add_argument("--sleep", type=int, help="Pause between invocations")
+    parser.add_argument("--accuracy_check", type=str, help="Compare against supplied ideal response")
+    parser.add_argument("--negative_prompt", type=str, help="Compute unspoken sections")
+    parser.add_argument("--use_for_training", type=str, help="Count this row for training")
+    parser.add_argument("--error_detection", type=str, help="Perform error detection")
+    parser.add_argument("--test_size_limit", type=int, help="How many test samples to run")
+    
+    args = parser.parse_args()
+    
+    start_time = time.time()
+    process_request(
+        usecase=args.usecase,
+        page=args.page,
+        mode=args.mode,
+        model_family=args.model_family,
+        formatter=args.formatter,
+        run_mode=args.run_mode,
+        sleep=args.sleep,
+        model=args.model,
+        prompt=None,  # Will be loaded from config
+        run_count=args.run_count,
+        accuracy_check=args.accuracy_check,
+        negative_prompt=args.negative_prompt,
+        use_for_training=args.use_for_training,
+        error_detection=args.error_detection,
+        test_size_limit=args.test_size_limit
+    )
+    
+    process_time = time.time() - start_time
+    print(f"Request took {process_time} secs to complete")
 
 if __name__ == "__main__":
     main()

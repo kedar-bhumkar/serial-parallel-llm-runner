@@ -12,7 +12,7 @@ default_mode = "serial"
 default_page = "demo"
 default_model_family = "openai"
 default_usecase = "demo"
-default_temperature=0.1
+default_temperature=0
 default_run_mode = "same-llm"
 default_run_count = 1
 default_sleep = 0.75
@@ -62,4 +62,18 @@ READ_QUERY = """
             ideal_response_difference,
             response 
         FROM Run_stats
+        """
+
+TEST_QUERY = """
+        SELECT DISTINCT ON (user_prompt)
+            run_no,
+            execution_time,
+            usecase,
+            functionality,                        
+            user_prompt,
+            response,
+            ideal_response            
+        FROM Run_stats 
+        WHERE use_for_testing = 'true'
+        ORDER BY user_prompt, run_no DESC
         """

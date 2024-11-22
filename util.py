@@ -9,6 +9,7 @@ from pydantic_models import *
 from custom_logger import *
 import re
 from datetime import datetime, timedelta
+from shared import *
 
 def transform_response(theFormatter,response):
     logger.critical('Inside  transform_response')
@@ -79,7 +80,7 @@ def num_tokens_from_string(string: str, encoding_name: str, type: str) -> int:
     logger.critical(f'For {type} the no of tokens are {num_tokens}')
     return num_tokens
 
-def get_Pydantic_Filtered_Response(page, response, formatter):
+def get_Pydantic_Filtered_Response(page, response, formatter,response_type=None):
     logger.critical(f"page-{page} , formatter - {formatter},  response-{response} ")
     try:
         cls = globals()[page]
@@ -99,7 +100,9 @@ def get_Pydantic_Filtered_Response(page, response, formatter):
         else:
             logger.critical("response validation is successful ...")     
         
-    finally:               
+    finally:
+        if(response_type == 'actual'):
+            shared_data_instance.set_data('unformatted_response', response)               
         return trim_response(response)
     
     

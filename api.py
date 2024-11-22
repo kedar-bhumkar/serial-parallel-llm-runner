@@ -53,7 +53,7 @@ def doChat( request:Request, message:Message):
         message.formatter = default_formatter
 
     response = handleRequest(message)
-
+    print(f"acd_response - {response}")
     return {"acd_response": response}
     #return {"acd_response": theResponse}
 

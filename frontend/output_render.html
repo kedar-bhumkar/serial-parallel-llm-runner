@@ -43,6 +43,10 @@
         .key-value .key {
             font-weight: bold;
         }
+
+        .value.highlight {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -77,6 +81,11 @@
                     const valueSpan = document.createElement('span');
                     valueSpan.className = 'value';
                     valueSpan.textContent = value === null ? 'null' : value;
+
+                    // Add highlight class if value is not null or "NA"
+                    if (value !== null && value !== "NA" && value !== "na" && value!=="Not Assessed") {
+                        valueSpan.classList.add('highlight');
+                    }
 
                     keyValueDiv.appendChild(keySpan);
                     keyValueDiv.appendChild(valueSpan);
