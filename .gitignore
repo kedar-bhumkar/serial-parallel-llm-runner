@@ -17,4 +17,5 @@ dump.txt
 delete.txt
 fine-tuning/formatted_conversation_data.jsonl
 tokens.txt
+pydantic_model_spec.py
 

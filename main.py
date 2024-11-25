@@ -12,7 +12,6 @@ from fuzzy_matching import *
 from shared import *
 
 clientSync = any
-clientAsync = any
 theModel = any
 theFormatter = None
 thePrompt = None
@@ -29,27 +28,7 @@ test_map = {}
 db_data= []
 i_data={}
 
-async def async_generate(client,count,prompt):        
-    print("Entering method: async_generate")
-    #logger.info(f"generate - {prompt}")
-    num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
-    chat_completion = await client.chat.completions.create(
-      messages=[
-            {"role": "system", "content": theSystemPrompt},
-            {"role": "user",   "content": prompt}
-        ],
-        model=theModel,
-        temperature = default_temperature
-    )
 
-    response = chat_completion.choices[0].message.content
-    num_tokens_from_string(response, default_encoding, "output")
-    #logger.critical(f'unformatted response...  {count} ...' , response)
-   
-    #This got replaced by the pydantic formatter
-    #formatted_json = transform_response(theFormatter, response)
-    #logger.info(f'response...  {count} ...' , formatted_json)
-    return response
 
 
 def generate(client,count,prompt,page):    
@@ -95,25 +74,12 @@ def generate_serially(usecase, page, mode, prompt):
     return [generate(clientSync, 0, thePrompt, page)]
 
 
-# Parallel
-async def generate_concurrently(usecase, page, mode, prompt):
-    print("Entering method: generate_concurrently")
-    global clientAsync    
-    #thePrompt = (config[usecase]['user_prompt'][page][mode]['input'])  
-    thePrompt = prompt
-    #Todo - Support negative prompts . Need to support at chunk level
-    tasks = [async_generate(clientAsync,count, prompt_constrainer(page, thePrompt[count], count)) for count in range(len(thePrompt))]    
-    # gather returns all the results when all the threads finish execution
-    results = await asyncio.gather(*tasks)
-    results = combine_jsons(results)
-    #logger.critical(f"results...{results}")
 
-    return results
 
 
 def init_AI_client(model_family, model):
     print("Entering method: init_AI_client")
-    global clientSync, clientAsync, theModel
+    global clientSync, theModel
     
     config = getConfig(config_file)
     if(model==None):
@@ -121,10 +87,7 @@ def init_AI_client(model_family, model):
     else:    
         theModel = model
 
-    clientAsync = AsyncOpenAI(
-        api_key  = config[model_family]["key"],
-        base_url = config[model_family]["url"],
-    )        
+       
     clientSync = OpenAI(
         api_key  = config[model_family]["key"],
         base_url = config[model_family]["url"],
@@ -222,12 +185,7 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
     init_AI_client(model_family, model)
     init_prompts(usecase, page, mode)
 
-    if (mode == "parallel" or  mode == "dual"):
-        start = time.perf_counter()    
-        response = asyncio.run(generate_concurrently(usecase, page, mode, prompt))
-        logger.info(f"parallel response - {response}")
-        end = time.perf_counter() - start
-        logger.info(f"Parallel Program finished in {end:0.2f} seconds.")
+
 
     if (mode == "serial" or  mode == "dual"):   
         # Serial invoker
@@ -366,17 +324,6 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
         prompt = config[usecase]['user_prompt'][page][mode]['input']
         if isinstance(prompt, str):
             prompt = add_space_after_punctuation(prompt)
-
-    # Handle parallel mode prompt preparation
-    if mode == "parallel":
-        transcript = (prompt if isinstance(prompt, str) 
-                     else config[usecase]['user_prompt'][page][mode]['transcript'])
-        transcript = add_space_after_punctuation(transcript)
-        shared_data_instance.set_data('transcript', transcript)
-        
-        if isinstance(prompt, str):
-            base_prompts = config[usecase]['user_prompt'][page][mode]['input']
-            prompt = [p.replace("{transcript}", transcript) for p in base_prompts]
 
     # Process based on run mode
     if run_mode == "multiple-llm":
