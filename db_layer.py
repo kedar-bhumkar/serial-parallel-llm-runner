@@ -30,7 +30,8 @@ def create_test_results_detail_table():
             ideal_response TEXT,
             difference TEXT,
             original_run_no INTEGER,
-            original_prompt TEXT
+            original_prompt TEXT,
+            execution_time DOUBLE PRECISION
         );
         """
         
@@ -63,7 +64,8 @@ def create_test_results_table():
             tests_passed INTEGER,
             tests_failed INTEGER,
             tests_pass_rate TEXT,
-            model TEXT
+            model TEXT,
+            average_execution_time DOUBLE PRECISION
         );
         """
         
@@ -165,21 +167,18 @@ def get_test_data(test_size_limit):
 
 
 
-def insert_test_results_data(model:str,total_tests: int, tests_passed: int, tests_failed: int, pass_rate: str):
+def insert_test_results_data(model:str,total_tests: int, tests_passed: int, tests_failed: int, pass_rate: str, average_execution_time: float):
     conn, cursor = connect()
     try:
         insert_query = """
-        INSERT INTO test_results (total_tests, tests_passed, tests_failed, tests_pass_rate)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO test_results (total_tests, tests_passed, tests_failed, tests_pass_rate, average_execution_time)
+        VALUES (%s, %s, %s, %s, %s)
         RETURNING test_run_no;
         """
         
-        cursor.execute(insert_query, (total_tests, tests_passed, tests_failed, pass_rate))
+        cursor.execute(insert_query, (total_tests, tests_passed, tests_failed, pass_rate, average_execution_time))
         test_run_no = cursor.fetchone()[0]
-        
-        
-
-
+    
         conn.commit()
         print(f"Test results inserted successfully with run number: {test_run_no}")
         return test_run_no
@@ -195,16 +194,16 @@ def insert_test_results_data(model:str,total_tests: int, tests_passed: int, test
             conn.close()
 
 
-def insert_test_results_detail_data(model:str,test_run_no: int,original_response: str,actual_response: str,ideal_response: str,difference: str,original_run_no: int,original_prompt: str):
+def insert_test_results_detail_data(model:str,test_run_no: int,original_response: str,actual_response: str,ideal_response: str,difference: str,original_run_no: int,original_prompt: str, execution_time: float):
     #logger.critical(f"insert_test_results_detail_data - {model},{test_run_no},{original_response},{actual_response},{ideal_response},{difference},{original_run_no},{original_prompt}")
     conn, cursor = connect()
     try: 
         insert_query = """
-        INSERT INTO test_results_detail (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt)
-        VALUES (%s, %s, %s, %s, %s,%s,%s)
+        INSERT INTO test_results_detail (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt, execution_time)
+        VALUES (%s, %s, %s, %s, %s,%s,%s,%s)
         """
 
-        cursor.execute(insert_query, (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt))
+        cursor.execute(insert_query, (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt, execution_time))
         conn.commit()
         print(f"Test results detail inserted successfully with run number: {test_run_no}")
 
@@ -217,8 +216,10 @@ def insert_test_results_detail_data(model:str,test_run_no: int,original_response
         if conn:
             conn.close()
 
-def save_test_results(test_map,model,total_tests,passed_tests,failed_tests,pass_rate):
-    test_run_no = insert_test_results_data(model,total_tests,passed_tests,failed_tests,pass_rate)
+def save_test_results(test_map,model,total_tests,passed_tests,failed_tests,pass_rate,average_execution_time):
+    print(f"average_execution_time-{average_execution_time}")
+    test_run_no = insert_test_results_data(model,total_tests,passed_tests,failed_tests,pass_rate,average_execution_time)
     for test in test_map.values():
-        insert_test_results_detail_data(model,test_run_no,test['original_response'],test['actual_response'],test['ideal_response'],test['idealResponse_changes'],test['original_run_no'],test['original_prompt'])
+        print(f"test['execution_time']-{test['execution_time']}")
+        insert_test_results_detail_data(model,test_run_no,test['original_response'],test['actual_response'],test['ideal_response'],test['idealResponse_changes'],test['original_run_no'],test['original_prompt'], test['execution_time'])
     
