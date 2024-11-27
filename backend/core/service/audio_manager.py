@@ -1,7 +1,7 @@
 import base64
 from openai import OpenAI
-from constants import *
-from util import getConfig
+from backend.core.utility.constants import *
+from backend.core.utility.util import getConfig
 
 
 config = getConfig(config_file)

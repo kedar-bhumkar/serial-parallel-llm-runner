@@ -1,0 +1,333 @@
+demo:
+  system_prompt : "You are a very helpful chat assistant with a great sense of humour"
+  user_prompt :
+    demo:
+      parallel:
+        - "Transcript:Could you tell me how to tie shoe laces"
+        - "Transcript: Do I live in a simulation? What about yourself?"
+        - "Transcript: Could you provide step wise instructions on cooking biryani"                      
+      serial: 
+        input: "Transcript:Could you tell me how to tie shoe laces"
+        ideal_response: "xxxx" 
+
+acd:
+  system_prompt : " As a clinical assistant, your role is to carefully analyze a transcript from a doctor's assessment of a member visit. 
+                    Your task is to interpret the transcript diligently and return the response in accordance with the 'Return_data_constraints' section. 
+                    This section outlines specific details that must be included in your response. Your response must be accurately formatted as JSON to ensure
+                    seamless integration with the system.It is crucial to avoid making any assumptions or errors in your analysis, as inaccuracies could have a
+                    negative impact on the member's health. A correct response will earn you $100. Your attention to detail and precision in interpreting the transcript 
+                    are essential to providing high-quality care for THE member. The response should adhere to the pydantic class model specification mentioned in the Return_data_constraints section.
+                    
+                    Special considerations:
+                    1)This section has literal values and your response should only include one of these. Do not use False value if there is no mention of the condition in the transcript. 
+                    Instead use NA if it is present in the specification. E.g.if the transcript includes a mention of a symptom called numbness then use the value true or false as per what is written, else use NA. This is super important. DO NOT USE FALSE if the symptom is not mentioned. 
+                    2)Another example: if the Literal values for a class variable are mentioned as 'Cognitive Impairment, member/Caregiver Refused, Poor Historian, Unconscious, Unresponsive, Other' only select an answer from these values.
+                    3)Ensure the exact letter casing is maintained in response. E.g. if true is mentioned output true and not True. IF Follow-up is expected do not use lower casing and return follow-up
+                    4)Do not add the characters ``` json anywhere in the response. Do not respond with messages like 'Here is the response in the required JSON format:'
+                    5) Member mentioned / informed is same as member reported 
+                    6) Do not infer values in the Pain assessment section if there is no mention of the actual words 'pain assessment' explicitly in the transcript. Use default values like false or na instead. 
+                    
+                    "
+  user_prompt :
+    cchpi:
+      parallel:
+        input: 
+        - "Transcript:I visited a member John Summers as part of a Follow up visit at his home on April 1,2024. He is a new  member of the program. He had a  Fall from staircase and had been to the ER.      
+                      He suffers from hypertension, had undergone a CABG 2 years back and has acute bronchotis.
+           Return_data_constraints:{constraints0}"
+
+        - "Transcript:I visited a member John Summers as part of a Follow up visit at his home on April 1,2024. He is a new  member of the program. He had a  Fall from staircase and had been to the ER.      
+                      He suffers from hypertension, had undergone a CABG 2 years back and has acute bronchotis.
+           Return_data_constraints:{constraints1}"
+
+        - "Transcript:I visited a member John Summers as part of a Follow up visit at his home on April 1,2024. He is a new  member of the program. He had a  Fall from staircase and had been to the ER.      
+                      He suffers from hypertension, had undergone a CABG 2 years back and has acute bronchotis.
+           Return_data_constraints:{constraints2}"                      
+      serial: 
+        input: "Return_data_constraints: {constraints} Transcript:Visit Type is Comprehensive Member New or Established is New Date of Visit is 05/18/2023 Place of Service is Assisted Living Facility How was visit Completed is Face to Face CC/Reason for Program Admission is Follow up on chronic conditions and management HPI is Member seen today for an initial comprehensive visit. He lives alone in an independent senior apartment. He has two cats for company. His son lives near by but he doesn't see him or talk often but does talk more often to his daughter in law. Denies falls in over 2 years. 1. HTN, CKD3A, afib, secondary hypercoagulability, anemia in CKD- continues on iron and vitamin C daily, coumadin managed by Holy Family coumadin clinic 2. Moderate protein calorie malnutrition, esophageal obstruction, hiatal hernia, vitamin D deficiency- swallowing ok now, has had dilation procedures in the past, continues on famotidine and vitamin d supplements. 3. BPH, obstructive uropathy- continues to self cath several times daily. 4. MDD, insomnia, RLS- manages depressive symptoms by planning daily outing on the bus. RLS managed with gabapentin, insomnia with melatonin with good effect. 5. OA- infrequent pain, but acetaminophen is effective when needed. Uses cane in the apartment and walker when out of apartment. No falls in more than 2 years.
+                    "
+        ideal_response: "{
+  \"visit_type\": \"Follow-up\",
+  \"date_of_visit\": \"April 1,2024\",
+  \"member_new_or_established\": \"New\",
+  \"place_of_service\": \"Home\",
+  \"has_there_been_a_fall\": \"Yes\",
+  \"history_of_present_illness\": \"Fall from staircase, Hypertension, CABG 2 years back, acute bronchitis \"
+}"                                     
+    ros:
+      parallel:
+        transcript:
+          "Transcript:Reviewed the following with the member today. Geriatric syndrome was assessed.
+member reports overall health to be Very good
+No change in Self-assessed mental health
+Pain assessment completed verbally.
+Verbal pain scale reported as  0 
+Constitutional Reviewed and negative.
+Eyes Assessed. members Uses glasses
+Nose and throat Assessed. member reports  difficulty swallowing.
+Respiratory was reviewed and negative.
+Cardiovascular was Reviewed and negative.
+Gastrointestinal was reviewed and negative.
+Genitourinary was Assessed. member reports  difficulty urinating.
+Cognitive impairment was not seen
+NEUROLOGICAL was assessed . The member said she has had Numbness and tingling with Prickling sensation
+It feels like Pins and needles
+Musculoskeletal  assessed and gait disturbances were seen.
+Reports history of fractures on Left femur. The last fracture was in 1996.
+member informed that he is Non-diabetic.
+Endocrine was assessed. The patient has hot and cold intolerance and has excessive thirst and hunger
+Psychological assessment was done. She Reports depression. Manages it with activities.
+Some additional notes about the member - He was once incacerated in jail for 2 weeks."
+        input: 
+        - "{transcript}
+{missing_sections} 
+Return_data_constraints: {constraints0}"
+
+        - "{transcript}
+{missing_sections} 
+Return_data_constraints: {constraints1}"
+
+        - "{transcript}
+{missing_sections} 
+Return_data_constraints:{constraints2}"                      
+      serial: 
+        input: "Return_data_constraints: {constraints}. Transcript: Reviewed the following with the member on 29-07-2024.  Geriatric syndrome was assessed. member reports overall health to be Very good No change in Self-assessed mental health Pain assessment completed verbally. Verbal pain scale reported as  0 Constitutional Reviewed and negative. Eyes Assessed.  members Uses glasses Nose and throat Assessed.  member reports  difficulty swallowing. Respiratory was reviewed and negative. Cardiovascular was Reviewed and negative. Gastrointestinal was reviewed and negative. Genitourinary was Assessed.  member reports  difficulty urinating. Cognitive impairment was not seen NEUROLOGICAL was assessed .  The member said she has had Numbness and tingling with Prickling sensationIt feels like Pins and needles Musculoskeletal  assessed and gait disturbances were seen. Reports history of fractures on Left femur.  The last fracture was in 1996. member informed that he is Non-diabetic. Endocrine was assessed.  The patient has hot and cold intolerance and has excessive thirst and hunger Psychological assessment was done.  She Reports depression.  Manages it with activities. Some additional notes about the member - He was once incacerated in jail for 2 weeks. {missing_sections} 
+        "
+        ideal_response: "{
+  \"Reviewed_with\": \"Member\",
+  \"CONSTITUTIONAL\": {
+    \"Constitutional_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"true\",
+    \"Fever\": \"NA\",
+    \"Chills\": \"NA\",
+    \"Fatigue\": \"NA\",
+    \"Change_in_Sleep\": \"NA\",
+    \"Change_in_Appetite\": \"NA\",
+    \"Unintentional_Weight_Loss\": \"NA\",
+    \"Unintentional_Weight_Gain\": \"NA\",
+    \"Night_Sweats\": \"NA\",
+    \"Weakness\": \"NA\"
+  },
+  \"EENT_EYES\": {
+    \"Eyes_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"false\",
+    \"Blurred_Vision\": \"NA\",
+    \"Drainage\": \"NA\",
+    \"Itching\": \"NA\",
+    \"Pain\": \"NA\",
+    \"Changes_in_Vision\": \"NA\",
+    \"Tearing\": \"NA\",
+    \"Dryness\": \"NA\",
+    \"Redness\": \"NA\",
+    \"Flashing_Lights\": \"NA\",
+    \"Double_Vision\": \"NA\",
+    \"Glasses_Contacts\": \"true\"
+  },
+  \"EENT_NOSE_AND_THROAT\": {
+    \"Nose_Throat_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"false\",
+    \"Nasal_Congestion\": \"NA\",
+    \"Sinus_Pressure\": \"NA\",
+    \"Nosebleeds\": \"NA\",
+    \"Hoarseness\": \"NA\",
+    \"Sore_Throat\": \"NA\",
+    \"Difficulty_Swallowing\": \"true\",
+    \"Difficulty_Chewing\": \"NA\",
+    \"Poor_Dentition\": \"NA\",
+    \"Sore_Tongue\": \"NA\",
+    \"Bleeding_Gums\": \"NA\",
+    \"Tooth_Pain\": \"NA\"
+  },
+  \"EENT_EARS\": {
+    \"Ears_ROS__c\": \"Not Assessed\",
+    \"Not_Assessed_Reason\": \"Other\",
+    \"Reviewed_and_Negative\": \"NA\",
+    \"Tinnitus\": \"NA\",
+    \"Ear_Pain\": \"NA\",
+    \"Change_in_Hearing\": \"NA\",
+    \"Drainage\": \"NA\"
+  },
+  \"CARDIOVASCULAR\": {
+    \"Cardiovascular_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"true\",
+    \"Chest_Pain\": \"NA\",
+    \"Palpitations\": \"NA\",
+    \"Lightheadedness\": \"NA\",
+    \"Dizziness\": \"NA\",
+    \"Syncope\": \"NA\",
+    \"Edema\": \"NA\",
+    \"Pain_with_Walking\": \"NA\",
+    \"Use_of_Compression_Stockings\": \"NA\"
+  },
+  \"GERIATRIC_SYNDROME\": {
+    \"Compared_to_others_your_age\": \"Very Good\",
+    \"Self_Assessed_Mental\": \"Same\"
+  },
+  \"GENITOURINARY\": {
+    \"Genitourinary_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"false\",
+    \"Urgency\": \"NA\",
+    \"Frequency\": \"NA\",
+    \"Difficulty_Urinating\": \"true\",
+    \"Burning_with_Urination\": \"NA\",
+    \"Blood_in_Urine\": \"NA\",
+    \"Stress_Incontinence\": \"NA\",
+    \"Frequent_Infections\": \"NA\",
+    \"Urge_Incontinence\": \"NA\",
+    \"Nocturia\": \"NA\",
+    \"Testicular_Pain\": \"NA\",
+    \"Vaginal_Bleeding\": \"NA\",
+    \"Scrotal_Swelling\": \"NA\"
+  },
+  \"NEUROLOGICAL\": {
+    \"Neurological_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"false\",
+    \"Cognitive_Impairment\": \"false\",
+    \"Numbness\": \"true\",
+    \"Tingling\": \"true\",
+    \"Prickling_Sensation\": \"true\",
+    \"Burning_Sensation\": \"NA\",
+    \"Itching_Sensation\": \"NA\",
+    \"Pins_and_Needles\": \"true\",
+    \"Pain_d_t_Innocuous_Stimuli\": \"NA\",
+    \"Increased_Sensitivity_to_Pain\": \"NA\",
+    \"Dizziness\": \"NA\",
+    \"Lightheadedness\": \"NA\",
+    \"Vertigo\": \"NA\",
+    \"Fainting\": \"NA\",
+    \"Loss_of_Balance\": \"NA\",
+    \"Memory_Problems\": \"NA\",
+    \"Difficulty_Speaking\": \"NA\",
+    \"Motor_Weakness\": \"NA\",
+    \"Seizures\": \"NA\"
+  },
+  \"ENDOCRINE\": {
+    \"Endocrine_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"false\",
+    \"Excessive_Thirst\": \"true\",
+    \"Excessive_Hunger\": \"true\",
+    \"Increased_Urination\": \"NA\",
+    \"Heat_Intolerance\": \"true\",
+    \"Cold_Intolerance\": \"true\",
+    \"Hypoglycemic_Events\": \"NA\",
+    \"Hyperglycemic_Events\": \"NA\"
+  },
+  \"PSYCHOLOGICAL\": {
+    \"Psychological_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\":\"false\",
+    \"Depression\": \"true\",
+    \"Withdrawn\": \"NA\",
+    \"Anxiety\": \"NA\",
+    \"Hallucinations\": \"NA\",
+    \"Sadness\": \"NA\",
+    \"Insomnia\": \"NA\",
+    \"Periods_of_High_Energy\": \"NA\",
+    \"Racing_Thoughts\": \"NA\",
+    \"Suicidal_Ideations\": \"NA\",
+    \"Homicidal_Ideations\": \"NA\",
+    \"Angry\": \"NA\",
+    \"Upset\": \"NA\",
+    \"Euthymic_Mood\": \"NA\"
+  },
+  \"PAIN_ASSESSMENT\": {
+    \"Cognitive_Impairment\": false,
+    \"Cognitive_Impairment_Type\": null,
+    \"Pain_Assessment_Completed\": \"Verbal\",
+    \"Verbal_Pain_Scale\": 0,
+    \"Description_of_Pain\": null,
+    \"Does_not_appear_to_be_in_pain\": true,
+    \"Non_Verbal_Pain_Indicators\": null,
+    \"What_Eases_the_Pain\": null,
+    \"Pain_Notes\": null
+  },
+  \"HEAD_AND_NECK\": {
+    \"Head_ROS__c\": \"Not Assessed\",
+    \"Not_Assessed_Reason\": \"Other\",
+    \"Reviewed_and_Negative\": \"NA\",
+    \"Headaches\": \"NA\",
+    \"Dizziness\": \"NA\",
+    \"Hair_Loss\": \"NA\",
+    \"Swollen_Glands\": \"NA\",
+    \"Neck_Stiffness\": \"NA\",
+    \"Previous_Head_Injury\": \"NA\",
+    \"Previous_Head_Injury_Describe\": null
+  },
+  \"RESPIRATORY\": {
+    \"Respiratory_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"true\",
+    \"Chronic_Cough\": \"NA\",
+    \"Acute_Cough\": \"NA\",
+    \"Sputum\": \"NA\",
+    \"Shortness_of_Breath\": \"NA\",
+    \"Wheezing\": \"NA\",
+    \"Snoring\": \"NA\",
+    \"CPAP_BiPAP\": \"NA\"
+  },
+  \"GASTROINTESTINAL\": {
+    \"Gastrointestinal_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"true\",
+    \"Heartburn\": \"NA\",
+    \"Nausea\": \"NA\",
+    \"Abdominal_Pain\": \"NA\",
+    \"Vomiting\": \"NA\",
+    \"Vomiting_Blood\": \"NA\",
+    \"Diarrhea\": \"NA\",
+    \"Constipation\": \"NA\",
+    \"Hemorrhoids\": \"NA\",
+    \"Fecal_Incontinence\": \"NA\",
+    \"Black_Stools\": \"NA\",
+    \"Bloody_Stools\": \"NA\",
+    \"Change_in_Bowel_Habits\": \"NA\"
+  },
+  \"INTEGUMENTARY\": {
+    \"Integumentary_ROS__c\": \"Not Assessed\",
+    \"Not_Assessed_Reason\": \"Other\",
+    \"Reviewed_and_Negative\": \"NA\",
+    \"Rash\": \"NA\",
+    \"Bruising\": \"NA\",
+    \"Abrasions\": \"NA\",
+    \"Skin_Tears\": \"NA\",
+    \"Lacerations\": \"NA\",
+    \"Surgical_Wounds\": \"NA\",
+    \"Diabetic_Ulcers\": \"NA\",
+    \"Pressure_Ulcers\": \"NA\",
+    \"Foot_Ulcers\": \"NA\",
+    \"Stasis_Ulcers\": \"NA\",
+    \"Poor_Healing_of_Wounds\": \"NA\",
+    \"Atypical_Skin_Lesion\": \"NA\",
+    \"Hair_Loss\": \"NA\"
+  },
+  \"MUSCULOSKELETAL\": {
+    \"Muscoloskeletal_ROS__c\": \"Assessed\",
+    \"Not_Assessed_Reason\": null,
+    \"Reviewed_and_Negative\": \"false\",
+    \"Gait_Disturbances\": \"true\",
+    \"Muscle_Cramping\": \"NA\",
+    \"Muscle_Pain\": \"NA\",
+    \"Joint_Pain\": \"NA\",
+    \"Joint_Pain_Location\": null,
+    \"Joint_Stiffness\": \"NA\",
+    \"Joint_Stiffness_Location\": null,
+    \"Fractures\": \"true\",
+    \"Fractures_Locations\": \"Left femur\",
+    \"Date_of_Last_Fracture\": \"1996\"
+  },
+  \"DIABETIC_TESTING\": {
+    \"Non_Diabetic_Member\": true,
+    \"Member_Reported\": true,
+    \"Routine_Diabetic_Testing\": false,
+    \"Member_Reported_A1C\": null,
+    \"A1C_Date\": null
+  },
+  \"additional_notes\": \"He was once incarcerated in jail for 2 weeks\"
+}"                                                                                              

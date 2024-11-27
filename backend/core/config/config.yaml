@@ -1,0 +1,31 @@
+openai:
+  preferred_model: gpt-4o-2024-11-20
+  model_options: [gpt-4o,gpt-4o-mini,gpt-3.5-turbo-0125, gpt-4-turbo, gpt-4o-2024-08-06, o1-mini, o1-preview]
+  key:  
+  url: https://api.openai.com/v1
+  active: false
+lmstudio:
+  preferred_model: lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF
+  model_options: [m1, m2]
+  key: lm-studio
+  url: http://localhost:1234/v1
+  active: false
+openrouter:
+  preferred_model: meta-llama/llama-3-8b
+  model_options: [openrouter/flavor-of-the-week]
+  key: 
+  url: https://openrouter.ai/api/v1
+  active: true
+groq:
+  preferred_model: llama-3.1-70b-versatile
+  model_options: [llama-3.1-405b-reasoning, llama-3.1-70b-versatile, llama3-8b-8192, llama3-70b-8192, mixtral-8x7b-32768, gemma-7b-it]
+  key: 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
+  url: https://api.groq.com/openai/v1
+  active: false
+  
+  
+
+  
+
+  
+

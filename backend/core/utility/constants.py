@@ -4,9 +4,9 @@
 #model="lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF"
 standard_model = "gpt-3.5-turbo-0125" 
 
-config_file =".\\config\\config.yaml"
-prompts_file=".\\config\\prompts.yaml"
-db_conn_file='.\\config\\db_config.yaml'
+config_file =".\\backend\\core\\config\\config.yaml"
+prompts_file=".\\backend\\core\\config\\prompts.yaml"
+db_conn_file='.\\backend\\core\\config\\db_config.yaml'
 
 default_mode = "serial"
 default_page = "demo"
