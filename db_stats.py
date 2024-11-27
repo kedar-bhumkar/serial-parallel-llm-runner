@@ -22,14 +22,14 @@ def print_reproducibility_stats(df):
 
     # Compute the true reproducibility
     numerator = grouped[True].sum()
-    denominator = grouped[False].sum() + grouped[True].sum()
+    denominator = grouped[False].sum() + grouped[True].sum()  
     #print(f'numerator={numerator} - denominator-{denominator}')
 
     true_value = ((numerator / denominator) * 100).round(2)
 
     true_value
     logger.critical(f'Reproducibility-{true_value}')
-
+ 
 
 def print_accuracy_stats(df):
     # Convert matches_baseline to boolean

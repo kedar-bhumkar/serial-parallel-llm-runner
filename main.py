@@ -248,6 +248,7 @@ def log(usecase, page, response, time, mode):
          test_result['original_response'] = shared_data_instance.get_data('original_response')  
          test_result['original_run_no'] = shared_data_instance.get_data('original_run_no')
          test_result['original_prompt'] = shared_data_instance.get_data('original_prompt')
+         logger.critical(f"accuracy_difflib_similarity-{accuracy_difflib_similarity}")
          test_map[shared_data_instance.get_data('run_no')] = test_result
          
     else:
@@ -372,11 +373,16 @@ def _process_test_llm(usecase, page, mode, model_family, formatter,
                 row['user_prompt'],
                 '{missing_sections}'
             ])
+            start_time = time.time()
             sync_async_runner(
                 row['usecase'], row['functionality'], mode,
                 model_family, formatter, run_mode, sleep, model, prompt
             )
-    
+            
+            test_result =test_map[shared_data_instance.get_data('run_no')] 
+            test_result['execution_time'] = round(time.time() - start_time, 2)
+
+
     return _generate_test_summary()
 
 def _process_same_llm(usecase, page, mode, model_family, formatter,
@@ -421,13 +427,15 @@ def _generate_test_summary():
     passed_tests = sum(1 for test in test_map.values() if test['matches_idealResponse'])
     failed_tests = total_tests - passed_tests
     pass_rate = f"{(passed_tests/total_tests)*100:.2f}%"
+    average_execution_time = round(sum(test['execution_time'] for test in test_map.values()) / total_tests, 2)
     
     summary = {
         "AI model": theModel,
         "Tests Passed": passed_tests,
         "Tests Failed": failed_tests,
         "Total Tests": total_tests,
-        "Pass Rate": pass_rate
+        "Pass Rate": pass_rate,
+        "Average Execution Time": average_execution_time
     }
     
     logger.critical("\nTest Suite Results:")
@@ -435,7 +443,7 @@ def _generate_test_summary():
     for key, value in summary.items():
         logger.critical(f"{key}: {value}")
     
-    save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate)
+    save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate, average_execution_time)
     return summary
 
 def handleRequest(message: Message):
