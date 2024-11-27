@@ -1,0 +1,1 @@
+python serial-parallel-runner.py --usecase=acd --page=cchpi --run_mode=multiple-llm  --accuracy_check=ON

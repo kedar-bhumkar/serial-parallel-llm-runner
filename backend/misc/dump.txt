@@ -1,0 +1,77 @@
+Reviewed the following with the member today. Geriatric syndrome was assessed. member reports overall health to be Very gooc. No change in Self-assessed mental health Pain assessment completed verbally. Verbal pain scale reported as  0 Constitutional Reviewed and negative. Eyes Assessed. Member uses glasses. Nose and throat were Assessed. member reports difficulty swallowing. Respiratory was reviewed and negative. Cardiovascular was Reviewed and negative. Gastrointestinal was reviewed and negative. Genitourinary was Assessed. member reports difficulty urinating. Cognitive impairment was not seen neurological was assessed. The member said she has had numbness and tingling, as well as a prickling sensation that feels like pins and needles. Musculoskeletal was assessed and gait disturbances were seen. Reports history of fractures on Left femur. The last fracture was in 1996. Member informed that he is Non-diabetic. Endocrine was assessed. The patient has hot and cold intolerance and excessive thirst and hunger. A psychological assessment was done. She Reports depression. Manages it with activities. Some additional notes about the member: He was incarcerated in jail for 2 weeks.  {missing_sections} Return_data_constraints: {constraints}
+
+
+Ideal
+
+Reviewed the following with the member today. Geriatric syndrome was assessed.
+member reports overall health to be Very good
+No change in Self-assessed mental health
+Pain assessment completed verbally.
+Verbal pain scale reported as  0 
+Constitutional Reviewed and negative.
+Eyes Assessed. members Uses glasses
+Nose and throat Assessed. member reports  difficulty swallowing.
+Respiratory was reviewed and negative.
+Cardiovascular was Reviewed and negative.
+Gastrointestinal was reviewed and negative.
+Genitourinary was Assessed. member reports  difficulty urinating.
+Cognitive impairment was not seen
+NEUROLOGICAL was assessed . The member said she has had Numbness and tingling with Prickling sensation
+It feels like Pins and needles
+Musculoskeletal  assessed and gait disturbances were seen.
+Reports history of fractures on Left femur. The last fracture was in 1996.
+member informed that he is Non-diabetic.
+Endocrine was assessed. The patient has hot and cold intolerance and has excessive thirst and hunger
+Psychological assessment was done. She Reports depression. Manages it with activities.
+Some additional notes about the member - He was once incacerated in jail for 2 weeks.
+{missing_sections} 
+Return_data_constraints: {constraints}
+
+===
+
+Reviewed the following with the member today.Eyes Assessed. Member uses glasses. Nose and throat were Assessed. {missing_sections} Return_data_constraints: {constraints}
+
+===
+Transcription:  Recorded a following with member today. The member has done diabetic testing. The member reported they did it on June 1st, 2020. The A1C level was reported to be 180. Musculoskeletal was assessed. Member had joint pain. Joint pain location was left shoulder. They also complained about muscle cramping and gait disturbance. The integumentary was not assessed. This was because the patient caregiver refused. Gastrointestinal was assessed. Member reported vomiting and blood fell from the vomit. The member also had constipation and hemorrhoids. Respiratory was not assessed because of cognitive impairment. The ears were not assessed. The not assessed reason being unresponsive member. Head and neck was assessed The member had dizziness hair loss swollen glands and neck stiffness Pain assessment was carried out The verbal pain scale was around 9. The assessment was completed verbally. Psychological was not assessed. The reason was the member was unconscious. Intracranial was assessed. The member had excessive thirst, hunger and increased urination. Neurological was assessed. The member had burning sensation, itching sensation and feeling of pins and needles. They also suffered from vertigo, fainting and a loss of balance and memory problems. The member definitely has difficulty speaking and also has seizures. Cardiovascular was not assessed due to cognitive impairment. Eyes were assessed. The member wears glasses. He has double vision. The eyes have dryness, redness, and itching. Constitutional was assessed. The member had fatigue, change in appetite, and unintentional weight loss.
+
+====
+Transcription:  I reviewed the following with a member today. The cardiovascular was not assessed because the patient care was refused. The geriatric syndrome was assessed. The member said that compared to others of their age, they felt very good. The self-assessed mental health was worse. Eyes were assessed. The member had tearing, dryness, and redness in the right eye. In the left eye, the patient had double vision. The left eye also exhibited drainage and itching. Genitourinary was assessed. The member had difficulty urinating and reported blood in urine. Endocrine was not assessed. This was because the member was unresponsive. Psychological was assessed The member had depression withdrawal symptoms anxiety and hallucinations Pain assessment was carried out non-verbally. The pain scale was around 2. Certain non-verbal indicators were seen, for example, crying out or moaning. The patient said that the pain eased because of position change. The ears were assessed. The member had ear pain in both the ears. They had a change in hearing in the left ear. Gastrointestinal was not assessed. was because the member was a poor historian. Musculoskeletal was assessed. The member had joint stiffness in the right elbow.
+
+Training
+====
+Transcription:  Reviewed the following with member on 16-08-2024.  The constitution was assessed.  The member had fever,  chills,  and change in sleep.  The eyes were assessed as well.  The member suffered from blurred vision,  drainage,  and itching in both the eyes. Correction itching was only in the left eye.  He had tearing,  dryness,  as well as redness in his left and right eye.  The member wears glasses.  The nose and throat section was assessed.  The member had sinus pressure,  nose bleeds,  and hoarseness.  Genitourinary was assessed.  The member had blurred urine and complained of noctoria.  Neurological was assessed.  The member had numbness,  tingling,  and tickling sensation.  He also had loss of balance and suffered from memory issues.  Pain assessment was done verbally The pain scale was around 9 The member mentioned that his pain is eased due to change in position The pain had started five years back.  Musculoskeletal was also assessed.  The member had muscle cramping and muscle pain.  The member also suffered from joint pain in his left shoulder.  He complained about joint stiffness in the right shoulder.  He had a fracture on his left hand and its date was around two years back.  The member is non-diabetic.  The member reported A1C level was around 140.  was conducted on 15-08-2024.   +   The below sections were not assessed: NoseThroat, Nose and Throat, HeadAndNeck, Head and Neck, HeadandNeck, Cardiovascular, GeriatricSyndrome, Endocrine, Psychological, Neck, Respiratory, Gastrointestinal, Integumentary, Diabetic, notes 
+Type - negative prompt
+Reason - blurred urine
+
+
+Transcription:  I reported a following with a member yesterday. The constitution was not assessed as the member had cognitive impairment. The eye section was not assessed as well because the member was unconscious. The nose and throat were assessed. The member had nasal congestion, sinus pressure, nosebleeds, and hoarseness. Cardiovascular was not assessed. Neurological was assessed. The member had pins and needles and increased sensitivity to pain. He had memory problems and difficulty speaking. Also suffered from seizures. Psychological was not assessed. Pain assessment was done. It was completed non-verbally. The pain scale was around 5. The pain the member suffered had a throbbing sensation and feeling. Musculoskeletal was assessed. The member had joint pain. It was located on the shoulder. also a joint stiffness located on the left elbow no the right elbow
+Type - negative prompt
+Reason - Left elbow no right elbow, incorrectly set Cognitive_impairment to true w/o any mention
+
+
+Breaking
+"Reviewed With is Member Constitutional is Assessed, Reviewed and Negative is Yes Eyes is Assessed,Reviewed and Negative is Yes Nose and Throat is Assessed, Reviewed and Negative is Yes Cardiovascular is Assessed, Edema is Positive Geriatric Syndrome- Compared to others your age, how would you describe your health? its Fair, Self - Assessed Mental is Same Genitourinary is Assessed, Reviewed and Negative is Yes Neurological is Assessed, Major Motor Weakness is Positive Endocrine is Assessed, Reviewed and Negative is Yes Psychological Assessed, Reviewed and Negative is Yes Pain Assessment- Pain Assessment Completed is Verbal, Verbal Pain Scale is 0 Head and Neck is Assessed, Reviewed and Negative is Yes EARS is Assessed, Reviewed and Negative is Yes RESPIRATORY is Assessed, Reviewed and Negative is Yes GASTROINTESTINAL is Assessed, Reviewed and Negative is Yes INTEGUMENTARY is Assessed, Reviewed and Negative is Yes MUSCULOSKELETAL is Assessed, Joint Stiffness is Positive and Location is (L) Hip and (L) Knee DIABETIC TESTING- No fields to fill"
+
+
+•	Transcript 1:
+o	Review of systems with negative findings:
+Reviewed ROS with member she was cooperative.  Did ask resident about how she would describe her health compared to others her age she said fair.  She answered same when asked about her self-assessment of her mental condition.
+During time of visit resident was verbal.  Denied any pain resident denies any fevers or chills.  When asked resident denies acute or chronic cough.  Resident also denied chest pain palpitations.  At time of visit had no edema.  Denied nausea vomiting diarrhea.  She denied any neurological symptoms.  During visit resident appears at her baseline cognition, denies cognitive impairment.  No signs of depression during our visit no suicidal thoughts or homicidal ideations.
+Review of systems with some positive findings:
+Resident evaluated today for review of systems.  She was nonverbal today.  Did not appear to be in pain.  Sitting comfortably in wheelchair no grimacing noted.  Negative findings for fever and chills.  Resident did have acute cough, nonproductive.  As noted per nursing.  No findings with chest pain or palpitations.  Negative review for neurologic or psychologic condition.
+•	Transcript 2:
+o	Gloria was seen today on 10/11/2024.  Staff are reporting that member had uncontrollable shaking and she presented similarly last time she had a urinary tract infection. upon examination she denies shortness of breath or acute cough.  She is reporting vaginal pain and burning with urination.  She has a history of frequent urinary tract infections.  Staff obtained a urine sample this morning and reported foul odor, increased mucus and cloudy in appearance.
+•	Transcript 3:
+o	Jackie is being seen today for concerns of nausea.
+Onset of symptoms was last evening.
+She is meaningfully involved in today's visit as she is her own primary medical decision maker.
+Onset of symptoms was last evening.
+Current symptoms include: Nausea, slight abdominal pain which is nonspecific and widespread, loose stools but no true diarrhea.  Of note: she denies any blackness or blood in her stool.  She states the loose stools started yesterday afternoon.  Her last bowel movement was last evening also loose.  Typical bowel movement pattern is daily.  She went 3 times yesterday.  None today.
+Denies: Fever, vomiting, watery stools, respiratory symptoms, rash, shortness of breath, difficulty breathing, dysuria.
+Further denies any recent antibiotic use, recent surgeries, significant gastrointestinal comorbidities such as IBS or Crohn's disease, exotic travel, exposure to animals.
+Aggravating factors: She states that the smell of food brings on the nausea.
+Alleviating factors: None noted.
+Interventions: Staff have utilized isopropyl alcohol pads for her to smell with moderate relief of symptoms.
+
+•	Transcript 4:
+o	Reviewed the following with member on 10/10/2024. Constitutional: No fever chills and fatigue noted. Neurologically she is alert and oriented x 1-2; eyes was assessed, pupils are equal and reactive to light. no blurriness noted; she denies pain and able to participate in group activities; ENT was assessed, no tinnitus noted although noted to be hard of hearing on both ears. Denies sore throat, likewise no swelling of lymph nodes noted; cardiac was assessed, she denies chest pain and palpitations. No peripheral edema noted; pulmonary was assessed. She denies cough, shortness of breath or wheezing. Hematology was assessed and no bruising or petechia noted. GI was assessed, no nausea, indigestion, diarrhea and constipated noted. Member states that she has good appetite. GU was assessed denies urinary urgency, dysuria, or hematuria. Musculoskeletal was assessed. No joint pain noted, with normal range of motion. Uses wheelchair for mobilization.

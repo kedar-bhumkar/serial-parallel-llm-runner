@@ -1,0 +1,3852 @@
+section_model-Constitutional
+thePrompt-Transcript:Reviewed the following with the member on 24-08-2024.  Geriatric syndrome was assessed.  member reports overall health to be Very good No change in Self-assessed mental health Pain assessment completed verbally.  Verbal pain scale reported as  0 Constitutional Reviewed and negative.  Eyes Assessed.  members Uses glasses Nose and throat Assessed.  member reports  difficulty swallowing.  Respiratory was reviewed and negative.  Cardiovascular was Reviewed and negative.  Gastrointestinal was reviewed and negative.  Genitourinary was Assessed.  member reports  difficulty urinating.  Cognitive impairment was not seen NEUROLOGICAL was assessed .  The member said she has had Numbness and tingling with Prickling sensation It feels like Pins and needles Musculoskeletal  assessed and gait disturbances were seen.  Reports history of fractures on Left femur.  The last fracture was in 1996.  member informed that he is Non-diabetic.  Endocrine was assessed.  The patient has hot and cold intolerance and has excessive thirst and hunger Psychological assessment was done.  She Reports depression.  Manages it with activities.  Some additional notes about the member - He was once incacerated in jail for 2 weeks.  The below sections were not assessed: Ears, NoseThroat, Nose and Throat, HeadAndNeck, Head and Neck, HeadandNeck, GeriatricSyndrome, Neck, Integumentary, Diabetic Return_data_constraints: {
+  "$defs": {
+    "Cardiovascular": {
+      "properties": {
+        "Cardiovascular_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Cardiovascular Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Chest_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Chest Pain"
+        },
+        "Palpitations": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Palpitations"
+        },
+        "Lightheadedness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lightheadedness"
+        },
+        "Dizziness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dizziness"
+        },
+        "Syncope": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Syncope"
+        },
+        "Edema": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Edema"
+        },
+        "Pain_with_Walking": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pain With Walking"
+        },
+        "Use_of_Compression_Stockings": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Use Of Compression Stockings"
+        }
+      },
+      "required": [
+        "Cardiovascular_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Chest_Pain",
+        "Palpitations",
+        "Lightheadedness",
+        "Dizziness",
+        "Syncope",
+        "Edema",
+        "Pain_with_Walking",
+        "Use_of_Compression_Stockings"
+      ],
+      "title": "Cardiovascular",
+      "type": "object"
+    },
+    "Constitutional": {
+      "properties": {
+        "Constitutional_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Constitutional Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Fever": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fever"
+        },
+        "Chills": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Chills"
+        },
+        "Fatigue": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fatigue"
+        },
+        "Change_in_Sleep": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Change In Sleep"
+        },
+        "Change_in_Appetite": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Change In Appetite"
+        },
+        "Unintentional_Weight_Loss": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unintentional Weight Loss"
+        },
+        "Unintentional_Weight_Gain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unintentional Weight Gain"
+        },
+        "Night_Sweats": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Night Sweats"
+        },
+        "Weakness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Weakness"
+        }
+      },
+      "required": [
+        "Constitutional_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Fever",
+        "Chills",
+        "Fatigue",
+        "Change_in_Sleep",
+        "Change_in_Appetite",
+        "Unintentional_Weight_Loss",
+        "Unintentional_Weight_Gain",
+        "Night_Sweats",
+        "Weakness"
+      ],
+      "title": "Constitutional",
+      "type": "object"
+    },
+    "DiabeticTesting": {
+      "properties": {
+        "Non_Diabetic_Member": {
+          "title": "Non Diabetic Member",
+          "type": "boolean"
+        },
+        "Member_Reported": {
+          "title": "Member Reported",
+          "type": "boolean"
+        },
+        "Routine_Diabetic_Testing": {
+          "title": "Routine Diabetic Testing",
+          "type": "boolean"
+        },
+        "Member_Reported_A1C": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Member Reported A1C"
+        },
+        "A1C_Date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "A1C Date"
+        }
+      },
+      "required": [
+        "Non_Diabetic_Member",
+        "Member_Reported",
+        "Routine_Diabetic_Testing",
+        "Member_Reported_A1C",
+        "A1C_Date"
+      ],
+      "title": "DiabeticTesting",
+      "type": "object"
+    },
+    "Ears": {
+      "properties": {
+        "Ears_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Ears Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Tinnitus": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tinnitus"
+        },
+        "Ear_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ear Pain"
+        },
+        "Change_in_Hearing": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Change In Hearing"
+        },
+        "Drainage": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Drainage"
+        }
+      },
+      "required": [
+        "Ears_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Tinnitus",
+        "Ear_Pain",
+        "Change_in_Hearing",
+        "Drainage"
+      ],
+      "title": "Ears",
+      "type": "object"
+    },
+    "Endocrine": {
+      "properties": {
+        "Endocrine_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Endocrine Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Excessive_Thirst": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Excessive Thirst"
+        },
+        "Excessive_Hunger": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Excessive Hunger"
+        },
+        "Increased_Urination": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Increased Urination"
+        },
+        "Heat_Intolerance": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Heat Intolerance"
+        },
+        "Cold_Intolerance": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cold Intolerance"
+        },
+        "Hypoglycemic_Events": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hypoglycemic Events"
+        },
+        "Hyperglycemic_Events": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hyperglycemic Events"
+        }
+      },
+      "required": [
+        "Endocrine_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Excessive_Thirst",
+        "Excessive_Hunger",
+        "Increased_Urination",
+        "Heat_Intolerance",
+        "Cold_Intolerance",
+        "Hypoglycemic_Events",
+        "Hyperglycemic_Events"
+      ],
+      "title": "Endocrine",
+      "type": "object"
+    },
+    "Eyes": {
+      "properties": {
+        "Eyes_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Eyes Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Blurred_Vision": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Blurred Vision"
+        },
+        "Drainage": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Drainage"
+        },
+        "Itching": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Itching"
+        },
+        "Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pain"
+        },
+        "Changes_in_Vision": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Changes In Vision"
+        },
+        "Tearing": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tearing"
+        },
+        "Dryness": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dryness"
+        },
+        "Redness": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Redness"
+        },
+        "Flashing_Lights": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Flashing Lights"
+        },
+        "Double_Vision": {
+          "anyOf": [
+            {
+              "enum": [
+                "Left",
+                "Right",
+                "Bilateral",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Double Vision"
+        },
+        "Glasses_Contacts": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Glasses Contacts"
+        }
+      },
+      "required": [
+        "Eyes_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Blurred_Vision",
+        "Drainage",
+        "Itching",
+        "Pain",
+        "Changes_in_Vision",
+        "Tearing",
+        "Dryness",
+        "Redness",
+        "Flashing_Lights",
+        "Double_Vision",
+        "Glasses_Contacts"
+      ],
+      "title": "Eyes",
+      "type": "object"
+    },
+    "Gastrointestinal": {
+      "properties": {
+        "Gastrointestinal_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Gastrointestinal Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Heartburn": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Heartburn"
+        },
+        "Nausea": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nausea"
+        },
+        "Abdominal_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Abdominal Pain"
+        },
+        "Vomiting": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vomiting"
+        },
+        "Vomiting_Blood": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vomiting Blood"
+        },
+        "Diarrhea": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Diarrhea"
+        },
+        "Constipation": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Constipation"
+        },
+        "Hemorrhoids": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hemorrhoids"
+        },
+        "Fecal_Incontinence": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fecal Incontinence"
+        },
+        "Black_Stools": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Black Stools"
+        },
+        "Bloody_Stools": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bloody Stools"
+        },
+        "Change_in_Bowel_Habits": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Change In Bowel Habits"
+        }
+      },
+      "required": [
+        "Gastrointestinal_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Heartburn",
+        "Nausea",
+        "Abdominal_Pain",
+        "Vomiting",
+        "Vomiting_Blood",
+        "Diarrhea",
+        "Constipation",
+        "Hemorrhoids",
+        "Fecal_Incontinence",
+        "Black_Stools",
+        "Bloody_Stools",
+        "Change_in_Bowel_Habits"
+      ],
+      "title": "Gastrointestinal",
+      "type": "object"
+    },
+    "Genitourinary": {
+      "properties": {
+        "Genitourinary_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Genitourinary Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Urgency": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Urgency"
+        },
+        "Frequency": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Frequency"
+        },
+        "Difficulty_Urinating": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Difficulty Urinating"
+        },
+        "Burning_with_Urination": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Burning With Urination"
+        },
+        "Blood_in_Urine": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Blood In Urine"
+        },
+        "Stress_Incontinence": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stress Incontinence"
+        },
+        "Frequent_Infections": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Frequent Infections"
+        },
+        "Urge_Incontinence": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Urge Incontinence"
+        },
+        "Nocturia": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nocturia"
+        },
+        "Testicular_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Testicular Pain"
+        },
+        "Vaginal_Bleeding": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vaginal Bleeding"
+        },
+        "Scrotal_Swelling": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Scrotal Swelling"
+        }
+      },
+      "required": [
+        "Genitourinary_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Urgency",
+        "Frequency",
+        "Difficulty_Urinating",
+        "Burning_with_Urination",
+        "Blood_in_Urine",
+        "Stress_Incontinence",
+        "Frequent_Infections",
+        "Urge_Incontinence",
+        "Nocturia",
+        "Testicular_Pain",
+        "Vaginal_Bleeding",
+        "Scrotal_Swelling"
+      ],
+      "title": "Genitourinary",
+      "type": "object"
+    },
+    "GeriatricSyndrome": {
+      "properties": {
+        "Compared_to_others_your_age": {
+          "anyOf": [
+            {
+              "enum": [
+                "Excellent",
+                "Very Good",
+                "Good",
+                "Fair",
+                "Poor",
+                "Doesn't know/Unable to answer"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Compared To Others Your Age"
+        },
+        "Self_Assessed_Mental": {
+          "anyOf": [
+            {
+              "enum": [
+                "Better",
+                "Same",
+                "Worse",
+                "Don't Know",
+                "Consumer Unable to Answer"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Self Assessed Mental"
+        }
+      },
+      "required": [
+        "Compared_to_others_your_age",
+        "Self_Assessed_Mental"
+      ],
+      "title": "GeriatricSyndrome",
+      "type": "object"
+    },
+    "HeadAndNeck": {
+      "properties": {
+        "Head_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Head Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Headaches": {
+          "anyOf": [
+            {
+              "enum": [
+                "Recurrent/Severe",
+                "New Onset",
+                "Migraines",
+                "Sinus",
+                "Tension",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Headaches"
+        },
+        "Dizziness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dizziness"
+        },
+        "Hair_Loss": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hair Loss"
+        },
+        "Swollen_Glands": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Swollen Glands"
+        },
+        "Neck_Stiffness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Neck Stiffness"
+        },
+        "Previous_Head_Injury": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Previous Head Injury"
+        },
+        "Previous_Head_Injury_Describe": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Previous Head Injury Describe"
+        }
+      },
+      "required": [
+        "Head_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Headaches",
+        "Dizziness",
+        "Hair_Loss",
+        "Swollen_Glands",
+        "Neck_Stiffness",
+        "Previous_Head_Injury",
+        "Previous_Head_Injury_Describe"
+      ],
+      "title": "HeadAndNeck",
+      "type": "object"
+    },
+    "Integumentary": {
+      "properties": {
+        "Integumentary_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Integumentary Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Rash": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rash"
+        },
+        "Bruising": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bruising"
+        },
+        "Abrasions": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Abrasions"
+        },
+        "Skin_Tears": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Skin Tears"
+        },
+        "Lacerations": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lacerations"
+        },
+        "Surgical_Wounds": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Surgical Wounds"
+        },
+        "Diabetic_Ulcers": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Diabetic Ulcers"
+        },
+        "Pressure_Ulcers": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pressure Ulcers"
+        },
+        "Foot_Ulcers": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Foot Ulcers"
+        },
+        "Stasis_Ulcers": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stasis Ulcers"
+        },
+        "Poor_Healing_of_Wounds": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Poor Healing Of Wounds"
+        },
+        "Atypical_Skin_Lesion": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Atypical Skin Lesion"
+        },
+        "Hair_Loss": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hair Loss"
+        }
+      },
+      "required": [
+        "Integumentary_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Rash",
+        "Bruising",
+        "Abrasions",
+        "Skin_Tears",
+        "Lacerations",
+        "Surgical_Wounds",
+        "Diabetic_Ulcers",
+        "Pressure_Ulcers",
+        "Foot_Ulcers",
+        "Stasis_Ulcers",
+        "Poor_Healing_of_Wounds",
+        "Atypical_Skin_Lesion",
+        "Hair_Loss"
+      ],
+      "title": "Integumentary",
+      "type": "object"
+    },
+    "Musculoskeletal": {
+      "properties": {
+        "Muscoloskeletal_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Muscoloskeletal Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Gait_Disturbances": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gait Disturbances"
+        },
+        "Muscle_Cramping": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Muscle Cramping"
+        },
+        "Muscle_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Muscle Pain"
+        },
+        "Joint_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Joint Pain"
+        },
+        "Joint_Pain_Location": {
+          "anyOf": [
+            {
+              "enum": [
+                "(L) Shoulder",
+                "(R) Shoulder",
+                "(L) Elbow",
+                "(R) Elbow",
+                "(L) Wrist",
+                "(R) Wrist",
+                "(L) Finger(s)",
+                "(R) Finger(s)",
+                "(L) Hip",
+                "(R) Hip",
+                "(L) Knee",
+                "(R) Knee",
+                "(L) Ankle",
+                "(R) Ankle",
+                "(L) Toe(s)",
+                "(R) Toe(s)"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Joint Pain Location"
+        },
+        "Joint_Stiffness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Joint Stiffness"
+        },
+        "Joint_Stiffness_Location": {
+          "anyOf": [
+            {
+              "enum": [
+                "(L) Shoulder",
+                "(R) Shoulder",
+                "(L) Elbow",
+                "(R) Elbow",
+                "(L) Wrist",
+                "(R) Wrist",
+                "(L) Finger(s)",
+                "(R) Finger(s)",
+                "(L) Hip",
+                "(R) Hip",
+                "(L) Knee",
+                "(R) Knee",
+                "(L) Ankle",
+                "(R) Ankle",
+                "(L) Toe(s)",
+                "(R) Toe(s)"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Joint Stiffness Location"
+        },
+        "Fractures": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fractures"
+        },
+        "Fractures_Locations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fractures Locations"
+        },
+        "Date_of_Last_Fracture": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Date Of Last Fracture"
+        }
+      },
+      "required": [
+        "Muscoloskeletal_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Gait_Disturbances",
+        "Muscle_Cramping",
+        "Muscle_Pain",
+        "Joint_Pain",
+        "Joint_Pain_Location",
+        "Joint_Stiffness",
+        "Joint_Stiffness_Location",
+        "Fractures",
+        "Fractures_Locations",
+        "Date_of_Last_Fracture"
+      ],
+      "title": "Musculoskeletal",
+      "type": "object"
+    },
+    "Neurological": {
+      "properties": {
+        "Neurological_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Neurological Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Cognitive_Impairment": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cognitive Impairment"
+        },
+        "Numbness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Numbness"
+        },
+        "Tingling": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tingling"
+        },
+        "Prickling_Sensation": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Prickling Sensation"
+        },
+        "Burning_Sensation": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Burning Sensation"
+        },
+        "Itching_Sensation": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Itching Sensation"
+        },
+        "Pins_and_Needles": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pins And Needles"
+        },
+        "Pain_d_t_Innocuous_Stimuli": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pain D T Innocuous Stimuli"
+        },
+        "Increased_Sensitivity_to_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Increased Sensitivity To Pain"
+        },
+        "Dizziness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dizziness"
+        },
+        "Lightheadedness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lightheadedness"
+        },
+        "Vertigo": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vertigo"
+        },
+        "Fainting": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fainting"
+        },
+        "Loss_of_Balance": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Loss Of Balance"
+        },
+        "Memory_Problems": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Memory Problems"
+        },
+        "Difficulty_Speaking": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Difficulty Speaking"
+        },
+        "Motor_Weakness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Motor Weakness"
+        },
+        "Seizures": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Seizures"
+        }
+      },
+      "required": [
+        "Neurological_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Cognitive_Impairment",
+        "Numbness",
+        "Tingling",
+        "Prickling_Sensation",
+        "Burning_Sensation",
+        "Itching_Sensation",
+        "Pins_and_Needles",
+        "Pain_d_t_Innocuous_Stimuli",
+        "Increased_Sensitivity_to_Pain",
+        "Dizziness",
+        "Lightheadedness",
+        "Vertigo",
+        "Fainting",
+        "Loss_of_Balance",
+        "Memory_Problems",
+        "Difficulty_Speaking",
+        "Motor_Weakness",
+        "Seizures"
+      ],
+      "title": "Neurological",
+      "type": "object"
+    },
+    "NoseThroat": {
+      "properties": {
+        "Nose_Throat_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Nose Throat Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Nasal_Congestion": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nasal Congestion"
+        },
+        "Sinus_Pressure": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sinus Pressure"
+        },
+        "Nosebleeds": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nosebleeds"
+        },
+        "Hoarseness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hoarseness"
+        },
+        "Sore_Throat": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sore Throat"
+        },
+        "Difficulty_Swallowing": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Difficulty Swallowing"
+        },
+        "Difficulty_Chewing": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Difficulty Chewing"
+        },
+        "Poor_Dentition": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Poor Dentition"
+        },
+        "Sore_Tongue": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sore Tongue"
+        },
+        "Bleeding_Gums": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bleeding Gums"
+        },
+        "Tooth_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tooth Pain"
+        }
+      },
+      "required": [
+        "Nose_Throat_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Nasal_Congestion",
+        "Sinus_Pressure",
+        "Nosebleeds",
+        "Hoarseness",
+        "Sore_Throat",
+        "Difficulty_Swallowing",
+        "Difficulty_Chewing",
+        "Poor_Dentition",
+        "Sore_Tongue",
+        "Bleeding_Gums",
+        "Tooth_Pain"
+      ],
+      "title": "NoseThroat",
+      "type": "object"
+    },
+    "PainAssessment": {
+      "properties": {
+        "Cognitive_Impairment": {
+          "title": "Cognitive Impairment",
+          "type": "boolean"
+        },
+        "Cognitive_Impairment_Type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cognitive Impairment Type"
+        },
+        "Pain_Assessment_Completed": {
+          "enum": [
+            "Verbal",
+            "Non-Verbal"
+          ],
+          "title": "Pain Assessment Completed",
+          "type": "string"
+        },
+        "Verbal_Pain_Scale": {
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "title": "Verbal Pain Scale",
+          "type": "integer"
+        },
+        "Description_of_Pain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Description Of Pain"
+        },
+        "Does_not_appear_to_be_in_pain": {
+          "title": "Does Not Appear To Be In Pain",
+          "type": "boolean"
+        },
+        "Non_Verbal_Pain_Indicators": {
+          "anyOf": [
+            {
+              "enum": [
+                "Changes in activity/pattern",
+                "Crying Out or Moaning",
+                "Facial Expressions",
+                "Mental Status Changes",
+                "Grimacing",
+                "Restlessness",
+                "Rigid Posture",
+                "Tears"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Non Verbal Pain Indicators"
+        },
+        "What_Eases_the_Pain": {
+          "anyOf": [
+            {
+              "enum": [
+                "Unable to Answer",
+                "Position Change",
+                "Medication",
+                "Heat",
+                "Cold",
+                "Rest",
+                "Activity",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "What Eases The Pain"
+        },
+        "Pain_Notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pain Notes"
+        }
+      },
+      "required": [
+        "Cognitive_Impairment",
+        "Cognitive_Impairment_Type",
+        "Pain_Assessment_Completed",
+        "Verbal_Pain_Scale",
+        "Description_of_Pain",
+        "Does_not_appear_to_be_in_pain",
+        "Non_Verbal_Pain_Indicators",
+        "What_Eases_the_Pain",
+        "Pain_Notes"
+      ],
+      "title": "PainAssessment",
+      "type": "object"
+    },
+    "Psychological": {
+      "properties": {
+        "Psychological_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Psychological Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Depression": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Depression"
+        },
+        "Withdrawn": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Withdrawn"
+        },
+        "Anxiety": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Anxiety"
+        },
+        "Hallucinations": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hallucinations"
+        },
+        "Sadness": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sadness"
+        },
+        "Insomnia": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Insomnia"
+        },
+        "Periods_of_High_Energy": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Periods Of High Energy"
+        },
+        "Racing_Thoughts": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Racing Thoughts"
+        },
+        "Suicidal_Ideations": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Suicidal Ideations"
+        },
+        "Homicidal_Ideations": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Homicidal Ideations"
+        },
+        "Angry": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Angry"
+        },
+        "Upset": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upset"
+        },
+        "Euthymic_Mood": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Euthymic Mood"
+        }
+      },
+      "required": [
+        "Psychological_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Depression",
+        "Withdrawn",
+        "Anxiety",
+        "Hallucinations",
+        "Sadness",
+        "Insomnia",
+        "Periods_of_High_Energy",
+        "Racing_Thoughts",
+        "Suicidal_Ideations",
+        "Homicidal_Ideations",
+        "Angry",
+        "Upset",
+        "Euthymic_Mood"
+      ],
+      "title": "Psychological",
+      "type": "object"
+    },
+    "Respiratory": {
+      "properties": {
+        "Respiratory_ROS__c": {
+          "enum": [
+            "Assessed",
+            "Not Assessed"
+          ],
+          "title": "Respiratory Ros  C",
+          "type": "string"
+        },
+        "Not_Assessed_Reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "Cognitive Impairment",
+                "Patient/Caregiver Refused",
+                "Poor Historian",
+                "Unconscious",
+                "Unresponsive",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Not Assessed Reason"
+        },
+        "Reviewed_and_Negative": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed And Negative"
+        },
+        "Chronic_Cough": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Chronic Cough"
+        },
+        "Acute_Cough": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Acute Cough"
+        },
+        "Sputum": {
+          "anyOf": [
+            {
+              "enum": [
+                "Clear",
+                "Colored",
+                "Bloody",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sputum"
+        },
+        "Shortness_of_Breath": {
+          "anyOf": [
+            {
+              "enum": [
+                "At Rest",
+                "Orthopnea",
+                "PND",
+                "With Normal Daily Activity",
+                "With Moderate Exertion",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Shortness Of Breath"
+        },
+        "Wheezing": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Wheezing"
+        },
+        "Snoring": {
+          "anyOf": [
+            {
+              "enum": [
+                "true",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Snoring"
+        },
+        "CPAP_BiPAP": {
+          "anyOf": [
+            {
+              "enum": [
+                "Compliant",
+                "Non-Compliant",
+                "false",
+                "NA"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cpap Bipap"
+        }
+      },
+      "required": [
+        "Respiratory_ROS__c",
+        "Not_Assessed_Reason",
+        "Reviewed_and_Negative",
+        "Chronic_Cough",
+        "Acute_Cough",
+        "Sputum",
+        "Shortness_of_Breath",
+        "Wheezing",
+        "Snoring",
+        "CPAP_BiPAP"
+      ],
+      "title": "Respiratory",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "Reviewed_with": {
+      "anyOf": [
+        {
+          "enum": [
+            "Member",
+            "Facility Staff",
+            "Facility Chart",
+            "Family"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reviewed With"
+    },
+    "CONSTITUTIONAL": {
+      "$ref": "#/$defs/Constitutional"
+    },
+    "EENT_EYES": {
+      "$ref": "#/$defs/Eyes"
+    },
+    "EENT_NOSE_AND_THROAT": {
+      "$ref": "#/$defs/NoseThroat"
+    },
+    "EENT_EARS": {
+      "$ref": "#/$defs/Ears"
+    },
+    "CARDIOVASCULAR": {
+      "$ref": "#/$defs/Cardiovascular"
+    },
+    "GERIATRIC_SYNDROME": {
+      "$ref": "#/$defs/GeriatricSyndrome"
+    },
+    "GENITOURINARY": {
+      "$ref": "#/$defs/Genitourinary"
+    },
+    "NEUROLOGICAL": {
+      "$ref": "#/$defs/Neurological"
+    },
+    "ENDOCRINE": {
+      "$ref": "#/$defs/Endocrine"
+    },
+    "PSYCHOLOGICAL": {
+      "$ref": "#/$defs/Psychological"
+    },
+    "PAIN_ASSESSMENT": {
+      "$ref": "#/$defs/PainAssessment"
+    },
+    "HEAD_AND_NECK": {
+      "$ref": "#/$defs/HeadAndNeck"
+    },
+    "RESPIRATORY": {
+      "$ref": "#/$defs/Respiratory"
+    },
+    "GASTROINTESTINAL": {
+      "$ref": "#/$defs/Gastrointestinal"
+    },
+    "INTEGUMENTARY": {
+      "$ref": "#/$defs/Integumentary"
+    },
+    "MUSCULOSKELETAL": {
+      "$ref": "#/$defs/Musculoskeletal"
+    },
+    "DIABETIC_TESTING": {
+      "$ref": "#/$defs/DiabeticTesting"
+    },
+    "additional_notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Additional_notes"
+    }
+  },
+  "required": [
+    "Reviewed_with",
+    "CONSTITUTIONAL",
+    "EENT_EYES",
+    "EENT_NOSE_AND_THROAT",
+    "EENT_EARS",
+    "CARDIOVASCULAR",
+    "GERIATRIC_SYNDROME",
+    "GENITOURINARY",
+    "NEUROLOGICAL",
+    "ENDOCRINE",
+    "PSYCHOLOGICAL",
+    "PAIN_ASSESSMENT",
+    "HEAD_AND_NECK",
+    "RESPIRATORY",
+    "GASTROINTESTINAL",
+    "INTEGUMENTARY",
+    "MUSCULOSKELETAL",
+    "DIABETIC_TESTING",
+    "additional_notes"
+  ],
+  "title": "ros",
+  "type": "object"
+}
+shared_user_prompt - Transcript:Reviewed the following with the member on 24-08-2024.  Geriatric syndrome was assessed.  member reports overall health to be Very good No change in Self-assessed mental health Pain assessment completed verbally.  Verbal pain scale reported as  0 Constitutional Reviewed and negative.  Eyes Assessed.  members Uses glasses Nose and throat Assessed.  member reports  difficulty swallowing.  Respiratory was reviewed and negative.  Cardiovascular was Reviewed and negative.  Gastrointestinal was reviewed and negative.  Genitourinary was Assessed.  member reports  difficulty urinating.  Cognitive impairment was not seen NEUROLOGICAL was assessed .  The member said she has had Numbness and tingling with Prickling sensation It feels like Pins and needles Musculoskeletal  assessed and gait disturbances were seen.  Reports history of fractures on Left femur.  The last fracture was in 1996.  member informed that he is Non-diabetic.  Endocrine was assessed.  The patient has hot and cold intolerance and has excessive thirst and hunger Psychological assessment was done.  She Reports depression.  Manages it with activities.  Some additional notes about the member - He was once incacerated in jail for 2 weeks.  {missing_sections} Return_data_constraints: {constraints}
+shared_error_detection-True
+Inside error detection....shared_error_detection-True
+Inside error detection....shared_error_detection-True
+{'Constitutional_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Fever': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Chills': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Fatigue': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Change_in_Sleep': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Change_in_Appetite': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Unintentional_Weight_Loss': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Unintentional_Weight_Gain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Night_Sweats': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Weakness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Constitutional_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Constitutional - is - True
+fuzzy matched 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-true 
+fuzzy_match for word Constitutional - is - True
+fuzzy matched 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Fever, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Chills, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Fatigue, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Change_in_Sleep, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Change_in_Appetite, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Unintentional_Weight_Loss, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Unintentional_Weight_Gain, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Night_Sweats, theAtrrib-value-NA 
+section - CONSTITUTIONAL , assessed_field_name -Constitutional_ROS__c, theAttr-Weakness, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Eyes_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Blurred_Vision': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Drainage': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Itching': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Pain': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Changes_in_Vision': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Tearing': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Dryness': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Redness': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Flashing_Lights': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Double_Vision': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Glasses_Contacts': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Eyes_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Eyes - is - True
+fuzzy matched 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word Eyes - is - True
+fuzzy matched 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Blurred_Vision, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Drainage, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Itching, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Pain, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Changes_in_Vision, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Tearing, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Dryness, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Redness, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Flashing_Lights, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Double_Vision, theAtrrib-value-NA 
+section - EENT_EYES , assessed_field_name -Eyes_ROS__c, theAttr-Glasses_Contacts, theAtrrib-value-true 
+fuzzy_match for word Eyes - is - True
+fuzzy matched 
+Inside error detection....shared_error_detection-True
+{'Nose_Throat_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Nasal_Congestion': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Sinus_Pressure': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Nosebleeds': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hoarseness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Sore_Throat': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Difficulty_Swallowing': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Difficulty_Chewing': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Poor_Dentition': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Sore_Tongue': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Bleeding_Gums': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Tooth_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Nose_Throat_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word NoseThroat - is - True
+fuzzy matched 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word NoseThroat - is - True
+fuzzy matched 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Nasal_Congestion, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Sinus_Pressure, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Nosebleeds, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Hoarseness, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Sore_Throat, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Difficulty_Swallowing, theAtrrib-value-true 
+fuzzy_match for word NoseThroat - is - True
+fuzzy matched 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Difficulty_Chewing, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Poor_Dentition, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Sore_Tongue, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Bleeding_Gums, theAtrrib-value-NA 
+section - EENT_NOSE_AND_THROAT , assessed_field_name -Nose_Throat_ROS__c, theAttr-Tooth_Pain, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Ears_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Tinnitus': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Ear_Pain': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Change_in_Hearing': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True), 'Drainage': FieldInfo(annotation=Union[Literal['Left', 'Right', 'Bilateral', 'false', 'NA'], NoneType], required=True)}
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Ears_ROS__c, theAtrrib-value-Not Assessed 
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-Other 
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Tinnitus, theAtrrib-value-NA 
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Ear_Pain, theAtrrib-value-NA 
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Change_in_Hearing, theAtrrib-value-NA 
+section - EENT_EARS , assessed_field_name -Ears_ROS__c, theAttr-Drainage, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Cardiovascular_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Chest_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Palpitations': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Lightheadedness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Dizziness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Syncope': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Edema': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Pain_with_Walking': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Use_of_Compression_Stockings': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Cardiovascular_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Cardiovascular - is - True
+fuzzy matched 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-true 
+fuzzy_match for word Cardiovascular - is - True
+fuzzy matched 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Chest_Pain, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Palpitations, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Lightheadedness, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Dizziness, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Syncope, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Edema, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Pain_with_Walking, theAtrrib-value-NA 
+section - CARDIOVASCULAR , assessed_field_name -Cardiovascular_ROS__c, theAttr-Use_of_Compression_Stockings, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Compared_to_others_your_age': FieldInfo(annotation=Union[Literal['Excellent', 'Very Good', 'Good', 'Fair', 'Poor', "Doesn't know/Unable to answer"], NoneType], required=True), 'Self_Assessed_Mental': FieldInfo(annotation=Union[Literal['Better', 'Same', 'Worse', "Don't Know", 'Consumer Unable to Answer'], NoneType], required=True)}
+Inside error detection....shared_error_detection-True
+{'Genitourinary_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Urgency': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Frequency': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Difficulty_Urinating': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Burning_with_Urination': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Blood_in_Urine': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Stress_Incontinence': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Frequent_Infections': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Urge_Incontinence': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Nocturia': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Testicular_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Vaginal_Bleeding': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Scrotal_Swelling': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Genitourinary_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Genitourinary - is - True
+fuzzy matched 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word Genitourinary - is - True
+fuzzy matched 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Urgency, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Frequency, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Difficulty_Urinating, theAtrrib-value-true 
+fuzzy_match for word Genitourinary - is - True
+fuzzy matched 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Burning_with_Urination, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Blood_in_Urine, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Stress_Incontinence, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Frequent_Infections, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Urge_Incontinence, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Nocturia, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Testicular_Pain, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Vaginal_Bleeding, theAtrrib-value-NA 
+section - GENITOURINARY , assessed_field_name -Genitourinary_ROS__c, theAttr-Scrotal_Swelling, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Neurological_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Cognitive_Impairment': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Numbness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Tingling': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Prickling_Sensation': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Burning_Sensation': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Itching_Sensation': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Pins_and_Needles': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Pain_d_t_Innocuous_Stimuli': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Increased_Sensitivity_to_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Dizziness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Lightheadedness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Vertigo': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Fainting': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Loss_of_Balance': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Memory_Problems': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Difficulty_Speaking': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Motor_Weakness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Seizures': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Neurological_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Cognitive_Impairment, theAtrrib-value-false 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Numbness, theAtrrib-value-true 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Tingling, theAtrrib-value-true 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Prickling_Sensation, theAtrrib-value-true 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Burning_Sensation, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Itching_Sensation, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Pins_and_Needles, theAtrrib-value-true 
+fuzzy_match for word Neurological - is - True
+fuzzy matched 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Pain_d_t_Innocuous_Stimuli, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Increased_Sensitivity_to_Pain, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Dizziness, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Lightheadedness, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Vertigo, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Fainting, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Loss_of_Balance, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Memory_Problems, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Difficulty_Speaking, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Motor_Weakness, theAtrrib-value-NA 
+section - NEUROLOGICAL , assessed_field_name -Neurological_ROS__c, theAttr-Seizures, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Endocrine_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Excessive_Thirst': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Excessive_Hunger': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Increased_Urination': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Heat_Intolerance': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Cold_Intolerance': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hypoglycemic_Events': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hyperglycemic_Events': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Endocrine_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Endocrine - is - True
+fuzzy matched 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word Endocrine - is - True
+fuzzy matched 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Excessive_Thirst, theAtrrib-value-true 
+fuzzy_match for word Endocrine - is - True
+fuzzy matched 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Excessive_Hunger, theAtrrib-value-true 
+fuzzy_match for word Endocrine - is - True
+fuzzy matched 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Increased_Urination, theAtrrib-value-NA 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Heat_Intolerance, theAtrrib-value-true 
+fuzzy_match for word Endocrine - is - True
+fuzzy matched 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Cold_Intolerance, theAtrrib-value-true 
+fuzzy_match for word Endocrine - is - True
+fuzzy matched 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Hypoglycemic_Events, theAtrrib-value-NA 
+section - ENDOCRINE , assessed_field_name -Endocrine_ROS__c, theAttr-Hyperglycemic_Events, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Psychological_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Depression': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Withdrawn': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Anxiety': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hallucinations': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Sadness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Insomnia': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Periods_of_High_Energy': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Racing_Thoughts': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Suicidal_Ideations': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Homicidal_Ideations': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Angry': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Upset': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Euthymic_Mood': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Psychological_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Psychological - is - True
+fuzzy matched 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word Psychological - is - True
+fuzzy matched 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Depression, theAtrrib-value-true 
+fuzzy_match for word Psychological - is - True
+fuzzy matched 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Withdrawn, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Anxiety, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Hallucinations, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Sadness, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Insomnia, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Periods_of_High_Energy, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Racing_Thoughts, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Suicidal_Ideations, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Homicidal_Ideations, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Angry, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Upset, theAtrrib-value-NA 
+section - PSYCHOLOGICAL , assessed_field_name -Psychological_ROS__c, theAttr-Euthymic_Mood, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Cognitive_Impairment': FieldInfo(annotation=bool, required=True, metadata=[Strict(strict=True)]), 'Cognitive_Impairment_Type': FieldInfo(annotation=Union[str, NoneType], required=True), 'Pain_Assessment_Completed': FieldInfo(annotation=Literal['Verbal', 'Non-Verbal'], required=True), 'Verbal_Pain_Scale': FieldInfo(annotation=Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], required=True), 'Description_of_Pain': FieldInfo(annotation=Union[str, NoneType], required=True), 'Does_not_appear_to_be_in_pain': FieldInfo(annotation=bool, required=True, metadata=[Strict(strict=True)]), 'Non_Verbal_Pain_Indicators': FieldInfo(annotation=Union[Literal['Changes in activity/pattern', 'Crying Out or Moaning', 'Facial Expressions', 'Mental Status Changes', 'Grimacing', 'Restlessness', 'Rigid Posture', 'Tears'], NoneType], required=True), 'What_Eases_the_Pain': FieldInfo(annotation=Union[Literal['Unable to Answer', 'Position Change', 'Medication', 'Heat', 'Cold', 'Rest', 'Activity', 'Other'], NoneType], required=True), 'Pain_Notes': FieldInfo(annotation=Union[str, NoneType], required=True)}
+Inside error detection....shared_error_detection-True
+{'Head_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Headaches': FieldInfo(annotation=Union[Literal['Recurrent/Severe', 'New Onset', 'Migraines', 'Sinus', 'Tension', 'false', 'NA'], NoneType], required=True), 'Dizziness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hair_Loss': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Swollen_Glands': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Neck_Stiffness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Previous_Head_Injury': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Previous_Head_Injury_Describe': FieldInfo(annotation=Union[str, NoneType], required=True)}
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Head_ROS__c, theAtrrib-value-Not Assessed 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-Other 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Headaches, theAtrrib-value-NA 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Dizziness, theAtrrib-value-NA 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Hair_Loss, theAtrrib-value-NA 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Swollen_Glands, theAtrrib-value-NA 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Neck_Stiffness, theAtrrib-value-NA 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Previous_Head_Injury, theAtrrib-value-NA 
+section - HEAD_AND_NECK , assessed_field_name -Head_ROS__c, theAttr-Previous_Head_Injury_Describe, theAtrrib-value-None 
+Inside error detection....shared_error_detection-True
+{'Respiratory_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Chronic_Cough': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Acute_Cough': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Sputum': FieldInfo(annotation=Union[Literal['Clear', 'Colored', 'Bloody', 'false', 'NA'], NoneType], required=True), 'Shortness_of_Breath': FieldInfo(annotation=Union[Literal['At Rest', 'Orthopnea', 'PND', 'With Normal Daily Activity', 'With Moderate Exertion', 'false', 'NA'], NoneType], required=True), 'Wheezing': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Snoring': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'CPAP_BiPAP': FieldInfo(annotation=Union[Literal['Compliant', 'Non-Compliant', 'false', 'NA'], NoneType], required=True)}
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Respiratory_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Respiratory - is - True
+fuzzy matched 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-true 
+fuzzy_match for word Respiratory - is - True
+fuzzy matched 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Chronic_Cough, theAtrrib-value-NA 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Acute_Cough, theAtrrib-value-NA 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Sputum, theAtrrib-value-NA 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Shortness_of_Breath, theAtrrib-value-NA 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Wheezing, theAtrrib-value-NA 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-Snoring, theAtrrib-value-NA 
+section - RESPIRATORY , assessed_field_name -Respiratory_ROS__c, theAttr-CPAP_BiPAP, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Gastrointestinal_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Heartburn': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Nausea': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Abdominal_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Vomiting': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Vomiting_Blood': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Diarrhea': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Constipation': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hemorrhoids': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Fecal_Incontinence': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Black_Stools': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Bloody_Stools': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Change_in_Bowel_Habits': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Gastrointestinal_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Gastrointestinal - is - True
+fuzzy matched 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-true 
+fuzzy_match for word Gastrointestinal - is - True
+fuzzy matched 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Heartburn, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Nausea, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Abdominal_Pain, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Vomiting, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Vomiting_Blood, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Diarrhea, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Constipation, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Hemorrhoids, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Fecal_Incontinence, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Black_Stools, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Bloody_Stools, theAtrrib-value-NA 
+section - GASTROINTESTINAL , assessed_field_name -Gastrointestinal_ROS__c, theAttr-Change_in_Bowel_Habits, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Integumentary_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Rash': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Bruising': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Abrasions': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Skin_Tears': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Lacerations': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Surgical_Wounds': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Diabetic_Ulcers': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Pressure_Ulcers': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Foot_Ulcers': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Stasis_Ulcers': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Poor_Healing_of_Wounds': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Atypical_Skin_Lesion': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Hair_Loss': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True)}
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Integumentary_ROS__c, theAtrrib-value-Not Assessed 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-Other 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Rash, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Bruising, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Abrasions, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Skin_Tears, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Lacerations, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Surgical_Wounds, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Diabetic_Ulcers, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Pressure_Ulcers, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Foot_Ulcers, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Stasis_Ulcers, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Poor_Healing_of_Wounds, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Atypical_Skin_Lesion, theAtrrib-value-NA 
+section - INTEGUMENTARY , assessed_field_name -Integumentary_ROS__c, theAttr-Hair_Loss, theAtrrib-value-NA 
+Inside error detection....shared_error_detection-True
+{'Muscoloskeletal_ROS__c': FieldInfo(annotation=Literal['Assessed', 'Not Assessed'], required=True), 'Not_Assessed_Reason': FieldInfo(annotation=Union[Literal['Cognitive Impairment', 'Patient/Caregiver Refused', 'Poor Historian', 'Unconscious', 'Unresponsive', 'Other'], NoneType], required=True), 'Reviewed_and_Negative': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Gait_Disturbances': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Muscle_Cramping': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Muscle_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Joint_Pain': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Joint_Pain_Location': FieldInfo(annotation=Union[Literal['(L) Shoulder', '(R) Shoulder', '(L) Elbow', '(R) Elbow', '(L) Wrist', '(R) Wrist', '(L) Finger(s)', '(R) Finger(s)', '(L) Hip', '(R) Hip', '(L) Knee', '(R) Knee', '(L) Ankle', '(R) Ankle', '(L) Toe(s)', '(R) Toe(s)'], NoneType], required=True), 'Joint_Stiffness': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Joint_Stiffness_Location': FieldInfo(annotation=Union[Literal['(L) Shoulder', '(R) Shoulder', '(L) Elbow', '(R) Elbow', '(L) Wrist', '(R) Wrist', '(L) Finger(s)', '(R) Finger(s)', '(L) Hip', '(R) Hip', '(L) Knee', '(R) Knee', '(L) Ankle', '(R) Ankle', '(L) Toe(s)', '(R) Toe(s)'], NoneType], required=True), 'Fractures': FieldInfo(annotation=Union[Literal['true', 'false', 'NA'], NoneType], required=True), 'Fractures_Locations': FieldInfo(annotation=Union[str, NoneType], required=True), 'Date_of_Last_Fracture': FieldInfo(annotation=Union[str, NoneType], required=True)}
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Muscoloskeletal_ROS__c, theAtrrib-value-Assessed 
+fuzzy_match for word Musculoskeletal - is - True
+fuzzy matched 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Not_Assessed_Reason, theAtrrib-value-None 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Reviewed_and_Negative, theAtrrib-value-false 
+fuzzy_match for word Musculoskeletal - is - True
+fuzzy matched 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Gait_Disturbances, theAtrrib-value-true 
+fuzzy_match for word Musculoskeletal - is - True
+fuzzy matched 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Muscle_Cramping, theAtrrib-value-NA 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Muscle_Pain, theAtrrib-value-NA 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Joint_Pain, theAtrrib-value-NA 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Joint_Pain_Location, theAtrrib-value-None 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Joint_Stiffness, theAtrrib-value-NA 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Joint_Stiffness_Location, theAtrrib-value-None 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Fractures, theAtrrib-value-true 
+fuzzy_match for word Musculoskeletal - is - True
+fuzzy matched 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Fractures_Locations, theAtrrib-value-Left femur 
+fuzzy_match for word Musculoskeletal - is - True
+fuzzy matched 
+section - MUSCULOSKELETAL , assessed_field_name -Muscoloskeletal_ROS__c, theAttr-Date_of_Last_Fracture, theAtrrib-value-1996 
+fuzzy_match for word Musculoskeletal - is - True
+fuzzy matched 
+Inside error detection....shared_error_detection-True
+{'Non_Diabetic_Member': FieldInfo(annotation=bool, required=True, metadata=[Strict(strict=True)]), 'Member_Reported': FieldInfo(annotation=bool, required=True, metadata=[Strict(strict=True)]), 'Routine_Diabetic_Testing': FieldInfo(annotation=bool, required=True, metadata=[Strict(strict=True)]), 'Member_Reported_A1C': FieldInfo(annotation=Union[str, NoneType], required=True), 'A1C_Date': FieldInfo(annotation=Union[str, NoneType], required=True)}
+confidence level - {}
+formatted_real_response - {"reviewed_with":"member","constitutional":{"constitutional_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","fever":"na","chills":"na","fatigue":"na","change_in_sleep":"na","change_in_appetite":"na","unintentional_weight_loss":"na","unintentional_weight_gain":"na","night_sweats":"na","weakness":"na"},"eent_eyes":{"eyes_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","blurred_vision":"na","drainage":"na","itching":"na","pain":"na","changes_in_vision":"na","tearing":"na","dryness":"na","redness":"na","flashing_lights":"na","double_vision":"na","glasses_contacts":"true"},"eent_nose_and_throat":{"nose_throat_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","nasal_congestion":"na","sinus_pressure":"na","nosebleeds":"na","hoarseness":"na","sore_throat":"na","difficulty_swallowing":"true","difficulty_chewing":"na","poor_dentition":"na","sore_tongue":"na","bleeding_gums":"na","tooth_pain":"na"},"eent_ears":{"ears_ros__c":"notassessed","not_assessed_reason":"other","reviewed_and_negative":"na","tinnitus":"na","ear_pain":"na","change_in_hearing":"na","drainage":"na"},"cardiovascular":{"cardiovascular_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","chest_pain":"na","palpitations":"na","lightheadedness":"na","dizziness":"na","syncope":"na","edema":"na","pain_with_walking":"na","use_of_compression_stockings":"na"},"geriatric_syndrome":{"compared_to_others_your_age":"verygood","self_assessed_mental":"same"},"genitourinary":{"genitourinary_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","urgency":"na","frequency":"na","difficulty_urinating":"true","burning_with_urination":"na","blood_in_urine":"na","stress_incontinence":"na","frequent_infections":"na","urge_incontinence":"na","nocturia":"na","testicular_pain":"na","vaginal_bleeding":"na","scrotal_swelling":"na"},"neurological":{"neurological_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","cognitive_impairment":"false","numbness":"true","tingling":"true","prickling_sensation":"true","burning_sensation":"na","itching_sensation":"na","pins_and_needles":"true","pain_d_t_innocuous_stimuli":"na","increased_sensitivity_to_pain":"na","dizziness":"na","lightheadedness":"na","vertigo":"na","fainting":"na","loss_of_balance":"na","memory_problems":"na","difficulty_speaking":"na","motor_weakness":"na","seizures":"na"},"endocrine":{"endocrine_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","excessive_thirst":"true","excessive_hunger":"true","increased_urination":"na","heat_intolerance":"true","cold_intolerance":"true","hypoglycemic_events":"na","hyperglycemic_events":"na"},"psychological":{"psychological_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","depression":"true","withdrawn":"na","anxiety":"na","hallucinations":"na","sadness":"na","insomnia":"na","periods_of_high_energy":"na","racing_thoughts":"na","suicidal_ideations":"na","homicidal_ideations":"na","angry":"na","upset":"na","euthymic_mood":"na"},"pain_assessment":{"cognitive_impairment":false,"cognitive_impairment_type":null,"pain_assessment_completed":"verbal","verbal_pain_scale":0,"description_of_pain":null,"does_not_appear_to_be_in_pain":true,"non_verbal_pain_indicators":null,"what_eases_the_pain":null,"pain_notes":null},"head_and_neck":{"head_ros__c":"notassessed","not_assessed_reason":"other","reviewed_and_negative":"na","headaches":"na","dizziness":"na","hair_loss":"na","swollen_glands":"na","neck_stiffness":"na","previous_head_injury":"na","previous_head_injury_describe":null},"respiratory":{"respiratory_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","chronic_cough":"na","acute_cough":"na","sputum":"na","shortness_of_breath":"na","wheezing":"na","snoring":"na","cpap_bipap":"na"},"gastrointestinal":{"gastrointestinal_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","heartburn":"na","nausea":"na","abdominal_pain":"na","vomiting":"na","vomiting_blood":"na","diarrhea":"na","constipation":"na","hemorrhoids":"na","fecal_incontinence":"na","black_stools":"na","bloody_stools":"na","change_in_bowel_habits":"na"},"integumentary":{"integumentary_ros__c":"notassessed","not_assessed_reason":"other","reviewed_and_negative":"na","rash":"na","bruising":"na","abrasions":"na","skin_tears":"na","lacerations":"na","surgical_wounds":"na","diabetic_ulcers":"na","pressure_ulcers":"na","foot_ulcers":"na","stasis_ulcers":"na","poor_healing_of_wounds":"na","atypical_skin_lesion":"na","hair_loss":"na"},"musculoskeletal":{"muscoloskeletal_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","gait_disturbances":"true","muscle_cramping":"na","muscle_pain":"na","joint_pain":"na","joint_pain_location":null,"joint_stiffness":"na","joint_stiffness_location":null,"fractures":"true","fractures_locations":"leftfemur","date_of_last_fracture":"1996"},"diabetic_testing":{"non_diabetic_member":true,"member_reported":true,"routine_diabetic_testing":false,"member_reported_a1c":null,"a1c_date":null}}
+formatted_ideal_response - {"reviewed_with":"member","constitutional":{"constitutional_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","fever":"na","chills":"na","fatigue":"na","change_in_sleep":"na","change_in_appetite":"na","unintentional_weight_loss":"na","unintentional_weight_gain":"na","night_sweats":"na","weakness":"na"},"eent_eyes":{"eyes_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","blurred_vision":"na","drainage":"na","itching":"na","pain":"na","changes_in_vision":"na","tearing":"na","dryness":"na","redness":"na","flashing_lights":"na","double_vision":"na","glasses_contacts":"true"},"eent_nose_and_throat":{"nose_throat_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","nasal_congestion":"na","sinus_pressure":"na","nosebleeds":"na","hoarseness":"na","sore_throat":"na","difficulty_swallowing":"true","difficulty_chewing":"na","poor_dentition":"na","sore_tongue":"na","bleeding_gums":"na","tooth_pain":"na"},"eent_ears":{"ears_ros__c":"notassessed","not_assessed_reason":"other","reviewed_and_negative":"na","tinnitus":"na","ear_pain":"na","change_in_hearing":"na","drainage":"na"},"cardiovascular":{"cardiovascular_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","chest_pain":"na","palpitations":"na","lightheadedness":"na","dizziness":"na","syncope":"na","edema":"na","pain_with_walking":"na","use_of_compression_stockings":"na"},"geriatric_syndrome":{"compared_to_others_your_age":"verygood","self_assessed_mental":"same"},"genitourinary":{"genitourinary_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","urgency":"na","frequency":"na","difficulty_urinating":"true","burning_with_urination":"na","blood_in_urine":"na","stress_incontinence":"na","frequent_infections":"na","urge_incontinence":"na","nocturia":"na","testicular_pain":"na","vaginal_bleeding":"na","scrotal_swelling":"na"},"neurological":{"neurological_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","cognitive_impairment":"false","numbness":"true","tingling":"true","prickling_sensation":"true","burning_sensation":"na","itching_sensation":"na","pins_and_needles":"true","pain_d_t_innocuous_stimuli":"na","increased_sensitivity_to_pain":"na","dizziness":"na","lightheadedness":"na","vertigo":"na","fainting":"na","loss_of_balance":"na","memory_problems":"na","difficulty_speaking":"na","motor_weakness":"na","seizures":"na"},"endocrine":{"endocrine_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","excessive_thirst":"true","excessive_hunger":"true","increased_urination":"na","heat_intolerance":"true","cold_intolerance":"true","hypoglycemic_events":"na","hyperglycemic_events":"na"},"psychological":{"psychological_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","depression":"true","withdrawn":"na","anxiety":"na","hallucinations":"na","sadness":"na","insomnia":"na","periods_of_high_energy":"na","racing_thoughts":"na","suicidal_ideations":"na","homicidal_ideations":"na","angry":"na","upset":"na","euthymic_mood":"na"},"pain_assessment":{"cognitive_impairment":false,"cognitive_impairment_type":null,"pain_assessment_completed":"verbal","verbal_pain_scale":0,"description_of_pain":null,"does_not_appear_to_be_in_pain":true,"non_verbal_pain_indicators":null,"what_eases_the_pain":null,"pain_notes":null},"head_and_neck":{"head_ros__c":"notassessed","not_assessed_reason":"other","reviewed_and_negative":"na","headaches":"na","dizziness":"na","hair_loss":"na","swollen_glands":"na","neck_stiffness":"na","previous_head_injury":"na","previous_head_injury_describe":null},"respiratory":{"respiratory_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","chronic_cough":"na","acute_cough":"na","sputum":"na","shortness_of_breath":"na","wheezing":"na","snoring":"na","cpap_bipap":"na"},"gastrointestinal":{"gastrointestinal_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"true","heartburn":"na","nausea":"na","abdominal_pain":"na","vomiting":"na","vomiting_blood":"na","diarrhea":"na","constipation":"na","hemorrhoids":"na","fecal_incontinence":"na","black_stools":"na","bloody_stools":"na","change_in_bowel_habits":"na"},"integumentary":{"integumentary_ros__c":"notassessed","not_assessed_reason":"other","reviewed_and_negative":"na","rash":"na","bruising":"na","abrasions":"na","skin_tears":"na","lacerations":"na","surgical_wounds":"na","diabetic_ulcers":"na","pressure_ulcers":"na","foot_ulcers":"na","stasis_ulcers":"na","poor_healing_of_wounds":"na","atypical_skin_lesion":"na","hair_loss":"na"},"musculoskeletal":{"muscoloskeletal_ros__c":"assessed","not_assessed_reason":null,"reviewed_and_negative":"false","gait_disturbances":"true","muscle_cramping":"na","muscle_pain":"na","joint_pain":"na","joint_pain_location":null,"joint_stiffness":"na","joint_stiffness_location":null,"fractures":"true","fractures_locations":"leftfemur","date_of_last_fracture":"1996"},"diabetic_testing":{"non_diabetic_member":true,"member_reported":true,"routine_diabetic_testing":false,"member_reported_a1c":null,"a1c_date":null}}
+Data inserted successfully
+numerator=1 - denominator-1

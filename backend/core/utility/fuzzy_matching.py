@@ -1,6 +1,6 @@
 import re
 from fuzzywuzzy import fuzz
-from constants import default_fuzzy_matching_threshold
+from backend.core.utility.constants import default_fuzzy_matching_threshold
 # List of words to check in the transcript
 words_to_check = [
     "Reviewed", "Constitutional", "Eyes", "Nose", "Throat", "Ears", "NoseThroat", "Nose and Throat","HeadAndNeck", "Head and Neck","HeadandNeck",

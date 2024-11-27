@@ -1,11 +1,11 @@
 import warnings
 warnings.filterwarnings("ignore")
 import psycopg2
-from constants import *
-from util import getConfig
+from backend.core.utility.constants import *
+from backend.core.utility.util import getConfig
 import pandas as pd
 from datetime import datetime
-from custom_logger import *
+from backend.core.logging.custom_logger import *
 
 def connect():
     config = getConfig(db_conn_file)
