@@ -3615,7 +3615,7 @@ response_schema_json = json.dumps(response_schema_dict, indent=2)
 thePrompt = thePrompt.format(constraints=response_schema_json)
 print(thePrompt)
 
-client = anthropic.Anthropic(api_key="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")
+#client = anthropic.Anthropic()
 
 message = client.messages.create(
     model="claude-3-5-sonnet-20240620",
