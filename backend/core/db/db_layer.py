@@ -116,8 +116,8 @@ def insert(data_list):
                 data['similarity_metric'],                
                 datetime.now(),  # Current date for run_date
                 data['use_for_training'],
-            )
-            for data in data_list
+            ) 
+            for data in data_list  
         ]
      
         # Execute the insert query
