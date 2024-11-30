@@ -35,7 +35,7 @@ def init_Reviewed_and_Negative(data, field_dict):
         section_data = getattr(data, section)
         theAttr = getattr(section_data, 'Reviewed_and_Negative', None)
         logger.critical(f"***** theAttr- {theAttr}")
-        if theAttr!=None:
+        if theAttr!=None: 
             if section!='Reviewed_with' and section!= 'additional_notes': 
                 section_model = field_dict.get(section)
                 attributes = get_pydantic_attributes(globals()[section_model])
