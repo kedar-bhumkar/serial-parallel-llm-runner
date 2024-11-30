@@ -5,11 +5,11 @@ import yaml
 from backend.core.utility.constants import prompts_file
 from backend.core.utility.fuzzy_matching import check_word_in_transcript
 from backend.core.utility.util import *
-
+from backend.core.utility.shared import *
 
 def ros_pe_formatter(data:ros):    
     logger.critical('Inside ros_pe_formatter ...')
-    confidence_level ={}
+   
     #@ToDo : revisit how to pass data between modules
     config = getConfig(prompts_file) 
     #shared_prompt =  (config['acd']['user_prompt']['ros']['serial']['input'])    
@@ -21,24 +21,59 @@ def ros_pe_formatter(data:ros):
     #Construct field name: type dict . This would be used to get the actual class for a 'string' section name
     field_dict = get_field_types(ros)
 
+    data = init_Reviewed_and_Negative(data, field_dict)
+    data = init_other_fields(data, field_dict, shared_prompt, shared_error_detection)
+
+    return data
+
+    
+
+def init_Reviewed_and_Negative(data, field_dict):
+    logger.critical(F'Inside init_Reviewed_and_Negative ...{data}')
     for section in data.dict():
         logger.critical(f"***** section- {section}")
+        section_data = getattr(data, section)
+        theAttr = getattr(section_data, 'Reviewed_and_Negative', None)
+        logger.critical(f"***** theAttr- {theAttr}")
+        if theAttr!=None:
+            if section!='Reviewed_with' and section!= 'additional_notes': 
+                section_model = field_dict.get(section)
+                attributes = get_pydantic_attributes(globals()[section_model])
+                #print(attributes) 
+
+                assessed_field_name = find_assessed_field(globals()[section_model], Literal["Assessed", "Not Assessed"])
+                if assessed_field_name!=None:
+                    assessed_field_value = getattr(section_data,assessed_field_name,None)      
+                    if assessed_field_value!=None and assessed_field_value=='Not Assessed':
+                        setattr(section_data, 'Reviewed_and_Negative', 'na')                
+                    elif assessed_field_value!='None':                
+                        for attrib in attributes:                    
+                            field_value =   getattr(section_data,attrib,None)  
+                            if field_value!=None and field_value.casefold() !='na' and attrib != 'Reviewed_and_Negative' and section.casefold() not in attrib.casefold():
+                                logger.critical(f"***** correcting Reviewed_and_Negative for {section.casefold()} - {attrib.casefold()}")
+                                setattr(section_data, 'Reviewed_and_Negative', 'false')
+                                break
+    logger.critical('Exiting init_Reviewed_and_Negative ...')                    
+    return data                    
+
+
+def init_other_fields(data, field_dict, shared_prompt, shared_error_detection):
+    confidence_level ={}
+    for section in data.dict():
+        #logger.critical(f"***** section- {section}")
         section_data = getattr(data, section)
         theAttr = getattr(section_data, 'Reviewed_and_Negative', None)
         
         # Remove n/a
         if theAttr!=None:
             if section_data.Reviewed_and_Negative.casefold() == 'na' :
-                
+                   
                 #logger.critical(f"***** correcting Reviewed_and_Negative")
                 setattr(section_data, 'Reviewed_and_Negative', 'false')
 
         # Replace null with Other 
         theAttr = getattr(section_data, 'Not_Assessed_Reason', None)   
         
-         
-
-       
         if shared_error_detection!='false':
             #print(f"Inside error detection....shared_error_detection-{shared_error_detection}")
             if section!='Reviewed_with' and section!= 'additional_notes':            

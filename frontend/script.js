@@ -9,7 +9,7 @@ let dataArray;
 let bufferLength;
 let canvas;
 let canvasCtx;
-let serverUrl="http://localhost:8001"
+let serverUrl="http://localhost:8000"
 
 
 function toggleRecording() {

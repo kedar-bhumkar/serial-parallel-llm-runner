@@ -406,6 +406,8 @@ def _process_same_llm(usecase, page, mode, model_family, formatter,
         
     return {"response": response, "confidence_map": confidence_map}
 
+
+
 def _setup_test_data(row):
     """Helper to set up shared data for test runs"""
     shared_data = {
@@ -416,7 +418,7 @@ def _setup_test_data(row):
         'usecase': row['usecase'],
         'original_run_no': row['run_no'],
         'original_prompt': row['user_prompt']
-    }
+    } 
     
     for key, value in shared_data.items():
         shared_data_instance.set_data(key, value)
@@ -451,7 +453,7 @@ def handleRequest(message: Message):
     if isinstance(message.prompt, str):
         message.prompt = add_space_after_punctuation(message.prompt)
         
-    return process_request(
+    return process_request( 
         usecase=message.usecase,
         page=message.page,
         mode=message.mode,
