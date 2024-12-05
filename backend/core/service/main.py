@@ -9,6 +9,7 @@ from backend.core.utility.util import *
 from backend.core.db.db_layer import *
 from backend.core.db.db_stats import *
 from backend.core.utility.fuzzy_matching import *
+from backend.core.utility.phi_remover import *
 from backend.core.utility.shared import *
 
 clientSync = any
@@ -111,6 +112,9 @@ def prompt_constrainer(page,thePrompt, count=None):
     page_index = page
     negativePrompt = ''
     thePrompt = replace_dates(thePrompt)
+    #remove phi/pii    
+    thePrompt = remove_phi_pii_presidio(thePrompt)
+    print(f"thePrompt phi removed -{thePrompt}")
     sharedPrompt = thePrompt
     #Create copy so that we just get what the user said minus constraints 
     shared_data_instance.set_data('thePrompt', sharedPrompt)

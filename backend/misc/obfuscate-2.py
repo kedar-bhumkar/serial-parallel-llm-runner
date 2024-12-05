@@ -20,11 +20,20 @@ def encode_class_to_file(
         bool: True if successful, False otherwise
     """
     try:
-        # Get the source code of the class
+        # Get all referenced classes from class attributes
+        referenced_classes = []
+        for attr_name, attr_type in cls.__annotations__.items():
+            if isinstance(attr_type, type) and issubclass(attr_type, BaseModel):
+                referenced_classes.append(inspect.getsource(attr_type))
+        
+        # Get the source code of the main class
         class_code = inspect.getsource(cls)
         
-        # Encode the class code to base64
-        encoded_bytes = base64.b64encode(class_code.encode('utf-8'))
+        # Combine all code
+        full_code = "\n".join(referenced_classes + [class_code])
+        
+        # Encode the combined code to base64
+        encoded_bytes = base64.b64encode(full_code.encode('utf-8'))
         encoded_string = encoded_bytes.decode('utf-8')
         
         # Convert path to Path object if string
@@ -69,13 +78,24 @@ def decode_class_from_file(
 
 # Example usage:
 if __name__ == "__main__":
- 
+    
+    class Visit(BaseModel):
+        name: str
+        age: int
+        city: str
+        
+    class Visit1(BaseModel):
+        name: str
+        age: int
+        city: str
+    
     class ExampleClass:
-        def __init__(self, name: str):
-            self.name = name
-            
-        def greet(self) -> str:
-            return f"Hello, {self.name}!"
+        visit:Visit 
+        visit1:Visit1
+        name:str
+
+
+
     # Encode and save
     success = encode_class_to_file(ExampleClass, "encoded_class.txt")
     if success:
