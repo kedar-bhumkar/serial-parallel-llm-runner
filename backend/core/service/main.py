@@ -113,13 +113,17 @@ def prompt_constrainer(page,thePrompt, count=None):
     negativePrompt = ''
     thePrompt = replace_dates(thePrompt)
     #remove phi/pii    
-    thePrompt = remove_phi_pii_presidio(thePrompt)
-    print(f"thePrompt phi removed -{thePrompt}")
+    if(shared_data_instance.get_data('phi_detection') == True):
+        print(f"Inside phi detection ")
+        thePrompt = remove_phi_pii_presidio(thePrompt)
+    else:
+        print(f"phi detection is off")
+    
     sharedPrompt = thePrompt
     #Create copy so that we just get what the user said minus constraints 
     shared_data_instance.set_data('thePrompt', sharedPrompt)
     #logger.info(f"page_index-{page_index}")
-    if(shared_data_instance.get_data('negative_prompt')== 'ON'):
+    if(shared_data_instance.get_data('negative_prompt')== True):
         negativePrompt = fuzzyMatch(thePrompt)   
     logger.critical(f"negativePrompt-{negativePrompt}")
 
@@ -292,7 +296,7 @@ def log(usecase, page, response, time, mode):
 
 def process_request(usecase, page, mode, model_family, formatter, run_mode, sleep, model, 
                    prompt, run_count, accuracy_check, negative_prompt, use_for_training, 
-                   error_detection, test_size_limit=None):
+                   error_detection, phi_detection, test_size_limit=None):
     """Common processing logic for both CLI and API requests"""
     global run_id, theIdealResponse, test_map, db_data
 
@@ -303,12 +307,13 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
     accuracy_check = accuracy_check or default_accuracy_check
     use_for_training = use_for_training or default_use_for_training
     error_detection = error_detection or default_error_detection
-
+    phi_detection = phi_detection or default_phi_detection
     logger.critical(
         f"usecase-{usecase}, page-{page}, mode-{mode}, family-{model_family}, "
         f"formatter-{formatter}, run_mode-{run_mode}, run_count-{run_count}, "
         f"sleep-{sleep}, accuracy_check-{accuracy_check}, model-{model}, "
-        f"negative_prompt-{negative_prompt}, use_for_training-{use_for_training}"
+        f"negative_prompt-{negative_prompt}, use_for_training-{use_for_training}, "
+        f"phi_detection-{phi_detection}"
     )
 
     # Set shared data
@@ -316,7 +321,8 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
         'negative_prompt': negative_prompt,
         'use_for_training': use_for_training,
         'error_detection': error_detection,
-        'run_mode': run_mode
+        'run_mode': run_mode,
+        'phi_detection': phi_detection
     }
     for key, value in shared_data.items():
         shared_data_instance.set_data(key, value)

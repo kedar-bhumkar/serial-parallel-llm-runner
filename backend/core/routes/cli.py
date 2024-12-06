@@ -21,6 +21,7 @@ def main():
     parser.add_argument("--use_for_training", type=str, help="Count this row for training")
     parser.add_argument("--error_detection", type=str, help="Perform error detection")
     parser.add_argument("--test_size_limit", type=int, help="How many test samples to run")
+    parser.add_argument("--phi_detection", type=str, help="Perform PHI detection")
     
     args = parser.parse_args()
     
@@ -40,6 +41,7 @@ def main():
         negative_prompt=args.negative_prompt,
         use_for_training=args.use_for_training,
         error_detection=args.error_detection,
+        phi_detection=args.phi_detection,
         test_size_limit=args.test_size_limit
     )
     

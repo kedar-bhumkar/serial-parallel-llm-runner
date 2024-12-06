@@ -23,6 +23,7 @@ default_negative_prompt="OFF"
 default_formatter = "ros_pe_formatter"
 default_use_for_training = False
 default_error_detection = True
+default_phi_detection = True
 
 
 INSERT_QUERY = """
