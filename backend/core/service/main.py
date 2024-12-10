@@ -11,6 +11,7 @@ from backend.core.db.db_stats import *
 from backend.core.utility.fuzzy_matching import *
 from backend.core.utility.phi_remover import *
 from backend.core.utility.shared import *
+import pandas as pd
 
 clientSync = any
 theModel = any
@@ -294,9 +295,10 @@ def log(usecase, page, response, time, mode):
     return formatted_real_response
 
 
+
 def process_request(usecase, page, mode, model_family, formatter, run_mode, sleep, model, 
                    prompt, run_count, accuracy_check, negative_prompt, use_for_training, 
-                   error_detection, phi_detection, test_size_limit=None):
+                   error_detection, phi_detection, test_size_limit=None, file_name=None):
     """Common processing logic for both CLI and API requests"""
     global run_id, theIdealResponse, test_map, db_data
 
@@ -313,7 +315,7 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
         f"formatter-{formatter}, run_mode-{run_mode}, run_count-{run_count}, "
         f"sleep-{sleep}, accuracy_check-{accuracy_check}, model-{model}, "
         f"negative_prompt-{negative_prompt}, use_for_training-{use_for_training}, "
-        f"phi_detection-{phi_detection}"
+        f"phi_detection-{phi_detection}, file_name-{file_name}"
     )
 
     # Set shared data
@@ -330,29 +332,43 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
     run_id = getRunID(8)
     config = getConfig(prompts_file)
 
-    # Handle prompt preparation
-    if prompt is None and mode != "test-llm":
-        prompt = config[usecase]['user_prompt'][page][mode]['input']
-        if isinstance(prompt, str):
-            prompt = add_space_after_punctuation(prompt)
+    # if file_name is provided, process each prompt in the file in serial mode on same llm
+    if file_name is not None:
+        df_prompts = load_prompt_from_file(file_name)        
+        if df_prompts is not None:
+            for index, row in df_prompts.iterrows():
+                prompt = row['Transcript']
+                if isinstance(prompt, str):
+                    prompt = add_space_after_punctuation(prompt)
+                    _process_same_llm(usecase, page, mode, model_family, formatter, run_mode, sleep, model, prompt, run_count, accuracy_check)
+        else:
+            logger.error(f"No prompts found in the file: {file_name}")
 
-    # Process based on run mode
-    if run_mode == "multiple-llm":
-        return _process_multiple_llm(
-            usecase, page, mode, formatter, run_mode, sleep, prompt
-        )
+    else:
+        # if file_name is not provided, process the prompt based on below logic        
+        if prompt is None and mode != "test-llm":
+            prompt = config[usecase]['user_prompt'][page][mode]['input']
+            if isinstance(prompt, str):
+                    prompt = add_space_after_punctuation(prompt)     
+        
 
-    elif run_mode == "test-llm":
-        return _process_test_llm(
-            usecase, page, mode, model_family, formatter, 
-            run_mode, sleep, model, test_size_limit
-        )
+        # Process based on run mode
+        if run_mode == "multiple-llm":
+            return _process_multiple_llm(
+                usecase, page, mode, formatter, run_mode, sleep, prompt
+            )
 
-    else:  # same-llm mode
-        return _process_same_llm(
-            usecase, page, mode, model_family, formatter,
-            run_mode, sleep, model, prompt, run_count, accuracy_check
-        )
+        elif run_mode == "test-llm":
+            return _process_test_llm(
+                usecase, page, mode, model_family, formatter, 
+                run_mode, sleep, model, test_size_limit
+            )
+
+        else:  # same-llm mode
+            return _process_same_llm(
+                usecase, page, mode, model_family, formatter,
+                run_mode, sleep, model, prompt, run_count, accuracy_check
+            )
 
 def _process_multiple_llm(usecase, page, mode, formatter, run_mode, sleep, prompt):
     """Handle multiple LLM processing mode"""
@@ -479,4 +495,5 @@ def handleRequest(message: Message):
         use_for_training=message.use_for_training,
         error_detection=message.error_detection
     )
+
 

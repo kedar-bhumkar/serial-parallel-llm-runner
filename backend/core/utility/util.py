@@ -11,6 +11,8 @@ import re
 from datetime import datetime, timedelta
 from backend.core.utility.util import *
 from backend.core.utility.shared import *
+import pandas as pd
+from pathlib import Path
 
 def transform_response(theFormatter,response):
     logger.critical('Inside  transform_response')
@@ -169,3 +171,14 @@ def add_space_after_punctuation(input_string):
         input_string = input_string.replace(punctuation, replacement)
         
     return input_string
+
+def load_prompt_from_file(file_name: str) -> str:
+    """Load prompt from a CSV file."""
+    print(f"file_name-{file_name}")
+    try:
+        file_path = Path(file_name)
+        df = pd.read_csv(file_path, encoding='utf-8')        
+        return df
+    except Exception as e:
+        logger.error(f"Error loading prompt from CSV: {e}")
+        return None
