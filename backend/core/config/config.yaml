@@ -1,7 +1,7 @@
 openai:
   preferred_model: gpt-4o-2024-11-20
   model_options: [gpt-4o,gpt-4o-mini,gpt-3.5-turbo-0125, gpt-4-turbo, gpt-4o-2024-08-06, o1-mini, o1-preview]
-  key: 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
+  key: 
   url: https://api.openai.com/v1
   active: false
 lmstudio:
