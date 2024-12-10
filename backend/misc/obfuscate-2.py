@@ -97,12 +97,12 @@ if __name__ == "__main__":
 
 
     # Encode and save
-    success = encode_class_to_file(ExampleClass, "encoded_class.txt")
-    if success:
-        print("Class encoded successfully")
+    #success = encode_class_to_file(ExampleClass, "encoded_class.txt")
+    #if success:
+    #    print("Class encoded successfully")
     
     # Decode and print
     decoded_code = decode_class_from_file("encoded_class.txt")
     if decoded_code:
-        print("\nDecoded class code:")
+        #print("\nDecoded class code:")
         print(decoded_code)
