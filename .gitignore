@@ -17,5 +17,7 @@ backend/misc/tokens.txt
 backend/misc/pydantic_model_spec.py
 backend/misc/log.txt
 backend/misc/requirements.txt
+backend/misc/schema_dld.py
+backend/misc/schema_dld.csv
 
 

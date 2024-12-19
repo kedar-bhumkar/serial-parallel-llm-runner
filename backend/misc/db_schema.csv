@@ -1,0 +1,59 @@
+Table Name,Column Name,Data Type
+run_stats,isbaseline,boolean
+run_stats,run_no,integer
+run_stats,system_prompt,text
+run_stats,user_prompt,text
+run_stats,response,text
+run_stats,execution_time,integer
+run_stats,matches_baseline,boolean
+run_stats,difference,text
+run_stats,run_date,timestamp without time zone
+run_stats,unique_id,integer
+run_stats,usecase,text
+run_stats,llm,text
+run_stats,llm_parameters,text
+run_stats,functionality,text
+run_stats,mode,text
+run_stats,ideal_response,text
+run_stats,matches_ideal,text
+run_stats,ideal_response_difference,text
+run_stats,similarity_metric,text
+run_stats,created_at,timestamp with time zone
+run_stats,use_for_training,boolean
+run_stats,use_for_testing,boolean
+run_stats,comments,text
+test_results_summary,test_run_no,integer
+test_results_summary,test_run_date,date
+test_results_summary,total_tests,integer
+test_results_summary,tests_passed,integer
+test_results_summary,tests_failed,integer
+test_results_summary,tests_pass_rate,text
+test_results_summary,model,text
+test_results_summary,average_execution_time,double precision
+test_results_detail,test_results_summary_detail_no,integer
+test_results_detail,test_run_no,integer
+test_results_detail,original_response,text
+test_results_detail,actual_response,text
+test_results_detail,ideal_response,text
+test_results_detail,difference,text
+test_results_detail,original_run_no,integer
+test_results_detail,original_prompt,text
+test_results_detail,execution_time,double precision
+prompt_config,usecase,text
+prompt_config,system_prompt,text
+prompt_config,isActive,boolean
+prompt_config,comments,text
+prompt_config,page,text
+llm_config,model,text
+llm_config,family,text
+llm_config,mode,text
+llm_config,formatter,text
+llm_config,run_mode,text
+llm_config,run_count,text
+llm_config,sleep,text
+llm_config,accuracy_check,text
+llm_config,negative_prompt,text
+llm_config,use_for_training,boolean
+llm_config,error_detection,boolean
+llm_config,phi_detection,boolean
+llm_config,isActive,text

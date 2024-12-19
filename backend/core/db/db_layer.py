@@ -223,3 +223,7 @@ def save_test_results(test_map,model,total_tests,passed_tests,failed_tests,pass_
         print(f"test['execution_time']-{test['execution_time']}")
         insert_test_results_detail_data(model,test_run_no,test['original_response'],test['actual_response'],test['ideal_response'],test['idealResponse_changes'],test['original_run_no'],test['original_prompt'], test['execution_time'])
     
+def get_test_results(test_run_no):
+    return read("".join([TEST_RESULTS_QUERY, f" where test_run_no='{test_run_no}'"]))
+
+    

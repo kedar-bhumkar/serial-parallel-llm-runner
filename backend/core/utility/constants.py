@@ -78,3 +78,9 @@ TEST_QUERY = """
         WHERE use_for_testing = 'true'
         ORDER BY user_prompt, run_no DESC
         """
+
+TEST_RESULTS_QUERY = """
+        SELECT test_run_no, test_results_detail_no, original_response, ideal_response, actual_response, original_prompt 
+        FROM public.test_results_detail 
+        """
+
