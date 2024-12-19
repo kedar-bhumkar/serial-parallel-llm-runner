@@ -493,7 +493,9 @@ def handleRequest(message: Message):
         accuracy_check=message.accuracy_check,
         negative_prompt=message.negative_prompt,
         use_for_training=message.use_for_training,
-        error_detection=message.error_detection
+        error_detection=message.error_detection,
+        phi_detection=message.phi_detection,
     )
+
 
 

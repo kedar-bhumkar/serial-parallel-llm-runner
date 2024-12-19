@@ -94,3 +94,16 @@ button:active {
     font-weight: 600;       
     
 }
+
+.page-selector {
+    margin: 15px 0;
+}
+
+.page-selector label {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.page-selector input[type="radio"] {
+    margin-right: 5px;
+}

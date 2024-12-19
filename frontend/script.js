@@ -190,27 +190,32 @@ async function transcribe() {
 }
 
 function submit() {
-    //alert('Submit transcript...');
-    // Implement transcribe functionality
-    hideMessage()
-    managePage("disable")
+    hideMessage();
+    managePage("disable");
     const loadingMessage = document.createElement('div');
-    document.getElementById('response-link').style.display = 'none'; // Show the response link       
+    document.getElementById('response-link').style.display = 'none';
     loadingMessage.id = 'loading-message';
     loadingMessage.textContent = '💀 Connecting with LLM... Please wait.';
     document.body.appendChild(loadingMessage);
 
+    // Get selected page value
+    const selectedPage = document.querySelector('input[name="page"]:checked').value;
+    
     var transcript = document.getElementById('transcript').value;
-    transcript =  'Transcript: ' + transcript + '  +   {missing_sections} Return_data_constraints: {constraints}'
-    console.log('transcript ' + transcript )
+    transcript = 'Transcript: ' + transcript + '  +   {missing_sections} Return_data_constraints: {constraints}';
+    console.log('transcript ' + transcript);
+    
     if (transcript) {
-        // Sending the transcript to the web service
         fetch(serverUrl+'/acd', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ prompt: transcript,     "usecase":"acd",       "page":"ros" })
+            body: JSON.stringify({ 
+                prompt: transcript,     
+                usecase: "acd",       
+                page: selectedPage  // Use the selected page value
+            })
         })
         .then(response => response.json())
         .then(data => {
@@ -237,8 +242,8 @@ function submit() {
             loadingMessage.remove();
         }
     }
-   
 }
+
 function openSettings() {
     alert('Open settings...');
     // Implement open settings functionality
