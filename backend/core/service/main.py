@@ -38,24 +38,31 @@ def generate(client,count,prompt,page):
     #logger.critical(f"generate - {prompt}")
     num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
     #logger.critical(f"theSystemPrompt-{theSystemPrompt}")
-    chat_completion = client.chat.completions.create(
-      messages=[
-            {"role": "system", "content": theSystemPrompt},
-            {"role": "user",   "content":  prompt}
-        ],
-        prediction = {"type": "content","content": prompt},
-        model=theModel,
-        temperature = default_temperature
-    )
+
+    completion_params = {
+       "messages": [
+           {"role": "system", "content": theSystemPrompt},
+           {"role": "user", "content": prompt}
+       ],
+       "model": theModel
+   }
+
+    completion_params.update(shared_data_instance.get_data('completion_params'))
+    print(f"completion_params-{completion_params}")
+ 
+    chat_completion = client.chat.completions.create(**completion_params)   
+
     response = chat_completion.choices[0].message.content
     print(f"chat_completion-total_tokens-{chat_completion.usage.total_tokens}")
     print(f"chat_completion-completion_tokens-{chat_completion.usage.completion_tokens}")
     print(f"chat_completion-prompt_tokens-{chat_completion.usage.prompt_tokens}")
     print(f"chat_completion-prompt_tokens_details_cached_tokens-{chat_completion.usage.prompt_tokens_details.cached_tokens}")
-    print(f"chat_completion.usage.completion_tokens_details.accepted_prediction_tokens-{chat_completion.usage.completion_tokens_details.accepted_prediction_tokens}")
-    print(f"chat_completion.usage.completion_tokens_details.rejected_prediction_tokens-{chat_completion.usage.completion_tokens_details.rejected_prediction_tokens}")
-    print(f"chat_completion.usage.completion_tokens_details.reasoning_tokens-{chat_completion.usage.completion_tokens_details.reasoning_tokens}")
+    #print(f"chat_completion.usage.completion_tokens_details.accepted_prediction_tokens-{chat_completion.usage.completion_tokens_details.accepted_prediction_tokens}")
+    #print(f"chat_completion.usage.completion_tokens_details.rejected_prediction_tokens-{chat_completion.usage.completion_tokens_details.rejected_prediction_tokens}")
+    #print(f"chat_completion.usage.completion_tokens_details.reasoning_tokens-{chat_completion.usage.completion_tokens_details.reasoning_tokens}")
+    print(f"chat_completion.system_fingerprint-{chat_completion.system_fingerprint}")
 
+    shared_data_instance.set_data('fingerprint', chat_completion.system_fingerprint)
     num_tokens_from_string(response, default_encoding, "output")
     #logger.critical(f'unformatted response...  {count} ...' , response)
     
@@ -63,7 +70,7 @@ def generate(client,count,prompt,page):
     #formatted_json = transform_response(theFormatter, response)
     #logger.info(f'response...  {count} ...' , formatted_json)
     return response
-
+ 
 # Serial
 def generate_serially(usecase, page, mode, prompt):  
     print("Entering method: generate_serially")
@@ -89,6 +96,8 @@ def init_AI_client(model_family, model):
     else:    
         theModel = model
 
+    completion_params = config[model_family]["parameters"]
+    shared_data_instance.set_data('completion_params', completion_params)
        
     clientSync = OpenAI(
         api_key  = config[model_family]["key"],
@@ -101,7 +110,7 @@ def init_prompts(usecase, page, mode):
     config = getConfig(prompts_file)     
     theSystemPrompt = config[usecase]['system_prompt']
     logger.critical(f"theSystemPrompt-{theSystemPrompt}")
-    if(shared_data_instance.get_data('theIdealResponse') == None):
+    if(shared_data_instance.get_data('theIdealResponse') == None or shared_data_instance.get_data('theIdealResponse') == ''):
         theIdealResponse = config[usecase]['user_prompt'][page]['serial']['ideal_response']
     else:
         theIdealResponse = shared_data_instance.get_data('theIdealResponse')
@@ -244,6 +253,7 @@ def log(usecase, page, response, time, mode):
          logger.info(f"theIdealResponse - {theIdealResponse}, response -{response}")
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)       
          #print(f"formatted_ideal_response - {formatted_ideal_response}" )
+         shared_data_instance.set_data('theIdealResponse', formatted_ideal_response)
          matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
     elif(run_mode == 'test-llm'):
          logger.info(f"Running test")
@@ -257,6 +267,7 @@ def log(usecase, page, response, time, mode):
          test_result['original_response'] = shared_data_instance.get_data('original_response')  
          test_result['original_run_no'] = shared_data_instance.get_data('original_run_no')
          test_result['original_prompt'] = shared_data_instance.get_data('original_prompt')
+         test_result['fingerprint'] = shared_data_instance.get_data('fingerprint')
          logger.critical(f"accuracy_difflib_similarity-{accuracy_difflib_similarity}")
          test_map[shared_data_instance.get_data('run_no')] = test_result
          
@@ -288,7 +299,8 @@ def log(usecase, page, response, time, mode):
             'difference': reproducibility_changes,
             'ideal_response_difference': idealResponse_changes,
             'similarity_metric':f'accuracy_difflib_similarity->>{accuracy_difflib_similarity} -- repro_difflib_similarity->>{repro_difflib_similarity}',
-            'use_for_training': shared_data_instance.get_data('use_for_training')
+            'use_for_training': shared_data_instance.get_data('use_for_training'),
+            'fingerprint': shared_data_instance.get_data('fingerprint')
         }    
         db_data.append(i_data)
     #logger.info(f"** db_data - {db_data}")
@@ -298,7 +310,7 @@ def log(usecase, page, response, time, mode):
 
 def process_request(usecase, page, mode, model_family, formatter, run_mode, sleep, model, 
                    prompt, run_count, accuracy_check, negative_prompt, use_for_training, 
-                   error_detection, phi_detection, test_size_limit=None, file_name=None):
+                   error_detection, phi_detection, test_size_limit=None, file_name=None, ideal_response=None):
     """Common processing logic for both CLI and API requests"""
     global run_id, theIdealResponse, test_map, db_data
 
@@ -315,7 +327,7 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
         f"formatter-{formatter}, run_mode-{run_mode}, run_count-{run_count}, "
         f"sleep-{sleep}, accuracy_check-{accuracy_check}, model-{model}, "
         f"negative_prompt-{negative_prompt}, use_for_training-{use_for_training}, "
-        f"phi_detection-{phi_detection}, file_name-{file_name}"
+        f"phi_detection-{phi_detection}, file_name-{file_name}, ideal_response-{ideal_response}"
     )
 
     # Set shared data
@@ -324,7 +336,9 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
         'use_for_training': use_for_training,
         'error_detection': error_detection,
         'run_mode': run_mode,
-        'phi_detection': phi_detection
+        'phi_detection': phi_detection,
+        'theIdealResponse': ideal_response,
+        'prompt': prompt
     }
     for key, value in shared_data.items():
         shared_data_instance.set_data(key, value)
@@ -430,7 +444,7 @@ def _process_same_llm(usecase, page, mode, model_family, formatter,
     if accuracy_check == "ON":
         print_accuracy_stats(readWithGroupFilter(run_id))
         
-    return {"response": response, "confidence_map": confidence_map}
+    return {"response": response, "confidence_map": confidence_map, "ideal_response": shared_data_instance.get_data('theIdealResponse'), "prompt": shared_data_instance.get_data('prompt')}
 
 
 
@@ -439,7 +453,7 @@ def _setup_test_data(row):
     shared_data = {
         'theIdealResponse': row['ideal_response'],
         'run_no': row['run_no'],
-        'ideal_response': row['ideal_response'],
+        'ideal_response': row['ideal_response'], 
         'original_response': row['response'],
         'usecase': row['usecase'],
         'original_run_no': row['run_no'],
@@ -495,6 +509,7 @@ def handleRequest(message: Message):
         use_for_training=message.use_for_training,
         error_detection=message.error_detection,
         phi_detection=message.phi_detection,
+        ideal_response=message.ideal_response
     )
 
 

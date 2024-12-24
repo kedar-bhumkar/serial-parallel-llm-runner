@@ -23,7 +23,8 @@ def main():
     parser.add_argument("--test_size_limit", type=int, help="How many test samples to run")
     parser.add_argument("--phi_detection", type=str, help="Perform PHI detection")
     parser.add_argument("--file_name", type=str, help="File name to use")
-    
+    parser.add_argument("--ideal_response", type=str, help="Ideal response to use")
+
     args = parser.parse_args()
     
     start_time = time.time()
@@ -44,7 +45,8 @@ def main():
         error_detection=args.error_detection,
         phi_detection=args.phi_detection,
         test_size_limit=args.test_size_limit,
-        file_name=args.file_name
+        file_name=args.file_name,
+        ideal_response=args.ideal_response
     )
     
     process_time = time.time() - start_time

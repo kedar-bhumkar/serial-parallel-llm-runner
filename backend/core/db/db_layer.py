@@ -116,6 +116,7 @@ def insert(data_list):
                 data['similarity_metric'],                
                 datetime.now(),  # Current date for run_date
                 data['use_for_training'],
+                data['fingerprint']
             ) 
             for data in data_list  
         ]
@@ -194,16 +195,16 @@ def insert_test_results_data(model:str,total_tests: int, tests_passed: int, test
             conn.close()
 
 
-def insert_test_results_detail_data(model:str,test_run_no: int,original_response: str,actual_response: str,ideal_response: str,difference: str,original_run_no: int,original_prompt: str, execution_time: float):
+def insert_test_results_detail_data(model:str,test_run_no: int,original_response: str,actual_response: str,ideal_response: str,difference: str,original_run_no: int,original_prompt: str, execution_time: float,fingerprint: str):
     #logger.critical(f"insert_test_results_detail_data - {model},{test_run_no},{original_response},{actual_response},{ideal_response},{difference},{original_run_no},{original_prompt}")
     conn, cursor = connect()
     try: 
         insert_query = """
-        INSERT INTO test_results_detail (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt, execution_time)
-        VALUES (%s, %s, %s, %s, %s,%s,%s,%s)
+        INSERT INTO test_results_detail (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt, execution_time,fingerprint)
+        VALUES (%s, %s, %s, %s, %s,%s,%s,%s,%s)
         """
 
-        cursor.execute(insert_query, (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt, execution_time))
+        cursor.execute(insert_query, (test_run_no, original_response, actual_response, ideal_response, difference,original_run_no,original_prompt, execution_time,fingerprint))
         conn.commit()
         print(f"Test results detail inserted successfully with run number: {test_run_no}")
 
@@ -221,9 +222,9 @@ def save_test_results(test_map,model,total_tests,passed_tests,failed_tests,pass_
     test_run_no = insert_test_results_data(model,total_tests,passed_tests,failed_tests,pass_rate,average_execution_time)
     for test in test_map.values():
         print(f"test['execution_time']-{test['execution_time']}")
-        insert_test_results_detail_data(model,test_run_no,test['original_response'],test['actual_response'],test['ideal_response'],test['idealResponse_changes'],test['original_run_no'],test['original_prompt'], test['execution_time'])
+        insert_test_results_detail_data(model,test_run_no,test['original_response'],test['actual_response'],test['ideal_response'],test['idealResponse_changes'],test['original_run_no'],test['original_prompt'], test['execution_time'], test['fingerprint'])
     
 def get_test_results(test_run_no):
-    return read("".join([TEST_RESULTS_QUERY, f" where test_run_no='{test_run_no}'"]))
+    return read("".join([TEST_RESULTS_QUERY, f" and test_run_no='{test_run_no}'"]))
 
     

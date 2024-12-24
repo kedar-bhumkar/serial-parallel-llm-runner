@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Results Viewer</title>
+     <!-- Add Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../common/styles/main.css">
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin-left: 15%;
+      margin-right: 5%;
+  
+    }
+    .pane {
+      width: 48%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      white-space: pre-wrap;
+    }
+    .highlight {
+      background-color: yellow;
+    }
+    .buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .container h2 {
+      width: 48%;
+      text-align: center;
+      font-size: 1.2em;
+      margin: 0 0 10px 0;
+    }
+    .info-icon {
+      display: inline-block;
+      font-size: small;
+      width: 20px;
+      height: 20px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+      position: relative;
+    }
+    
+    .tooltip {
+      visibility: hidden;
+      background-color: #333;
+      color: white;
+      text-align: left;
+      padding: 10px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      width: 300px;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 5px;
+    }
+    
+    .buttons .info-icon .tooltip {
+      bottom: 100%;
+      top: auto;
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    
+    .info-icon:hover .tooltip {
+      visibility: visible;
+    }
+    .section-highlight {
+      color: blue;
+      font-weight: bold;
+    }
+    .section {
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      margin-top: 0;
+    }
+
+    .key-value {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+
+    .key-value .key {
+      font-weight: bold;
+    }
+
+    .value.highlight {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <div id="sidebar"></div>
+    <main>
+        <div id="header"></div>
+        <section id="main-content">
+          <h1 style="text-align: center;">Test Results Viewer <span class="info-icon">i<span class="tooltip"></span></span></h1>
+  
+          <!-- Add mismatch percentage display with red color -->
+          <div style="text-align: center; margin: 10px 0;">
+            <span>Mismatch: <span id="mismatchPercentage" style="color: red; font-weight: bold;">0%</span></span>
+          </div>
+        
+          <div class="buttons">
+            <button id="prevButton" onclick="prevTest()">Previous</button>
+            <span id="counter" style="margin: 0 15px; font-size: 16px;"></span>
+            <button id="nextButton" onclick="nextTest()">Next</button>
+          </div>
+          <div class="container">            
+            <h2>Actual Response</h2>
+            <h2>Ideal Response</h2>
+          </div>
+          <div class="container">           
+            <div id="actualPane" class="pane"></div>
+            <div id="idealPane" class="pane"></div>
+          </div>
+          
+          <div class="buttons">
+            <button id="prevButton" onclick="prevTest()">Previous</button>
+            <span id="counter" style="margin: 0 15px; font-size: 16px;"></span>
+            <button id="nextButton" onclick="nextTest()">Next</button>
+            <span class="info-icon">i<span class="tooltip"></span></span>
+          </div>
+    </main>
+</div>
+  
+<script>
+  // Load components
+  fetch('../common/html/sidebar.html').then(response => response.text()).then(data => document.getElementById('sidebar').innerHTML = data);
+  fetch('../common/html/header.html').then(response => response.text()).then(data => document.getElementById('header').innerHTML = data);
+ 
+  let TEST_RESULTS = new Map();
+  let serverUrl = "http://localhost:8000"
+  let keys = [];
+  let currentIndex = 0;
+
+  // Function to get URL parameters
+  function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  // Function to render JSON data in sections
+  function renderJsonInSections(jsonStr, containerId, otherJsonStr) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    
+    try {
+      const data = JSON.parse(jsonStr);
+      const otherData = otherJsonStr ? JSON.parse(otherJsonStr) : null;
+      let totalValues = 0;
+      let mismatchCount = 0;
+      
+      for (const [sectionName, sectionData] of Object.entries(data)) {
+        if (typeof sectionData === 'object' && sectionData !== null) {
+          const section = document.createElement('div');
+          section.className = 'section';
+
+          const header = document.createElement('h3');
+          header.textContent = sectionName.replace(/_/g, ' ').replace(/(?:^|\s)\S/g, a => a.toUpperCase());
+          section.appendChild(header);
+
+          for (const [key, value] of Object.entries(sectionData)) {
+            if (value !== null && !key.includes('ROS__c') && !key.includes('Not_Assessed_Reason')) {
+              totalValues++;
+              
+              if (otherData && otherData[sectionName]?.[key] !== value) {
+                mismatchCount++;
+              }
+            }
+
+            const keyValueDiv = document.createElement('div');
+            keyValueDiv.className = 'key-value';
+
+            const keySpan = document.createElement('span');
+            keySpan.className = 'key';
+            keySpan.textContent = key.replace(/_/g, ' ') + ':';
+            
+            const valueSpan = document.createElement('span');
+            valueSpan.className = 'value';
+            valueSpan.textContent = value === null ? 'null' : value;
+
+            if (otherData && otherData[sectionName]?.[key] !== value) {
+              valueSpan.classList.add('highlight');
+            }
+
+            keyValueDiv.appendChild(keySpan);
+            keyValueDiv.appendChild(valueSpan);
+            section.appendChild(keyValueDiv);
+          }
+
+          container.appendChild(section);
+        }
+      }
+
+      // Update mismatch percentage after processing ideal pane
+      if (containerId === 'idealPane' && otherData) {
+        const mismatchPercentage = ((mismatchCount / totalValues) * 100).toFixed(1);
+        document.getElementById('mismatchPercentage').textContent = `${mismatchPercentage}%`;
+      }
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+      container.innerHTML = 'Error parsing JSON data';
+    }
+  }
+
+  // Initialize based on mode
+  const mode = getUrlParameter('mode');
+  const testId = getUrlParameter('test-id');
+
+  if (mode === 'run_transcript') {
+    // Hide navigation buttons
+    document.querySelectorAll('.buttons').forEach(button => button.style.display = 'none');
+    document.querySelectorAll('#sidebar').forEach(sidebar => sidebar.style.display = 'none');
+    
+    try {
+      const llmResponse = JSON.parse(sessionStorage.getItem('llmResponse'));
+      if (llmResponse?.acd_response?.response?.[0]) {
+        console.log('Response found in session storage')
+        const actualData = JSON.parse(llmResponse.acd_response.response[0]);
+        const actualResponse = JSON.stringify(actualData);
+        const prompt = llmResponse.acd_response.prompt;
+        console.log('prompt', prompt)
+        document.querySelectorAll('.tooltip').forEach(tooltip => {
+          tooltip.textContent = prompt || 'No prompt available';
+        });        
+        // Check if ideal response exists
+        if (llmResponse?.acd_response?.ideal_response) {
+          console.log('Ideal Response found in session storage')
+          const idealData = JSON.parse(llmResponse.acd_response.ideal_response);
+          const idealResponse = JSON.stringify(idealData);
+          
+          // Show ideal pane and mismatch percentage
+          document.getElementById('idealPane').style.display = 'block';
+          document.getElementById('mismatchPercentage').parentElement.style.display = 'block';
+          document.querySelectorAll('.container h2').forEach(h2 => {
+            if (h2.textContent === 'Ideal Response') {
+              h2.style.display = 'block';
+            }
+          });
+          
+          renderJsonInSections(idealResponse, 'idealPane', actualResponse);
+          renderJsonInSections(actualResponse, 'actualPane', idealResponse);
+        } else {
+          console.log('No Ideal Response found in session storage')
+          // Hide ideal pane and mismatch percentage
+          document.getElementById('idealPane').style.display = 'none';
+          document.getElementById('mismatchPercentage').parentElement.style.display = 'none';
+          document.querySelectorAll('.container h2').forEach(h2 => {
+            if (h2.textContent === 'Ideal Response') {
+              h2.style.display = 'none';
+            }
+          });
+          // Only render actual response without comparison
+          renderJsonInSections(actualResponse, 'actualPane');
+        }
+      } else {
+        throw new Error('No LLM response found in session storage');
+      }
+    } catch (error) {
+      console.error('Error processing LLM response:', error);
+      document.getElementById('idealPane').innerHTML = 'Error loading LLM response';
+      document.getElementById('actualPane').innerHTML = 'Error loading LLM response';
+    }
+  } else if (testId) {
+    // Original test results viewing mode
+    async function fetchTestResults(testId) {
+      try {
+        const response = await fetch(serverUrl+'/test-results', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            'test_no': testId
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        TEST_RESULTS = new Map(Object.entries(data));
+        keys = Array.from(TEST_RESULTS.keys());
+        currentIndex = 0;
+        renderTest(currentIndex);
+      } catch (error) {
+        console.error('Error fetching test results:', error);
+        document.getElementById('idealPane').innerHTML = 'Error loading test results';
+        document.getElementById('actualPane').innerHTML = 'Error loading test results';
+      }
+    }
+
+    function renderTest(index) {
+      const { ideal_response, actual_response, original_prompt, trd_fingerprint, rs_fingerprint } = TEST_RESULTS.get(keys[index]);
+      rs_fingerprint_ = rs_fingerprint || 'N/A'
+      trd_fingerprint_   = trd_fingerprint || 'N/A'
+      
+      const fingerprintColor = rs_fingerprint_ === trd_fingerprint_ ? '#28a745' : '#dc3545'; // green : red
+ 
+      
+      // Add fingerprint displays above panes
+      const container = document.querySelector('.container');
+      const fingerprintDiv = document.createElement('div');
+      fingerprintDiv.style.cssText = 'display: flex; justify-content: space-between; margin-left: 15%; margin-right: 5%; margin-bottom: 10px;';
+      
+      fingerprintDiv.innerHTML = `
+        <div style="width: 48%">
+          <strong>Fingerprint:</strong><span style="color: ${fingerprintColor}"> ${rs_fingerprint_}
+        </div>
+        <div style="width: 48%">
+          <strong>Fingerprint:</strong> <span style="color: ${fingerprintColor}"> ${trd_fingerprint_}
+        </div>
+      `;
+      
+      // Insert fingerprint div before the first container
+      container.parentNode.insertBefore(fingerprintDiv, container);
+      
+      document.querySelectorAll('.tooltip').forEach(tooltip => {
+        tooltip.textContent = original_prompt || 'No prompt available';
+      });
+
+      document.querySelectorAll('#counter').forEach(counter => {
+        counter.textContent = `${index + 1} of ${keys.length}`;
+      });
+
+      renderJsonInSections(ideal_response, 'idealPane', actual_response);
+      renderJsonInSections(actual_response, 'actualPane', ideal_response);
+
+      document.getElementById('prevButton').disabled = index === 0;
+      document.getElementById('nextButton').disabled = index === keys.length - 1;
+    }
+
+    fetchTestResults(testId);
+  } else {
+    document.getElementById('idealPane').innerHTML = 'No test ID or mode provided';
+    document.getElementById('actualPane').innerHTML = 'No test ID or mode provided';
+  }
+
+  function prevTest() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderTest(currentIndex);
+    }
+  }
+
+  function nextTest() {
+    if (currentIndex < keys.length - 1) {
+      currentIndex++;
+      renderTest(currentIndex);
+    }
+  }
+</script>
+</body>
+</html>

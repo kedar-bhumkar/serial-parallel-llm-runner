@@ -11,7 +11,9 @@ def getTestResults(testId):
             "ideal_response": row["original_response"],
             "actual_response": row["actual_response"],
             "original_prompt": row["original_prompt"],
-            "test_results_detail_no": row["test_results_detail_no"]
+            "test_results_detail_no": row["test_results_detail_no"],
+            "trd_fingerprint": row["trd_fingerprint"],
+            "rs_fingerprint": row["rs_fingerprint"]
         }
         for idx, row in df.iterrows()
     }
@@ -20,4 +22,4 @@ def getTestResults(testId):
 
 
 if __name__ == "__main__":
-    print(getTestResults(11))
+    print(getTestResults(17))

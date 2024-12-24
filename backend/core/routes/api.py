@@ -48,7 +48,7 @@ def doGet( request:Request):
 def doChat( request:Request, message:Message):    
     print("Inside /acd")    
     
-    print(f'prompt -  {message.prompt}, mode - {message.mode}')           
+    print(f'prompt -  {message.prompt}, mode - {message.mode}, ideal_response - {message.ideal_response}')           
 
     if(message.formatter == None and message.usecase=="acd" and  (message.page == "ros" or message.page =="pe")):
         message.formatter = default_formatter

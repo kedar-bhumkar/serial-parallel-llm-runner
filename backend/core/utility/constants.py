@@ -46,9 +46,11 @@ INSERT_QUERY = """
             mode,
             similarity_metric,
             run_date,
-            use_for_training
+            use_for_training,
+            fingerprint
+            
 
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
         """
 READ_QUERY = """
         SELECT 
@@ -80,7 +82,8 @@ TEST_QUERY = """
         """
 
 TEST_RESULTS_QUERY = """
-        SELECT test_run_no, test_results_detail_no, original_response, ideal_response, actual_response, original_prompt 
-        FROM public.test_results_detail 
+        SELECT test_run_no, test_results_detail_no, original_response, trd.ideal_response, actual_response, original_prompt, trd.fingerprint as trd_fingerprint, rs.fingerprint as rs_fingerprint
+        FROM public.test_results_detail as trd, public.run_stats as rs
+        WHERE trd.original_run_no = rs.run_no
         """
 
