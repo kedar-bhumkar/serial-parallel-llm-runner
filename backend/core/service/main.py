@@ -12,6 +12,9 @@ from backend.core.utility.fuzzy_matching import *
 from backend.core.utility.phi_remover import *
 from backend.core.utility.shared import *
 import pandas as pd
+import base64
+from io import StringIO
+import uuid
 
 clientSync = any
 theModel = any
@@ -249,13 +252,13 @@ def log(usecase, page, response, time, mode):
         reproducibility_changes = ''
         repro_difflib_similarity = 1.0
 
-    if(accuracy_check == "ON" and run_mode != 'test-llm'):
+    if(accuracy_check == "ON" and (run_mode != 'cli-test-llm' or run_mode != 'eval-test-llm')):
          logger.info(f"theIdealResponse - {theIdealResponse}, response -{response}")
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)       
          #print(f"formatted_ideal_response - {formatted_ideal_response}" )
          shared_data_instance.set_data('theIdealResponse', formatted_ideal_response)
          matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
-    elif(run_mode == 'test-llm'):
+    elif(run_mode == 'cli-test-llm' or run_mode == 'eval-test-llm'):
          logger.info(f"Running test")
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)                
          matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
@@ -269,6 +272,7 @@ def log(usecase, page, response, time, mode):
          test_result['original_prompt'] = shared_data_instance.get_data('original_prompt')
          test_result['fingerprint'] = shared_data_instance.get_data('fingerprint')
          logger.critical(f"accuracy_difflib_similarity-{accuracy_difflib_similarity}")
+         print(f"key while saving-{shared_data_instance.get_data('run_no')}")
          test_map[shared_data_instance.get_data('run_no')] = test_result
          
     else:
@@ -277,7 +281,7 @@ def log(usecase, page, response, time, mode):
         formatted_ideal_response = ""
 
 
-    if(run_mode != 'test-llm'):
+    if(run_mode != 'cli-test-llm' and run_mode != 'eval-test-llm'):
         if(mode=='parallel'):
             thePrompt = shared_data_instance.get_data('transcript')
 
@@ -308,20 +312,25 @@ def log(usecase, page, response, time, mode):
 
 
 
-def process_request(usecase, page, mode, model_family, formatter, run_mode, sleep, model, 
-                   prompt, run_count, accuracy_check, negative_prompt, use_for_training, 
-                   error_detection, phi_detection, test_size_limit=None, file_name=None, ideal_response=None):
+def process_request(usecase, page, mode=None, model_family=None, formatter=None, run_mode=None, sleep=None, model=None, 
+                   prompt=None, run_count=None, accuracy_check=None, negative_prompt=None, use_for_training=None, 
+                   error_detection=None, phi_detection=None, test_size_limit=default_test_size_limit, file_name=None, ideal_response=None):
     """Common processing logic for both CLI and API requests"""
     global run_id, theIdealResponse, test_map, db_data
 
     # Initialize defaults if not provided
     mode = mode or default_mode
     run_mode = run_mode or default_run_mode
+    model_family = model_family or default_model_family
+    formatter = formatter or default_formatter
     run_count = run_count or default_run_count
     accuracy_check = accuracy_check or default_accuracy_check
     use_for_training = use_for_training or default_use_for_training
     error_detection = error_detection or default_error_detection
     phi_detection = phi_detection or default_phi_detection
+    negative_prompt = negative_prompt or default_negative_prompt
+    sleep = sleep or default_sleep
+    model = model or default_model
     logger.critical(
         f"usecase-{usecase}, page-{page}, mode-{mode}, family-{model_family}, "
         f"formatter-{formatter}, run_mode-{run_mode}, run_count-{run_count}, "
@@ -360,7 +369,7 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
 
     else:
         # if file_name is not provided, process the prompt based on below logic        
-        if prompt is None and mode != "test-llm":
+        if prompt is None and (run_mode != "cli-test-llm" or  run_mode != "eval-test-llm"):
             prompt = config[usecase]['user_prompt'][page][mode]['input']
             if isinstance(prompt, str):
                     prompt = add_space_after_punctuation(prompt)     
@@ -372,8 +381,14 @@ def process_request(usecase, page, mode, model_family, formatter, run_mode, slee
                 usecase, page, mode, formatter, run_mode, sleep, prompt
             )
 
-        elif run_mode == "test-llm":
+        elif run_mode == "cli-test-llm":
             return _process_test_llm(
+                usecase, page, mode, model_family, formatter, 
+                run_mode, sleep, model, test_size_limit
+            )
+
+        elif run_mode == "eval-test-llm":
+            return _process_eval_test_llm(
                 usecase, page, mode, model_family, formatter, 
                 run_mode, sleep, model, test_size_limit
             )
@@ -402,11 +417,13 @@ def _process_multiple_llm(usecase, page, mode, formatter, run_mode, sleep, promp
 def _process_test_llm(usecase, page, mode, model_family, formatter, 
                      run_mode, sleep, model, test_size_limit):
     """Handle test LLM processing mode"""
-    result = get_test_data(test_size_limit)
+    result = get_test_data(test_size_limit,page)
     
     for count, row in result.iterrows():
         logger.critical(f"Running test {count+1} of total {len(result)}")
         if row['user_prompt'] is not None:
+            # hack visit later
+            row['ideal_response'] = row['response']
             _setup_test_data(row)
             prompt = ''.join([
                 'Return_data_constraints: {constraints} ',
@@ -418,12 +435,79 @@ def _process_test_llm(usecase, page, mode, model_family, formatter,
                 row['usecase'], row['functionality'], mode,
                 model_family, formatter, run_mode, sleep, model, prompt
             )
-            
+            print(f"key while extracting-{shared_data_instance.get_data('run_no')}")
             test_result =test_map[shared_data_instance.get_data('run_no')] 
             test_result['execution_time'] = round(time.time() - start_time, 2)
 
 
-    return _generate_test_summary()
+    return _generate_test_summary('consistency')
+
+
+def _process_eval_test_llm(usecase, page, mode, model_family, formatter, 
+                     run_mode, sleep, model, test_size_limit):
+    print("Entering method: _process_eval_test_llm")
+    
+    eval_file_data = shared_data_instance.get_data('eval_file_data')
+    print(f"eval_file_data-{eval_file_data}")
+    if not eval_file_data:
+        logger.error("No evaluation file data found")
+    try:
+        # Convert to string if it's bytes
+        if isinstance(eval_file_data, bytes):
+            print("eval_file_data is bytes")
+            eval_file_data = eval_file_data.decode('utf-8-sig')
+            #eval_file_data = base64.b64decode(eval_file_data)
+            print(f"decoded_eval_file_data-{eval_file_data}")
+     
+
+            
+        try:
+            #df = pd.read_csv(StringIO(decoded_string))
+            print("reading csv")
+            df = pd.read_csv(StringIO(eval_file_data))
+            print("reading csv done")
+        except Exception as e:
+            logger.error(f"CSV parsing error: {str(e)}")
+            return {"error": f"Could not parse CSV data: {str(e)}"}
+        
+        # Validate required columns
+        required_columns = ['user_prompt', 'ideal_response']
+        if not all(col in df.columns for col in required_columns):
+            logger.error("CSV file missing required columns: user_prompt, ideal_response")
+            return
+        
+        results = []
+        total_rows = len(df)
+        print(f"total_rows-{total_rows}")
+        exit
+        for index, row in df.iterrows():
+            logger.critical(f"Processing evaluation {index + 1} of {total_rows}")
+            
+            if pd.notna(row['user_prompt']):
+                # Construct prompt
+                prompt = ''.join([
+                    'Return_data_constraints: {constraints} ',
+                    row['user_prompt'],
+                    '{missing_sections}'
+                ])
+                row['run_no'] = index
+                _setup_test_data(row)         
+                # Execute test
+                start_time = time.time()
+                sync_async_runner(
+                    usecase, page, mode,
+                    model_family, formatter, run_mode, sleep, model, prompt
+                )
+                
+                # Store test results
+                test_result = test_map[shared_data_instance.get_data('run_no')]
+                test_result['execution_time'] = round(time.time() - start_time, 2)
+                results.append(test_result)
+            
+        return _generate_test_summary('eval')
+    except Exception as e:
+        logger.error(f"Error processing evaluation file: {str(e)}")
+        return {"error": str(e)}
 
 def _process_same_llm(usecase, page, mode, model_family, formatter,
                      run_mode, sleep, model, prompt, run_count, accuracy_check):
@@ -451,19 +535,19 @@ def _process_same_llm(usecase, page, mode, model_family, formatter,
 def _setup_test_data(row):
     """Helper to set up shared data for test runs"""
     shared_data = {
-        'theIdealResponse': row['ideal_response'],
-        'run_no': row['run_no'],
-        'ideal_response': row['ideal_response'], 
-        'original_response': row['response'],
-        'usecase': row['usecase'],
-        'original_run_no': row['run_no'],
-        'original_prompt': row['user_prompt']
+        'theIdealResponse': row.get('ideal_response') ,
+        'run_no': row.get('run_no') ,
+        'ideal_response': row.get('ideal_response'), 
+        'original_response': row.get('response') ,
+        'usecase': row.get('usecase') ,
+        'original_run_no': row.get('run_no'),
+        'original_prompt': row.get('user_prompt') 
     } 
     
     for key, value in shared_data.items():
         shared_data_instance.set_data(key, value)
 
-def _generate_test_summary():
+def _generate_test_summary(test_type):
     """Generate and log test results summary"""
     total_tests = len(test_map)
     passed_tests = sum(1 for test in test_map.values() if test['matches_idealResponse'])
@@ -485,8 +569,10 @@ def _generate_test_summary():
     for key, value in summary.items():
         logger.critical(f"{key}: {value}")
     
-    save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate, average_execution_time)
-    return summary
+    test_run_no = save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate, average_execution_time, test_type)
+    print(f"test_run_no-{test_run_no}")
+    print(f'summary-{summary}')
+    return test_run_no
 
 def handleRequest(message: Message):
     """Handle API requests"""

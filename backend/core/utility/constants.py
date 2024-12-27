@@ -24,7 +24,8 @@ default_formatter = "ros_pe_formatter"
 default_use_for_training = False
 default_error_detection = True
 default_phi_detection = True
-
+default_model = "gpt-4o-2024-11-20"
+default_test_size_limit = 1
 
 INSERT_QUERY = """
         INSERT INTO Run_stats (
@@ -78,12 +79,34 @@ TEST_QUERY = """
             ideal_response            
         FROM Run_stats 
         WHERE use_for_testing = 'true'
-        ORDER BY user_prompt, run_no DESC
+       
         """
 
 TEST_RESULTS_QUERY = """
-        SELECT test_run_no, test_results_detail_no, original_response, trd.ideal_response, actual_response, original_prompt, trd.fingerprint as trd_fingerprint, rs.fingerprint as rs_fingerprint
-        FROM public.test_results_detail as trd, public.run_stats as rs
-        WHERE trd.original_run_no = rs.run_no
+        SELECT 
+            test_run_no, 
+            test_results_detail_no, 
+            original_response, 
+            trd.ideal_response, 
+            actual_response, 
+            original_prompt, 
+            trd.fingerprint as trd_fingerprint, 
+            rs.fingerprint as rs_fingerprint
+        FROM public.test_results_detail trd
+        LEFT JOIN public.run_stats rs 
+            ON trd.original_run_no = rs.run_no
         """
+
+TEST_RESULTS_DETAIL_QUERY = """
+    SELECT         
+        test_run_date,
+        total_tests,
+        tests_passed,
+        tests_failed,
+        tests_pass_rate,
+        average_execution_time,
+        test_type
+    FROM test_results 
+    
+"""
 
