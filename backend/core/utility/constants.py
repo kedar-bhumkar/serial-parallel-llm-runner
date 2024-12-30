@@ -91,7 +91,13 @@ TEST_RESULTS_DETAIL_QUERY = """
             actual_response, 
             original_prompt, 
             trd.fingerprint as trd_fingerprint, 
-            rs.fingerprint as rs_fingerprint            
+            rs.fingerprint as rs_fingerprint,
+            trd.matched_tokens, 
+            trd.mismatched_tokens, 
+            trd.mismatch_percentage, 
+            trd.execution_time,             
+            trd.page, 
+            trd.status
         FROM public.test_results_detail trd
         LEFT JOIN public.run_stats rs 
             ON trd.original_run_no = rs.run_no
@@ -111,3 +117,13 @@ TEST_RESULTS_QUERY = """
     
 """
 
+TEST_NAMES_QUERY = """
+    SELECT eval_name, test_run_no
+    FROM test_results
+    where status = 'active'
+"""
+
+VIEW_TEST_RESULTS_DETAIL_QUERY = """
+    SELECT 
+    FROM test_results_detail    
+"""

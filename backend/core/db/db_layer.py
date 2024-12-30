@@ -235,3 +235,8 @@ def get_test_results(test_run_no):
 
 def get_test_results_detail(test_run_no):
     return read("".join([TEST_RESULTS_DETAIL_QUERY, f" Where trd.test_run_no='{test_run_no}'"]))
+
+def get_test_names():
+    return read("".join([TEST_NAMES_QUERY]))
+
+

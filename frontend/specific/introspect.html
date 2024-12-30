@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Results Viewer</title>
+     <!-- Add Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../common/styles/main.css">
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin-left: 15%;
+      margin-right: 5%;
+  
+    }
+    .pane {
+      width: 48%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .highlight {
+      background-color: yellow;
+    }
+    .buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .container h2 {
+      width: 48%;
+      text-align: center;
+      font-size: 1.2em;
+      margin: 0 0 10px 0;
+    }
+    .info-icon {
+      display: inline-block;
+      font-size: small;
+      width: 20px;
+      height: 20px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+      position: relative;
+    }
+    
+    .tooltip {
+      visibility: hidden;
+      background-color: #333;
+      color: white;
+      text-align: left;
+      padding: 10px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      width: 300px;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 5px;
+    }
+    
+    .buttons .info-icon .tooltip {
+      bottom: 100%;
+      top: auto;
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    
+    .info-icon:hover .tooltip {
+      visibility: visible;
+    }
+    .section-highlight {
+      color: blue;
+      font-weight: bold;
+    }
+    .section {
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      margin-top: 0;
+    }
+
+    .key-value {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      flex-wrap: wrap;
+    }
+
+    .key-value .key {
+      font-weight: bold;
+      flex: 0 0 40%;
+    }
+
+    .key-value .value {
+      flex: 0 0 55%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      text-align: right;
+      display: inline-block;
+    }
+
+    .value.highlight {
+      color: red;
+      background-color: yellow;
+      display: inline-block;
+      padding: 0 2px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <div id="sidebar"></div>
+    <main>
+        <div id="header"></div>
+        <section id="main-content">
+          <div style="text-align: center; margin: 20px 0;">
+            <select id="testNameSelect" style="padding: 8px; min-width: 200px;">
+              <option value="">Select a test...</option>
+            </select>
+          </div>
+
+          <!-- Add table container -->
+          <div id="resultsContainer" style="margin: 20px 15%;">
+            <!-- Summary section -->
+            <div id="summarySection" class="section" style="display: none;">
+              <h3>Test Summary</h3>
+              <div id="summaryContent"></div>
+            </div>
+            
+            <!-- Results table -->
+            <div id="tableContainer" style="margin-top: 20px; display: none;">
+              <h3>Test Details</h3>
+              <table id="resultsTable" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                  <tr style="background-color: #f4f4f4;">
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Test No.</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Matched Tokens</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Mismatched Tokens</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Mismatch %</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Execution Time</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Status</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Page</th>  
+                  </tr>
+                </thead>
+                <tbody id="resultsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+    </main>
+  </div>
+  
+<script>
+  // Load components
+  fetch('../common/html/sidebar.html').then(response => response.text()).then(data => document.getElementById('sidebar').innerHTML = data);
+  fetch('../common/html/header.html').then(response => response.text()).then(data => document.getElementById('header').innerHTML = data);
+
+  // Add new function to fetch and populate test names
+  async function loadTestNames() {
+    try {
+      const response = await fetch('http://localhost:8000/test-names');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data.test_names)
+      
+      const select = document.getElementById('testNameSelect');
+      data.test_names.forEach(test => {
+        const option = document.createElement('option');
+        option.value = test.eval_name;
+        option.textContent = test.eval_name;
+        option.setAttribute('data-test-run-no', test.test_run_no);
+        select.appendChild(option);
+      });
+
+      // Add change event listener
+      select.addEventListener('change', async (e) => {
+        if (e.target.value) {
+          try {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const testRunNo = selectedOption.getAttribute('data-test-run-no');
+            
+            const response = await fetch('http://localhost:8000/test-results', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                test_no: testRunNo
+              })
+            });
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(data)
+            renderResults(data);
+          } catch (error) {
+            console.error('Error fetching test results:', error);
+            alert('Error loading test results');
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching test names:', error);
+      document.getElementById('testNameSelect').innerHTML = '<option>Error loading tests</option>';
+    }
+  }
+
+  function renderResults(data) {
+    // Show containers
+    document.getElementById('summarySection').style.display = 'block';
+    document.getElementById('tableContainer').style.display = 'block';
+
+    // Render summary
+    const summaryHtml = Object.entries(data.summary)
+      .map(([key, value]) => `
+        <div class="key-value">
+          <span class="key">${key.replace(/_/g, ' ').toUpperCase()}</span>
+          <span class="value">${value}</span>
+        </div>
+      `).join('');
+    document.getElementById('summaryContent').innerHTML = summaryHtml;
+
+    // Render table - Added hyperlink to test number
+    const tableBody = document.getElementById('resultsTableBody');
+    tableBody.innerHTML = Object.values(data.transformed_results)
+      .map(result => `
+        <tr>
+          <td style="padding: 12px; border: 1px solid #ddd;">
+            <a href="view_test_results.html?test-id=${result.test_results_detail_no}" style="text-decoration: none; color: #007bff;">
+              ${result.test_results_detail_no}
+            </a>
+          </td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${result.matched_tokens}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${result.mismatched_tokens}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${result.mismatch_percentage}%</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${result.execution_time.toFixed(2)}s</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${result.status}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${result.page}</td>
+        </tr>
+      `).join('');
+  }
+
+  // Call the function when page loads
+  loadTestNames();
+</script>
+</body>
+</html>
