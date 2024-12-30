@@ -267,7 +267,7 @@ def log(usecase, page, response, time, mode):
          test_result['accuracy_difflib_similarity'] = accuracy_difflib_similarity
          test_result['matched_tokens'] = matched_tokens
          test_result['mismatched_tokens'] = mismatched_tokens
-         test_result['mismatch_percentage'] = mismatch_percentage
+         test_result['mismatch_percentage'] = round(mismatch_percentage,2)
          test_result['ideal_response'] = formatted_ideal_response
          test_result['actual_response'] = formatted_real_response
          test_result['original_response'] = shared_data_instance.get_data('original_response')  
@@ -568,7 +568,7 @@ def _generate_test_summary(test_type):
         "Total Tests": total_tests,
         "Pass Rate": pass_rate,
         "Average Execution Time": average_execution_time,
-        "Accuracy": accuracy
+        "Accuracy": round(accuracy,2) + "%"
     }
     
     logger.critical("\nTest Suite Results:")

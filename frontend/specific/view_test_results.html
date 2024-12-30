@@ -318,11 +318,14 @@
   const mode = getUrlParameter('mode');
   const testId = getUrlParameter('test-id');
   const pageName = getUrlParameter('page');
-
+  const testResultId = getUrlParameter('test-result-id');
   if (mode === 'run_transcript') {
-    // Hide navigation buttons
+    // Hide navigation buttons, sidebar, summary icon, and test type info
     document.querySelectorAll('.buttons').forEach(button => button.style.display = 'none');
     document.querySelectorAll('#sidebar').forEach(sidebar => sidebar.style.display = 'none');
+    // Hide summary icon (the green 's' icon)
+    document.querySelector('.info-icon[style*="background-color: green"]').style.display = 'none';
+   
     
     try {
       const llmResponse = JSON.parse(sessionStorage.getItem('llmResponse'));
@@ -382,18 +385,26 @@
       document.getElementById('idealPane').innerHTML = 'Error loading LLM response';
       document.getElementById('actualPane').innerHTML = 'Error loading LLM response';
     }
-  } else if (testId) {
+  } else if (mode === 'run_eval' || mode === 'introspect') {
+    // Hide sidebar for introspect mode
+    if (mode === 'introspect') {
+      document.querySelectorAll('#sidebar').forEach(sidebar => sidebar.style.display = 'none');
+    }
     // Original test results viewing mode
     async function fetchTestResults(testId) {
       try {
+        const requestBody = {
+          'test_no': testId,
+          'mode': mode,
+          'test_result_id': testResultId
+        };
+
         const response = await fetch(serverUrl+'/test-results', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            'test_no': testId
-          })
+          body: JSON.stringify(requestBody)
         });
 
         if (!response.ok) {

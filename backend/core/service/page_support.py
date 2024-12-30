@@ -1,7 +1,7 @@
 from backend.core.db.db_layer import get_test_results, get_test_results_detail, get_test_names
 
 
-def getTestResults(testId):
+def getTestResults(testId, mode, test_result_id):
     
     df_detail = get_test_results(testId)
     # Get the first record as a dictionary
@@ -9,7 +9,7 @@ def getTestResults(testId):
     print(f"summary-{summary}")
 
     # Get results as a DataFrame
-    df = get_test_results_detail(testId)
+    df = get_test_results_detail(testId,test_result_id)
     
     # Transform DataFrame into required format
     transformed_results = {
@@ -22,10 +22,11 @@ def getTestResults(testId):
             "rs_fingerprint": row["rs_fingerprint"],
             "matched_tokens": row["matched_tokens"],
             "mismatched_tokens": row["mismatched_tokens"],
-            "mismatch_percentage": row["mismatch_percentage"],
+            "mismatch_percentage": round(row["mismatch_percentage"],2),
             "execution_time": row["execution_time"],
             "page": row["page"],
-            "status": row["status"]
+            "status": row["status"],
+            "test_run_no": row["test_run_no"]
         }
         for idx, row in df.iterrows()
     }

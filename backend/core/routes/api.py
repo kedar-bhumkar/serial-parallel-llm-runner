@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from backend.core.utility.constants import *
 from backend.core.service.main import handleRequest, process_request
-from backend.core.model.pydantic_models import Message, AudioMessage, TestResults, EvalRequest, ConsistencyRequest, TestResultDetailRequest
+from backend.core.model.pydantic_models import Message, AudioMessage, TestResults, EvalRequest, ConsistencyRequest
 from backend.core.service.audio_manager import *
 from backend.core.utility.test_results import getTestResults
 from backend.core.utility.shared import *
@@ -70,7 +70,7 @@ def doTranscribe( request:Request, audioMessage: AudioMessage):
 def doTestResults( request:Request, testResults:TestResults):    
     print(f"Inside doTestResults - {testResults}")    
     
-    return getTestResults(testResults.test_no)
+    return getTestResults(testResults.test_no, testResults.mode, testResults.test_result_id)
 
 @app.post("/eval")
 def doEval( request:Request, evalRequest:EvalRequest):    

@@ -227,7 +227,7 @@
                     
                     // Add results link
                     const resultsLinkDiv = document.getElementById('resultsLink');
-                    resultsLinkDiv.innerHTML = `<a href="/specific/view_test_results.html?test-id=${data.test_run_no}&page=${selectedPage}" class="primary-button">
+                    resultsLinkDiv.innerHTML = `<a href="/specific/view_test_results.html?mode=run_eval&test-id=${data.test_run_no}&page=${selectedPage}" class="primary-button">
                         <i class="fas fa-chart-bar"></i> View Eval Results
                     </a>`;
                     

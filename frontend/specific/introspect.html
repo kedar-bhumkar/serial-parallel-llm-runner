@@ -212,7 +212,9 @@
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                test_no: testRunNo
+                test_no: testRunNo,  
+                mode:"introspect",
+                test_result_id: null
               })
             });
 
@@ -256,7 +258,11 @@
       .map(result => `
         <tr>
           <td style="padding: 12px; border: 1px solid #ddd;">
-            <a href="view_test_results.html?test-id=${result.test_results_detail_no}" style="text-decoration: none; color: #007bff;">
+            <a href="javascript:void(0)" 
+               onclick="window.open('view_test_results.html?mode=introspect&test-result-id=${result.test_results_detail_no}&test-id=${result.test_run_no}', 
+               'TestResults', 
+               'width=1200,height=800,resizable=yes,scrollbars=yes')"
+               style="text-decoration: none; color: #007bff;">
               ${result.test_results_detail_no}
             </a>
           </td>
