@@ -245,7 +245,7 @@ def log(usecase, page, response, time, mode):
     if(len(db_data)>0):
         isBaseline = False
         first_response = db_data[0]['response']
-        matches_baseline, reproducibility_changes, repro_difflib_similarity = compare(get_Pydantic_Filtered_Response(page, first_response,None), get_Pydantic_Filtered_Response(page,response,None))
+        matches_baseline, reproducibility_changes, repro_difflib_similarity, matched_tokens, mismatched_tokens , mismatch_percentage = compare(get_Pydantic_Filtered_Response(page, first_response,None), get_Pydantic_Filtered_Response(page,response,None))
     else:
         isBaseline = True
         matches_baseline = True
@@ -257,20 +257,25 @@ def log(usecase, page, response, time, mode):
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)       
          #print(f"formatted_ideal_response - {formatted_ideal_response}" )
          shared_data_instance.set_data('theIdealResponse', formatted_ideal_response)
-         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
+         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity, matched_tokens, mismatched_tokens, mismatch_percentage = compare(formatted_ideal_response, formatted_real_response)
     elif(run_mode == 'cli-test-llm' or run_mode == 'eval-test-llm'):
          logger.info(f"Running test")
          formatted_ideal_response = get_Pydantic_Filtered_Response(page,theIdealResponse, None)                
-         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity = compare(formatted_ideal_response, formatted_real_response)
+         matches_idealResponse, idealResponse_changes,accuracy_difflib_similarity, matched_tokens, mismatched_tokens, mismatch_percentage = compare(formatted_ideal_response, formatted_real_response)
          test_result['matches_idealResponse'] = matches_idealResponse
          test_result['idealResponse_changes'] = idealResponse_changes
          test_result['accuracy_difflib_similarity'] = accuracy_difflib_similarity
+         test_result['matched_tokens'] = matched_tokens
+         test_result['mismatched_tokens'] = mismatched_tokens
+         test_result['mismatch_percentage'] = mismatch_percentage
          test_result['ideal_response'] = formatted_ideal_response
          test_result['actual_response'] = formatted_real_response
          test_result['original_response'] = shared_data_instance.get_data('original_response')  
          test_result['original_run_no'] = shared_data_instance.get_data('original_run_no')
          test_result['original_prompt'] = shared_data_instance.get_data('original_prompt')
          test_result['fingerprint'] = shared_data_instance.get_data('fingerprint')
+         test_result['page'] = shared_data_instance.get_data('eval_request').page
+         test_result['status'] = 'success'
          logger.critical(f"accuracy_difflib_similarity-{accuracy_difflib_similarity}")
          print(f"key while saving-{shared_data_instance.get_data('run_no')}")
          test_map[shared_data_instance.get_data('run_no')] = test_result
@@ -447,7 +452,7 @@ def _process_eval_test_llm(usecase, page, mode, model_family, formatter,
                      run_mode, sleep, model, test_size_limit):
     print("Entering method: _process_eval_test_llm")
     
-    eval_file_data = shared_data_instance.get_data('eval_file_data')
+    eval_file_data = shared_data_instance.get_data('eval_request').csv_data
     print(f"eval_file_data-{eval_file_data}")
     if not eval_file_data:
         logger.error("No evaluation file data found")
@@ -554,14 +559,16 @@ def _generate_test_summary(test_type):
     failed_tests = total_tests - passed_tests
     pass_rate = f"{(passed_tests/total_tests)*100:.2f}%"
     average_execution_time = round(sum(test['execution_time'] for test in test_map.values()) / total_tests, 2)
-    
+    accuracy = 100 -sum(test['mismatch_percentage'] for test in test_map.values()) / total_tests
+    print(f"accuracy-{accuracy}")
     summary = {
         "AI model": theModel,
         "Tests Passed": passed_tests,
         "Tests Failed": failed_tests,
         "Total Tests": total_tests,
         "Pass Rate": pass_rate,
-        "Average Execution Time": average_execution_time
+        "Average Execution Time": average_execution_time,
+        "Accuracy": accuracy
     }
     
     logger.critical("\nTest Suite Results:")
@@ -569,7 +576,8 @@ def _generate_test_summary(test_type):
     for key, value in summary.items():
         logger.critical(f"{key}: {value}")
     
-    test_run_no = save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate, average_execution_time, test_type)
+    eval_name = shared_data_instance.get_data('eval_request').evalName
+    test_run_no = save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate, average_execution_time, test_type, eval_name, accuracy)
     print(f"test_run_no-{test_run_no}")
     print(f'summary-{summary}')
     return test_run_no

@@ -121,10 +121,14 @@
       word-wrap: break-word;
       overflow-wrap: break-word;
       text-align: right;
+      display: inline-block;
     }
 
     .value.highlight {
       color: red;
+      background-color: yellow;
+      display: inline-block;
+      padding: 0 2px;
     }
   </style>
 </head>
@@ -399,11 +403,53 @@
         summary = data.summary;
         console.log('summary', summary)
 
-        // Update summary tooltip
+        // Calculate overall accuracy
+        let totalMismatch = 0;
+        let testCount = 0;
+        
+        // Process each test result to calculate average mismatch
+        Object.values(data.transformed_results).forEach(result => {
+          try {
+            const actualData = JSON.parse(result.actual_response);
+            const idealData = JSON.parse(result.ideal_response);
+            
+            let mismatchCount = 0;
+            let totalValues = 0;
+            
+            // Compare each section and count mismatches
+            Object.entries(idealData).forEach(([section, sectionData]) => {
+              if (typeof sectionData === 'object' && sectionData !== null) {
+                Object.entries(sectionData).forEach(([key, value]) => {
+                  if (value !== null && !key.includes('ROS__c') && !key.includes('Not_Assessed_Reason')) {
+                    totalValues++;
+                    if (actualData[section]?.[key] !== value) {
+                      mismatchCount++;
+                    }
+                  }
+                });
+              }
+            });
+            
+            if (totalValues > 0) {
+              const mismatchPercentage = (mismatchCount / totalValues) * 100;
+              totalMismatch += mismatchPercentage;
+              testCount++;
+            }
+          } catch (error) {
+            console.error('Error processing test result:', error);
+          }
+        });
+
+        const averageMismatch = totalMismatch / testCount;
+        const accuracy = (100 - averageMismatch).toFixed(1);
+
+        // Update summary tooltip with accuracy
         const summaryTooltip = document.getElementById('summaryTooltip');
         if (summary) {
           let summaryHtml = '<div style="text-align: left;">';
           for (const [key, value] of Object.entries(summary)) {
+            console.log('key', key)
+            console.log('value', value)
             summaryHtml += `<div><strong>${key}:</strong> ${value}</div>`;
           }
           summaryHtml += '</div>';

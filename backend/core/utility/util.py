@@ -13,6 +13,7 @@ from backend.core.utility.util import *
 from backend.core.utility.shared import *
 import pandas as pd
 from pathlib import Path
+from itertools import zip_longest
 
 def transform_response(theFormatter,response):
     logger.critical('Inside  transform_response')
@@ -48,32 +49,63 @@ def getRunID(digits):
     return random.randint(lower_bound, upper_bound)
 
 
-def compare(resp1, resp2):
-    #logger.info(f'resp1-{resp1}')
-    #logger.info(f'resp2-{resp2}')
+def preprocess_string(input_str: str) -> str:
+    """Add spaces between JSON-like braces and quotes for better comparison"""
+    return input_str.replace('{', '').replace('}', '').replace(':', ' ').replace(',', ' ').replace('[', '').replace(']', '').replace('\"',"")
 
-
-    diff = unified_diff(resp1 , resp2,n=0, lineterm='')    
-    changes = ''.join(list(diff))
-    logger.critical(f'diff-{changes}')
-
+def compare(resp1: str, resp2: str):
+    # Preprocess the responses
+    processed_resp1 = preprocess_string(resp1)
+    processed_resp2 = preprocess_string(resp2)
+    
+    # Convert responses to tokens, including whitespace in the split
+    tokens1 = re.split(r'(\s+)', processed_resp1)
+    tokens2 = re.split(r'(\s+)', processed_resp2)
+    
+    # Filter out empty strings that might result from the split
+    #tokens1 = [t for t in tokens1 if t]
+    #tokens2 = [t for t in tokens2 if t]
+    
+    print(f'tokens1-{tokens1}')
+    
+    # Find matching and mismatching tokens
+    matched_tokens = sum(1 for t1, t2 in zip(tokens1, tokens2) if t1 == t2)
+    total_tokens = max(len(tokens1), len(tokens2))
+    mismatched_tokens = total_tokens - matched_tokens
+    
+    # Calculate mismatch percentage
+    mismatch_percentage = (mismatched_tokens / total_tokens * 100) if total_tokens > 0 else 0
+    
+    # Generate diff-style output
+    diff_lines1 = []
+    diff_lines2 = []
+    for t1, t2 in zip_longest(tokens1, tokens2, fillvalue=None):
+        if t1 != t2:
+            if t1 is not None:
+                diff_lines1.append(f'- {t1}')
+            if t2 is not None:
+                diff_lines2.append(f'+ {t2}')
+    
+    changes = '\n resp1-'.join(diff_lines1) + '\n resp2-'.join(diff_lines2)
+    print(f'changes00-{changes}')
+    # Keep the existing similarity metrics
     ratio = SequenceMatcher(a=resp1, b=resp2).ratio()
-    _ratio = f'diff_ratio-{ratio}'
-    #logger.info(f'ratio-{_ratio}')
-
-    # Calculate Levenshtein distance
     distance = Levenshtein.distance(resp1, resp2)
-    _distance = f'distance-{distance}'
-    #logger.info(f'Levenshtein distance-{_distance}')
+    similarity_ratio = Levenshtein.ratio(resp1, resp2)
+    
+    metrics = (
+        f'diff_ratio-{ratio},'
+        f'distance-{distance},'
+        f'similarity_ratio-{similarity_ratio},'
+        f'matched_tokens-{matched_tokens},'
+        f'mismatched_tokens-{mismatched_tokens},'
+        f'mismatch_percentage-{mismatch_percentage:.2f}%',
+        f'changes-{changes}',
+    
+    )
 
-    similarity_ratio = Levenshtein.ratio(resp1, resp2)    
-    _similarity_ratio = f'similarity_ratio-{similarity_ratio}'
-    #logger.info(f'Similarity ratio-{_similarity_ratio}')    
-
-    if(resp1 == resp2):
-        return True, changes, f'{_ratio},{_distance},{_similarity_ratio}'
-    else:
-        return False, changes, f'{_ratio},{_distance},{_similarity_ratio}'
+    
+    return (tokens1 == tokens2), changes, metrics, matched_tokens, mismatched_tokens, mismatch_percentage
 
 
 def num_tokens_from_string(string: str, encoding_name: str, type: str) -> int:

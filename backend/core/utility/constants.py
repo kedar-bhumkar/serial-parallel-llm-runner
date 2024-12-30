@@ -82,7 +82,7 @@ TEST_QUERY = """
        
         """
 
-TEST_RESULTS_QUERY = """
+TEST_RESULTS_DETAIL_QUERY = """
         SELECT 
             test_run_no, 
             test_results_detail_no, 
@@ -91,13 +91,13 @@ TEST_RESULTS_QUERY = """
             actual_response, 
             original_prompt, 
             trd.fingerprint as trd_fingerprint, 
-            rs.fingerprint as rs_fingerprint
+            rs.fingerprint as rs_fingerprint            
         FROM public.test_results_detail trd
         LEFT JOIN public.run_stats rs 
             ON trd.original_run_no = rs.run_no
         """
 
-TEST_RESULTS_DETAIL_QUERY = """
+TEST_RESULTS_QUERY = """
     SELECT         
         test_run_date,
         total_tests,
@@ -105,7 +105,8 @@ TEST_RESULTS_DETAIL_QUERY = """
         tests_failed,
         tests_pass_rate,
         average_execution_time,
-        test_type
+        test_type,
+        accuracy
     FROM test_results 
     
 """

@@ -1,11 +1,11 @@
 <div class="page-selector">
-    <label>
+    <label class="page-option">
         <input type="radio" name="page" value="ros" checked> ROS
     </label>
-    <label>
+    <label class="page-option">
         <input type="radio" name="page" value="pe"> PE
     </label>
-    <label>
+    <label class="page-option">
         <input type="radio" name="page" value="cchpi"> CCHPI
     </label>
 </div>
@@ -13,14 +13,25 @@
 <style>
     .page-selector {
         margin: 15px 0;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
     }
     
-    .page-selector label {
-        margin: 0 10px;
+    .page-option {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 4px;
         cursor: pointer;
+        transition: background-color 0.2s;
     }
     
-    .page-selector input[type="radio"] {
+    .page-option:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+    
+    .page-option input[type="radio"] {
         margin-right: 5px;
     }
 </style> 

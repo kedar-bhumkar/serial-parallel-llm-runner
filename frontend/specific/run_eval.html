@@ -109,6 +109,16 @@
         margin-bottom: 2rem;
         text-align: center;
     }
+
+    .eval-name-input {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+        margin-bottom: 1rem;
+    }
     </style>
 </head>
 <body>
@@ -121,6 +131,11 @@
                     <div id="pageSelector"></div>
                     <div id="message"></div>
                     <div class="file-upload-container">
+                        <label for="evalName">
+                            <i class="fas fa-tag"></i>
+                            Evaluation Name
+                        </label>
+                        <input type="text" id="evalName" class="eval-name-input">
                         <label for="evalFile">
                             <i class="fas fa-file-upload"></i>
                             Upload Eval File (CSV)
@@ -187,7 +202,8 @@
             loadingMessage.id = 'loading-message';
             loadingMessage.textContent = '💀 Processing evaluation file... Please wait.';
             document.body.appendChild(loadingMessage);
-
+            evalName = document.getElementById('evalName').value;
+            console.log('evalName', evalName);
             const reader = new FileReader();
             reader.onload = async (e) => {
                 try {
@@ -201,7 +217,8 @@
                         },
                         body: JSON.stringify({
                             csv_data: base64Content,
-                            page: selectedPage  
+                            page: selectedPage,  
+                            evalName: evalName
                         })
                     });
                     
@@ -235,8 +252,39 @@
         // Add this to your DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', function() {
             handleFileUpload();
+            // Initialize eval name with random value
+            document.getElementById('evalName').value = generateRandomEvalName();
         });        
 
+        // Add this function to generate random eval names
+        function generateRandomEvalName() {
+            const adjectives = [
+                'visual', 'neural', 'cognitive', 'semantic', 'logical', 'temporal', 'spatial', 'dynamic', 'adaptive', 'quantum',
+                'predictive', 'synthetic', 'autonomous', 'intelligent', 'recursive', 'parallel', 'distributed', 'generative', 'analytical', 'probabilistic',
+                'algorithmic', 'heuristic', 'stochastic', 'empirical', 'inferential', 'bayesian', 'symbolic', 'abstract', 'computational', 'statistical',
+                'iterative', 'nonlinear', 'emergent', 'evolutionary', 'fuzzy', 'geometric', 'harmonic', 'holistic', 'intuitive', 'kinetic',
+                'linguistic', 'mechanical', 'metamorphic', 'numeric', 'organic', 'parametric', 'quantum', 'resonant', 'synergetic', 'transformative'
+            ];
+            
+            const nouns = [
+                'cortex', 'matrix', 'nexus', 'vector', 'tensor', 'circuit', 'network', 'system', 'kernel', 'framework',
+                'engine', 'processor', 'algorithm', 'paradigm', 'interface', 'protocol', 'schema', 'module', 'function', 'pattern',
+                'cluster', 'graph', 'lattice', 'mesh', 'array', 'pipeline', 'quantum', 'spectrum', 'cipher', 'codec',
+                'core', 'portal', 'proxy', 'router', 'sensor', 'synapse', 'thread', 'transformer', 'vertex', 'vortex',
+                'beacon', 'catalyst', 'cipher', 'fusion', 'genome', 'horizon', 'neuron', 'oracle', 'prism', 'quantum'
+            ];
+            
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date();
+            const dateString = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0');
+            
+            return `${randomAdjective}-${randomNoun}-${dateString}`;
+        }
 
     </script>
 </body>

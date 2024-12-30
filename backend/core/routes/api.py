@@ -78,7 +78,8 @@ def doEval( request:Request, evalRequest:EvalRequest):
     page = evalRequest.page
     usecase = 'acd'
     print(f"csv_data - {evalRequest.csv_data}") 
-    shared_data_instance.set_data('eval_file_data', evalRequest.csv_data)
+    #shared_data_instance.set_data('eval_fil', evalRequest.csv_data)
+    shared_data_instance.set_data('eval_request', evalRequest)
     test_run_no =  process_request(usecase, page, None, None, None, "eval-test-llm")  
     return {"test_run_no": test_run_no}
 

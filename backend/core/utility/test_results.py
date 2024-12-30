@@ -3,13 +3,13 @@ from backend.core.db.db_layer import get_test_results, get_test_results_detail
 
 def getTestResults(testId):
     
-    df_detail = get_test_results_detail(testId)
+    df_detail = get_test_results(testId)
     # Get the first record as a dictionary
     summary = df_detail.to_dict('records')[0]
     print(f"summary-{summary}")
 
     # Get results as a DataFrame
-    df = get_test_results(testId)
+    df = get_test_results_detail(testId)
     
     # Transform DataFrame into required format
     transformed_results = {
