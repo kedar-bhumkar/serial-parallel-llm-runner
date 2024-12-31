@@ -274,7 +274,7 @@ def log(usecase, page, response, time, mode):
          test_result['original_run_no'] = shared_data_instance.get_data('original_run_no')
          test_result['original_prompt'] = shared_data_instance.get_data('original_prompt')
          test_result['fingerprint'] = shared_data_instance.get_data('fingerprint')
-         test_result['page'] = shared_data_instance.get_data('eval_request').page
+         test_result['page'] = shared_data_instance.get_data('page')
          test_result['status'] = 'success'
          logger.critical(f"accuracy_difflib_similarity-{accuracy_difflib_similarity}")
          print(f"key while saving-{shared_data_instance.get_data('run_no')}")
@@ -445,7 +445,7 @@ def _process_test_llm(usecase, page, mode, model_family, formatter,
             test_result['execution_time'] = round(time.time() - start_time, 2)
 
 
-    return _generate_test_summary('consistency')
+    return _generate_test_summary('consistency','consistency-eval-test')
 
 
 def _process_eval_test_llm(usecase, page, mode, model_family, formatter, 
@@ -508,8 +508,10 @@ def _process_eval_test_llm(usecase, page, mode, model_family, formatter,
                 test_result = test_map[shared_data_instance.get_data('run_no')]
                 test_result['execution_time'] = round(time.time() - start_time, 2)
                 results.append(test_result)
-            
-        return _generate_test_summary('eval')
+          
+        eval_name = shared_data_instance.get_data('eval_request').evalName    
+        print(f"eval_name-{eval_name}")
+        return _generate_test_summary('eval', eval_name)
     except Exception as e:
         logger.error(f"Error processing evaluation file: {str(e)}")
         return {"error": str(e)}
@@ -552,7 +554,7 @@ def _setup_test_data(row):
     for key, value in shared_data.items():
         shared_data_instance.set_data(key, value)
 
-def _generate_test_summary(test_type):
+def _generate_test_summary(test_type, eval_name):
     """Generate and log test results summary"""
     total_tests = len(test_map)
     passed_tests = sum(1 for test in test_map.values() if test['matches_idealResponse'])
@@ -568,15 +570,14 @@ def _generate_test_summary(test_type):
         "Total Tests": total_tests,
         "Pass Rate": pass_rate,
         "Average Execution Time": average_execution_time,
-        "Accuracy": round(accuracy,2) + "%"
+        "Accuracy": round(accuracy,2)
     }
     
     logger.critical("\nTest Suite Results:")
     logger.critical("==================")
     for key, value in summary.items():
         logger.critical(f"{key}: {value}")
-    
-    eval_name = shared_data_instance.get_data('eval_request').evalName
+  
     test_run_no = save_test_results(test_map, theModel, total_tests, passed_tests, failed_tests, pass_rate, average_execution_time, test_type, eval_name, accuracy)
     print(f"test_run_no-{test_run_no}")
     print(f'summary-{summary}')

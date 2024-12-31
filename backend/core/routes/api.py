@@ -81,6 +81,7 @@ def doEval( request:Request, evalRequest:EvalRequest):
     print(f"csv_data - {evalRequest.csv_data}") 
     #shared_data_instance.set_data('eval_fil', evalRequest.csv_data)
     shared_data_instance.set_data('eval_request', evalRequest)
+    shared_data_instance.set_data('page', evalRequest.page)
     test_run_no =  process_request(usecase, page, None, None, None, "eval-test-llm")  
     return {"test_run_no": test_run_no}
 
@@ -91,6 +92,7 @@ def doConsistency( request:Request, consistencyRequest:ConsistencyRequest):
     
     page = consistencyRequest.page
     usecase = 'acd'
+    shared_data_instance.set_data('page', consistencyRequest.page)
     test_run_no =  process_request(usecase, page, None, None, None, "cli-test-llm")  
     return {"test_run_no": test_run_no}
 

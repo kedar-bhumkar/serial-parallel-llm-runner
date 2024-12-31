@@ -223,13 +223,15 @@
                     });
                     
                     const data = await response.json();
-                    showMessage('info', 'Evaluation completed successfully');
+                    console.log('Evaluation response:', data);
+                    showMessage('info', 'Evaluation completed successfully - ' + data.test_run_no);
                     
                     // Add results link
                     const resultsLinkDiv = document.getElementById('resultsLink');
-                    resultsLinkDiv.innerHTML = `<a href="/specific/view_test_results.html?mode=run_eval&test-id=${data.test_run_no}&page=${selectedPage}" class="primary-button">
-                        <i class="fas fa-chart-bar"></i> View Eval Results
-                    </a>`;
+                    resultsLinkDiv.innerHTML = `
+                        <a href="#" onclick="showResultsPopup('${data.test_run_no}', '${selectedPage}')" class="primary-button">
+                            <i class="fas fa-chart-bar"></i> View Eval Results
+                        </a>`;
                     
                     console.log('Evaluation response:', data);
                 } catch (error) {
@@ -284,6 +286,14 @@
                 String(today.getDate()).padStart(2, '0');
             
             return `${randomAdjective}-${randomNoun}-${dateString}`;
+        }
+
+        function showResultsPopup(testId, page) {
+            window.open(
+                `/specific/view_test_results.html?mode=run_eval&test-id=${testId}&page=${page}`,
+                '_blank',
+                'width=1200,height=800'
+            );
         }
 
     </script>

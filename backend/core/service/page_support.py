@@ -22,6 +22,7 @@ def getTestResults(testId, mode, test_result_id):
             "rs_fingerprint": row["rs_fingerprint"],
             "matched_tokens": row["matched_tokens"],
             "mismatched_tokens": row["mismatched_tokens"],
+            "total_tokens": row["matched_tokens"] + row["mismatched_tokens"],
             "mismatch_percentage": round(row["mismatch_percentage"],2),
             "execution_time": row["execution_time"],
             "page": row["page"],

@@ -166,7 +166,7 @@
                 showMessage('info', 'Consistency tests completed successfully');
                 
                 const resultsLinkDiv = document.getElementById('resultsLink');
-                resultsLinkDiv.innerHTML = `<a href="/specific/view_test_results.html?test-id=${data.test_run_no}" class="primary-button">
+                resultsLinkDiv.innerHTML = `<a href="/specific/view_test_results.html?test-id=${data.test_run_no}&mode=consistency_check" class="primary-button">
                     <i class="fas fa-chart-bar"></i> View Test Results
                 </a>`;
                 

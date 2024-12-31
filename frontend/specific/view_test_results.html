@@ -147,7 +147,18 @@
           <!-- Add test type and mismatch percentage display -->
           <div style="text-align: center; margin: 10px 0;">
             <span style="margin-right: 20px;">Test Type: <span id="testType" style="font-weight: bold;"></span></span>
-            <span>Mismatch: <span id="mismatchPercentage" style="color: red; font-weight: bold;">0%</span></span>
+            <span id="mismatchPercentageContainer">Mismatch: <span id="mismatchPercentage" style="color: red; font-weight: bold;">0%</span></span>
+          </div>
+
+          <!-- Add metrics display -->
+          <div id="metricsContainer" style="text-align: center; margin: 15px 0; display: none;">
+            <div style="display: inline-flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+              <span>Total Tokens: <span id="totalTokens" style="font-weight: bold;"></span></span>
+              <span>Matched Tokens: <span id="matchedTokens" style="font-weight: bold; color: green;"></span></span>
+              <span>Mismatched Tokens: <span id="mismatchedTokens" style="font-weight: bold; color: red;"></span></span>
+              <span>Token Mismatch: <span id="tokenMismatchPercentage" style="font-weight: bold; color: red;"></span></span>
+              <span>Execution Time: <span id="executionTime" style="font-weight: bold;"></span></span>
+            </div>
           </div>
         
           <div class="buttons">
@@ -385,11 +396,10 @@
       document.getElementById('idealPane').innerHTML = 'Error loading LLM response';
       document.getElementById('actualPane').innerHTML = 'Error loading LLM response';
     }
-  } else if (mode === 'run_eval' || mode === 'introspect') {
-    // Hide sidebar for introspect mode
-    if (mode === 'introspect') {
+  } else if (mode === 'run_eval' || mode === 'introspect' || mode === 'consistency_check') {
+    
       document.querySelectorAll('#sidebar').forEach(sidebar => sidebar.style.display = 'none');
-    }
+    
     // Original test results viewing mode
     async function fetchTestResults(testId) {
       try {
@@ -487,8 +497,25 @@
     }
 
     function renderTest(index) {
-      const { ideal_response, actual_response, original_prompt, trd_fingerprint, rs_fingerprint } = TEST_RESULTS.get(keys[index]);
+      const { ideal_response, actual_response, original_prompt, trd_fingerprint, rs_fingerprint, 
+              total_tokens, matched_tokens, mismatched_tokens, mismatch_percentage, execution_time } = TEST_RESULTS.get(keys[index]);
       
+      // Show metrics if not in run_transcript mode
+      const metricsContainer = document.getElementById('metricsContainer');
+      if (mode !== 'run_transcript') {
+        metricsContainer.style.display = 'block';
+        document.getElementById('totalTokens').textContent = total_tokens || 'N/A';
+        document.getElementById('matchedTokens').textContent = matched_tokens || 'N/A';
+        document.getElementById('mismatchedTokens').textContent = mismatched_tokens || 'N/A';
+        document.getElementById('tokenMismatchPercentage').textContent = 
+          mismatch_percentage ? `${mismatch_percentage}%` : 'N/A';
+        document.getElementById('executionTime').textContent = 
+          execution_time ? `${execution_time}s` : 'N/A';
+        document.getElementById('mismatchPercentageContainer').style.display = 'none';
+      } else {
+        metricsContainer.style.display = 'none';
+      }
+
       // Check if we should show fingerprints based on test type
       const shouldShowFingerprints = summary?.test_type?.toLowerCase() !== 'eval';
       
@@ -533,6 +560,8 @@
       });
 
       if (pageName === 'cchpi') {
+        console.log('ideal_response', ideal_response)
+        console.log('actual_response', actual_response)
         renderJsonForCchpi(ideal_response, 'idealPane', actual_response);
         renderJsonForCchpi(actual_response, 'actualPane', ideal_response);
       } else {
