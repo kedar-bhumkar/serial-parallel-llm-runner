@@ -6,6 +6,7 @@ from backend.core.utility.util import getConfig
 import pandas as pd
 from datetime import datetime
 from backend.core.logging.custom_logger import *
+from functools import lru_cache
 
 def connect():
     config = getConfig(db_conn_file)
@@ -239,7 +240,24 @@ def get_test_results_detail(test_run_no,test_result_id):
     else:
         return read("".join([TEST_RESULTS_DETAIL_QUERY, f" Where trd.test_run_no='{test_run_no}'"]))
 
+
 def get_test_names():
     return read("".join([TEST_NAMES_QUERY]))
+
+
+@lru_cache(maxsize=100)
+def get_system_prompt(usecase: str, page: str) -> str:
+    df = read("".join([SYSTEM_PROMPT_QUERY, f" where usecase='{usecase}' and page='{page}' and isactive=true"]))
+    if df.empty:
+        return None
+    return df.to_dict('records')[0]['system_prompt']
+
+
+def get_llm_config():
+    df = read("".join([LLM_CONFIG_QUERY, f" LIMIT 1"]))
+    if df.empty:
+        raise RuntimeError("No active LLM configuration found in database")
+    else:
+        return df.to_dict('records')[0]
 
 

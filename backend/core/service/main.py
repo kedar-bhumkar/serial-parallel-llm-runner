@@ -11,6 +11,7 @@ from backend.core.db.db_stats import *
 from backend.core.utility.fuzzy_matching import *
 from backend.core.utility.phi_remover import *
 from backend.core.utility.shared import *
+from backend.core.utility.LLMConfig import *
 import pandas as pd
 import base64
 from io import StringIO
@@ -51,7 +52,7 @@ def generate(client,count,prompt,page):
    }
 
     completion_params.update(shared_data_instance.get_data('completion_params'))
-    print(f"completion_params-{completion_params}")
+    print(f"modified completion_params-{completion_params}")
  
     chat_completion = client.chat.completions.create(**completion_params)   
 
@@ -99,20 +100,26 @@ def init_AI_client(model_family, model):
     else:    
         theModel = model
 
-    completion_params = config[model_family]["parameters"]
+    #completion_params = config[model_family]["parameters"]
+    llm_config = LLMConfig.get_config()
+    print(f"llm_config-{llm_config['parameters']}")
+    completion_params = json.loads(llm_config['parameters'])
+    print(f"completion_params-{completion_params}")
     shared_data_instance.set_data('completion_params', completion_params)
-       
+    print('Setting client ...')   
     clientSync = OpenAI(
         api_key  = config[model_family]["key"],
         base_url = config[model_family]["url"],
-    )
+    ) 
 
 def init_prompts(usecase, page, mode):
     print("Entering method: init_prompts")
     global thePrompt,theSystemPrompt,theIdealResponse
     config = getConfig(prompts_file)     
-    theSystemPrompt = config[usecase]['system_prompt']
-    logger.critical(f"theSystemPrompt-{theSystemPrompt}")
+    #theSystemPrompt = config[usecase]['system_prompt']
+    theSystemPrompt = get_system_prompt(usecase, page)
+    #print('cache info = ' , get_system_prompt.cache_info()) 
+    #logger.critical(f"the_System_Prompt-{theSystemPrompt}")
     if(shared_data_instance.get_data('theIdealResponse') == None or shared_data_instance.get_data('theIdealResponse') == ''):
         theIdealResponse = config[usecase]['user_prompt'][page]['serial']['ideal_response']
     else:
@@ -153,14 +160,14 @@ def prompt_constrainer(page,thePrompt, count=None):
         response_schema_json = json.dumps(response_schema_dict, indent=2)    
         end_time = time.time()
         print(f"Time taken to get response schema - {end_time-start_time}")
-
+ 
         #logger.info(f"response_schema_json-{response_schema_json}")
         #print(f"response_schema_json-{response_schema_json}")
         constraints = "constraints"+ str(count)
         #print(f"constraints-{constraints}")
         logger.info(f"constraints-{constraints}")
         logger.info(f"thePrompt-{thePrompt}")
-        
+         
         # @todo REFACTOR THIS
         if(count == -1):
             thePrompt = thePrompt.format(constraints=response_schema_json,missing_sections=negativePrompt)
@@ -204,6 +211,7 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
         sleep_time = default_sleep    
     logger.info(f"model-{model}")
     init_AI_client(model_family, model)
+    print(f"Calling  init_prompts")
     init_prompts(usecase, page, mode)
 
 
