@@ -62,7 +62,7 @@ def doChat( request:Request, message:Message):
     print(f'prompt -  {message.prompt}, mode - {message.mode}, ideal_response - {message.ideal_response}')           
 
     if(message.formatter == None and message.usecase=="acd" and  (message.page == "ros" or message.page =="pe")):
-        message.formatter = default_formatter
+        message.formatter = LLMConfig.get_default("formatter")
 
     response = handleRequest(message)
     print(f"acd_response - {response}")

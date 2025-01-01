@@ -1,26 +1,27 @@
-from typing import Dict, Type, Literal
-from backend.core.model.pydantic_models import *
-from backend.core.logging.custom_logger import *
+from typing import Dict, Type, Literal, Optional
+from backend.core.model.pydantic_models import (
+    BaseModel,
+    ros
+)
+from backend.core.logging.custom_logger import logger
 import yaml
 from backend.core.utility.constants import prompts_file
 from backend.core.utility.fuzzy_matching import check_word_in_transcript
 from backend.core.utility.util import *
-from backend.core.utility.shared import *
+from backend.core.utility.shared import shared_data_instance
 
-def ros_pe_formatter(data:ros):    
+def ros_pe_formatter(data: ros):    
     logger.critical('Inside ros_pe_formatter ...')
    
-    #@ToDo : revisit how to pass data between modules
+    # Get config and shared data
     config = getConfig(prompts_file) 
-    #shared_prompt =  (config['acd']['user_prompt']['ros']['serial']['input'])    
     shared_prompt = shared_data_instance.get_data('thePrompt')
-    #print(f"shared_user_prompt - {shared_prompt}")
     shared_error_detection = shared_data_instance.get_data('error_detection')
-    #print(f"shared_error_detection-{shared_error_detection}")
     
-    #Construct field name: type dict . This would be used to get the actual class for a 'string' section name
+    # Get field types dictionary
     field_dict = get_field_types(ros)
 
+    # Initialize fields
     data = init_Reviewed_and_Negative(data, field_dict)
     data = init_other_fields(data, field_dict, shared_prompt, shared_error_detection)
 

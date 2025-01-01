@@ -19,6 +19,7 @@ class LLMConfig:
         return cls._config
 
     @classmethod
+    @lru_cache(maxsize=1)
     def load_config(cls) -> Dict:                  
         cls._config = get_llm_config()
         return cls._config
@@ -28,3 +29,10 @@ class LLMConfig:
         """Force refresh config from database"""
         cls._config.clear()
         return cls.get_config()
+
+    @classmethod
+    def get_default(cls, key: str) -> str:
+        """Get specific default value"""
+        if not cls._instance:
+            cls.load_config()
+        return cls._config.get(key, None)

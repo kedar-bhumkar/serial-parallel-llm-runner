@@ -1,6 +1,5 @@
 import re
 from fuzzywuzzy import fuzz
-from backend.core.utility.constants import default_fuzzy_matching_threshold
 # List of words to check in the transcript
 words_to_check = [
     "Reviewed", "Constitutional", "Eyes", "Nose", "Throat", "Ears", "NoseThroat", "Nose and Throat","HeadAndNeck", "Head and Neck","HeadandNeck",
@@ -35,7 +34,7 @@ Some additional notes about the patient - He was once incarcerated in jail for 2
 """
 
 # Function to check for presence of words with fuzzy matching
-def check_words_in_transcript(words, transcript, threshold=default_fuzzy_matching_threshold):
+def check_words_in_transcript(words, transcript, threshold=0.75):
     found_words = {}
     transcript_words = transcript.split()
     
@@ -52,7 +51,7 @@ def check_words_in_transcript(words, transcript, threshold=default_fuzzy_matchin
 
 
 # Function to check for presence of words with fuzzy matching
-def check_word_in_transcript(word, transcript, threshold=default_fuzzy_matching_threshold):
+def check_word_in_transcript(word, transcript, threshold=0.75):
     words = None
     if(word == 'NoseThroat'):
         words = ['Nose', 'Throat']

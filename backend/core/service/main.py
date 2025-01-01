@@ -40,7 +40,7 @@ i_data={}
 def generate(client,count,prompt,page):    
     print("Entering method: generate")
     #logger.critical(f"generate - {prompt}")
-    num_tokens_from_string(''.join([theSystemPrompt, prompt]), default_encoding, "input")
+    num_tokens_from_string(''.join([theSystemPrompt, prompt]), 'cl100k_base', "input")
     #logger.critical(f"theSystemPrompt-{theSystemPrompt}")
 
     completion_params = {
@@ -67,7 +67,7 @@ def generate(client,count,prompt,page):
     print(f"chat_completion.system_fingerprint-{chat_completion.system_fingerprint}")
 
     shared_data_instance.set_data('fingerprint', chat_completion.system_fingerprint)
-    num_tokens_from_string(response, default_encoding, "output")
+    num_tokens_from_string(response,'cl100k_base', "output")
     #logger.critical(f'unformatted response...  {count} ...' , response)
     
     #This got replaced by the pydantic formatter
@@ -95,6 +95,7 @@ def init_AI_client(model_family, model):
     global clientSync, theModel
     
     config = getConfig(config_file)
+    print(f"config-{config}")
     if(model==None):
         theModel =  config[model_family]["preferred_model"]
     else:    
@@ -102,14 +103,12 @@ def init_AI_client(model_family, model):
 
     #completion_params = config[model_family]["parameters"]
     llm_config = LLMConfig.get_config()
-    print(f"llm_config-{llm_config['parameters']}")
     completion_params = json.loads(llm_config['parameters'])
-    print(f"completion_params-{completion_params}")
     shared_data_instance.set_data('completion_params', completion_params)
-    print('Setting client ...')   
+    
     clientSync = OpenAI(
-        api_key  = config[model_family]["key"],
-        base_url = config[model_family]["url"],
+        api_key  = config['openai']['key'],
+        base_url = config['openai']['url'],
     ) 
 
 def init_prompts(usecase, page, mode):
@@ -193,22 +192,22 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
     
     # Parallel invoker
     if(mode == None):
-        mode = default_mode
+        mode = LLMConfig.get_default("mode") 
 
     if(page == None):
-        page = default_page     
+        page = LLMConfig.get_default("page")      
 
     if(model_family == None):
-        model_family = default_model_family
+        model_family = LLMConfig.get_default("family") 
 
     if(formatter != None):
-        theFormatter = formatter    
+        theFormatter = LLMConfig.get_default("formatter")      
     
     if(usecase == None):
-        usecase = default_usecase
+        usecase = LLMConfig.get_default("usecase") 
 
     if(sleep_time == None):
-        sleep_time = default_sleep    
+        sleep_time = LLMConfig.get_default("sleep")    
     logger.info(f"model-{model}")
     init_AI_client(model_family, model)
     print(f"Calling  init_prompts")
@@ -229,9 +228,9 @@ def sync_async_runner(usecase, page, mode, model_family,formatter, run_mode, sle
     if(run_mode !=None):
         response = log(usecase, page, response, end, mode)
         #logger.critical(f"f-response-{response}")
-
-    time.sleep(sleep_time)
-
+   
+    time.sleep(float(sleep_time))
+  
     return response
 
 
@@ -287,7 +286,6 @@ def log(usecase, page, response, time, mode):
          logger.critical(f"accuracy_difflib_similarity-{accuracy_difflib_similarity}")
          print(f"key while saving-{shared_data_instance.get_data('run_no')}")
          test_map[shared_data_instance.get_data('run_no')] = test_result
-         
     else:
         matches_idealResponse = ""
         idealResponse_changes = ""    
@@ -297,13 +295,12 @@ def log(usecase, page, response, time, mode):
     if(run_mode != 'cli-test-llm' and run_mode != 'eval-test-llm'):
         if(mode=='parallel'):
             thePrompt = shared_data_instance.get_data('transcript')
-
         i_data = {
             'usecase':usecase,
             'mode':mode,
             'functionality':page,
             'llm':theModel,
-            'llm_parameters':'temperature='+str(default_temperature),
+            'llm_parameters': LLMConfig.get_config()['parameters'],
             'isBaseline': isBaseline,
             'run_no': run_id,
             'system_prompt': theSystemPrompt,
@@ -327,23 +324,23 @@ def log(usecase, page, response, time, mode):
 
 def process_request(usecase, page, mode=None, model_family=None, formatter=None, run_mode=None, sleep=None, model=None, 
                    prompt=None, run_count=None, accuracy_check=None, negative_prompt=None, use_for_training=None, 
-                   error_detection=None, phi_detection=None, test_size_limit=default_test_size_limit, file_name=None, ideal_response=None):
+                   error_detection=None, phi_detection=None, test_size_limit=1, file_name=None, ideal_response=None):
     """Common processing logic for both CLI and API requests"""
     global run_id, theIdealResponse, test_map, db_data
 
     # Initialize defaults if not provided
-    mode = mode or default_mode
-    run_mode = run_mode or default_run_mode
-    model_family = model_family or default_model_family
-    formatter = formatter or default_formatter
-    run_count = run_count or default_run_count
-    accuracy_check = accuracy_check or default_accuracy_check
-    use_for_training = use_for_training or default_use_for_training
-    error_detection = error_detection or default_error_detection
-    phi_detection = phi_detection or default_phi_detection
-    negative_prompt = negative_prompt or default_negative_prompt
-    sleep = sleep or default_sleep
-    model = model or default_model
+    mode = mode or LLMConfig.get_default("mode")
+    run_mode = run_mode or LLMConfig.get_default("run_mode")
+    model_family = model_family or LLMConfig.get_default("family")
+    formatter = formatter or LLMConfig.get_default("formatter")
+    run_count = run_count or LLMConfig.get_default("run_count")
+    accuracy_check = accuracy_check or LLMConfig.get_default("accuracy_check")
+    use_for_training = use_for_training or LLMConfig.get_default("use_for_training")
+    error_detection = error_detection or LLMConfig.get_default("error_detection")
+    phi_detection = phi_detection or LLMConfig.get_default("phi_detection")
+    negative_prompt = negative_prompt or LLMConfig.get_default("negative_prompt")
+    sleep = sleep or LLMConfig.get_default("sleep")
+    model = model or LLMConfig.get_default("model")
     logger.critical(
         f"usecase-{usecase}, page-{page}, mode-{mode}, family-{model_family}, "
         f"formatter-{formatter}, run_mode-{run_mode}, run_count-{run_count}, "
@@ -467,10 +464,7 @@ def _process_eval_test_llm(usecase, page, mode, model_family, formatter,
     try:
         # Convert to string if it's bytes
         if isinstance(eval_file_data, bytes):
-            print("eval_file_data is bytes")
             eval_file_data = eval_file_data.decode('utf-8-sig')
-            #eval_file_data = base64.b64decode(eval_file_data)
-            print(f"decoded_eval_file_data-{eval_file_data}")
      
 
             
@@ -511,12 +505,10 @@ def _process_eval_test_llm(usecase, page, mode, model_family, formatter,
                     usecase, page, mode,
                     model_family, formatter, run_mode, sleep, model, prompt
                 )
-                
                 # Store test results
                 test_result = test_map[shared_data_instance.get_data('run_no')]
                 test_result['execution_time'] = round(time.time() - start_time, 2)
                 results.append(test_result)
-          
         eval_name = shared_data_instance.get_data('eval_request').evalName    
         print(f"eval_name-{eval_name}")
         return _generate_test_summary('eval', eval_name)

@@ -1,5 +1,3 @@
-from backend.core.utility.LLMConfig import *
-
 #model = "gpt-3.5-turbo-0125"
 #model="gpt-4o"
 #model="meta-llama/llama-3-8b",
@@ -10,26 +8,8 @@ config_file =".\\backend\\core\\config\\config.yaml"
 prompts_file=".\\backend\\core\\config\\prompts.yaml"
 db_conn_file='.\\backend\\core\\config\\db_config.yaml'
 
-llm_config = LLMConfig.get_config()
 
-default_mode = llm_config['mode'] or "serial"
-default_page = llm_config['page'] or "demo"
-default_model_family = llm_config['family'] or "openai"
-default_usecase = llm_config['usecase'] or "demo"
-default_temperature=llm_config['temperature'] or 0
-default_run_mode = llm_config['run_mode'] or "same-llm"
-default_run_count = llm_config['run_count'] or 1
-default_sleep = llm_config['sleep'] or 0.75
-default_accuracy_check = llm_config['accuracy_check'] or "ON"
-default_encoding = "cl100k_base"
-default_fuzzy_matching_threshold = 80
-default_negative_prompt=llm_config['negative_prompt'] or "OFF"
-default_formatter = llm_config['formatter'] or "ros_pe_formatter"
-default_use_for_training = llm_config['use_for_training'] or False
-default_error_detection = llm_config['error_detection'] or True
-default_phi_detection = llm_config['phi_detection'] or True
-default_model = llm_config['model'] or "gpt-4o-2024-11-20"
-default_test_size_limit = 1
+
 
  
 
