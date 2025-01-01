@@ -333,7 +333,7 @@ def process_request(usecase, page, mode=None, model_family=None, formatter=None,
     run_mode = run_mode or LLMConfig.get_default("run_mode")
     model_family = model_family or LLMConfig.get_default("family")
     formatter = formatter or LLMConfig.get_default("formatter")
-    run_count = run_count or LLMConfig.get_default("run_count")
+    run_count = int(run_count or LLMConfig.get_default("run_count"))
     accuracy_check = accuracy_check or LLMConfig.get_default("accuracy_check")
     use_for_training = use_for_training or LLMConfig.get_default("use_for_training")
     error_detection = error_detection or LLMConfig.get_default("error_detection")

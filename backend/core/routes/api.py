@@ -65,6 +65,7 @@ def doChat( request:Request, message:Message):
         message.formatter = LLMConfig.get_default("formatter")
 
     response = handleRequest(message)
+    shared_data_instance.set_data('theIdealResponse', None)
     print(f"acd_response - {response}")
     return {"acd_response": response}
     #return {"acd_response": theResponse}

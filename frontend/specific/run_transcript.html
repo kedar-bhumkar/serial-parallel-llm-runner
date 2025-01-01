@@ -256,7 +256,7 @@
             
             var transcript = document.getElementById('transcript').value;
             var idealResponse = document.getElementById('idealResponse').value;
-            transcript = 'Transcript: ' + transcript + '  +   {missing_sections} Return_data_constraints: {constraints}';
+            transcript = 'Transcript: ' + transcript;
             console.log('transcript ' + transcript);
             
             if (transcript) {
@@ -315,9 +315,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             const useIdealResponseCheckbox = document.getElementById('useIdealResponse');
             const idealResponseBox = document.querySelector('.ideal-response-box');
+            const idealResponseTextarea = document.getElementById('idealResponse');
         
             useIdealResponseCheckbox.addEventListener('change', function() {
                 idealResponseBox.style.display = this.checked ? 'block' : 'none';
+                // Clear the textarea when unchecked
+                if (!this.checked) {
+                    idealResponseTextarea.value = '';
+                }
             });
         });
         
